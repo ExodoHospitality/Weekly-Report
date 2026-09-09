@@ -1,2 +1,2 @@
 # Weekly-Report
-Wxodo Weekly KPIs Reports
+Exodo Weekly KPIs Reports
