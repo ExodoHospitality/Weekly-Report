@@ -546,12 +546,31 @@
       <span class="source-text" id="sourceText">Upload the weekly sales log to refresh.</span>
     </div>
 
-    <div style="margin:24px 0; padding:16px 20px; border:1px solid rgba(128,128,128,0.3); border-radius:10px;">
-      <div style="font-size:12px; letter-spacing:1px; text-transform:uppercase; opacity:0.7; margin-bottom:10px;">Invoice Processing</div>
-      <a href="akiro/index.html" style="margin-right:20px;">Akiro Invoicing →</a>
-      <a href="Kayao/index.html" style="margin-right:20px;">Kayao Invoicing →</a>
-     <a href="Matilda/index.html" style="margin-right:20px;">Matilda Invoicing →</a>
-      <a href="Ayayay/index.html">Ayayay Invoicing →</a>
+        <style>
+      .invoice-nav{ display:flex; flex-direction:column; gap:6px; margin:28px 0 0; }
+      .invoice-nav-label{
+        font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em;
+        text-transform:uppercase; color:var(--ink-soft); font-weight:600;
+      }
+      .invoice-nav-links{ display:flex; gap:12px; flex-wrap:wrap; }
+      .invoice-btn{
+        font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.06em;
+        text-transform:uppercase; font-weight:600; text-decoration:none;
+        padding:10px 20px; background:var(--surface); color:var(--oxblood);
+        border:1.5px solid var(--oxblood); border-radius:3px;
+        transition:all .15s; white-space:nowrap;
+      }
+      .invoice-btn:hover{ background:var(--oxblood); color:var(--bg); }
+    </style>
+
+    <div class="invoice-nav">
+      <div class="invoice-nav-label">Invoice processing</div>
+      <div class="invoice-nav-links">
+        <a class="invoice-btn" href="akiro/index.html">Akiro →</a>
+        <a class="invoice-btn" href="Kayao/index.html">Kayao →</a>
+        <a class="invoice-btn" href="Matilda/index.html">Matilda →</a>
+        <a class="invoice-btn" href="Ayayay/index.html">Ayayay →</a>
+      </div>
     </div>
 
     <div class="controls-row">
