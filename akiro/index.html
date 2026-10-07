@@ -1,0 +1,4529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akiro Chicago purchasing</title>
+<meta name="description" content="Weekly purchasing, cost ratios and accounts payable for Akiro Chicago.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍣</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Akiro dashboard — tokens */
+:root{
+  --paper:#F6F5F1; --surface:#FFFFFF; --sunk:#EFEDE7; --ink:#1B2433; --muted:#626873; --rule:#DEDAD0;
+  --indigo:#2E4A7A; --indigo-soft:#E3E9F3; --amber:#B07A2A; --stone:#8C9199; --mist:#C3C7CD;
+  --stamp:#B8322A; --stamp-soft:#F6E3E0; --moss:#4F7443; --moss-soft:#E4ECDF; --warn:#8F6210; --warn-soft:#F5ECD9;
+  --liquor:#7A4B1E; --beer:#C9962E; --wine:#7D2E3F; --sake:#6E8FB5; --na:#8FA57C;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",Georgia,"Times New Roman",serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --r-sm:4px; --r:8px; --r-lg:12px;
+  --shadow:0 12px 40px rgba(20,28,40,.18);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11151C; --surface:#181D26; --sunk:#141922; --ink:#E7E5E0; --muted:#9BA1AB; --rule:#2B323E;
+    --indigo:#86A3D9; --indigo-soft:#1F2A3D; --amber:#D6A04E; --stone:#8E949D; --mist:#4A515C;
+    --stamp:#E26A5F; --stamp-soft:#3A2120; --moss:#8DB47F; --moss-soft:#1F2C1D; --warn:#DDAE55; --warn-soft:#332A17;
+    --liquor:#C08A55; --beer:#DDB25A; --wine:#C0697D; --sake:#8FB0D6; --na:#A9C095;
+    --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11151C; --surface:#181D26; --sunk:#141922; --ink:#E7E5E0; --muted:#9BA1AB; --rule:#2B323E;
+  --indigo:#86A3D9; --indigo-soft:#1F2A3D; --amber:#D6A04E; --stone:#8E949D; --mist:#4A515C;
+  --stamp:#E26A5F; --stamp-soft:#3A2120; --moss:#8DB47F; --moss-soft:#1F2C1D; --warn:#DDAE55; --warn-soft:#332A17;
+  --liquor:#C08A55; --beer:#DDB25A; --wine:#C0697D; --sake:#8FB0D6; --na:#A9C095;
+  --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:120px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0;letter-spacing:.01em;line-height:1.25}
+h1{font-size:clamp(26px,3.6vw,34px)}
+h2{font-size:20px}
+h3{font-size:16.5px;margin-bottom:10px}
+p{margin:0}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:8px 12px;border-radius:var(--r-sm);z-index:50}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px;border-radius:var(--r-sm)}
+#main:focus,#main:focus-visible{outline:none}
+.mt{margin-top:22px}.mt-lg{margin-top:36px}
+
+/* header + tabs */
+.bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--rule)}
+.bar-inner,.tabs-inner,main,.foot{max-width:1160px;margin:0 auto;padding-left:20px;padding-right:20px}
+.bar-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:8px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:34px;height:34px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);font-family:var(--serif);font-weight:700;display:grid;place-items:center;font-size:17px;transform:rotate(-8deg)}
+.brand strong{display:block;font-family:var(--serif);font-size:18px;line-height:1.1}
+.brand small{display:block;font-size:12.5px;color:var(--muted)}
+.bar-right{display:flex;align-items:center;gap:10px}
+.asof{font-size:12.5px;color:var(--muted);text-align:right;line-height:1.35}
+.asof b{color:var(--ink);font-weight:500}
+.icon-btn{appearance:none;border:1px solid var(--rule);background:var(--surface);width:36px;height:36px;border-radius:50%;cursor:pointer;display:inline-grid;place-items:center;font-size:18px;line-height:1;flex:none}
+.icon-btn:hover{border-color:var(--muted)}
+.icon-btn:disabled{opacity:.35;cursor:default}
+.tabs-inner{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs-inner::-webkit-scrollbar{display:none}
+.tabs a{white-space:nowrap;text-decoration:none;padding:10px 12px 11px;color:var(--muted);border-bottom:2px solid transparent;font-size:14.5px;display:flex;align-items:center;gap:6px}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:500}
+.pill{font-size:11.5px;background:var(--stamp);color:#fff;border-radius:999px;padding:0 7px;line-height:18px;font-weight:700}
+.pill.soft{background:var(--sunk);color:var(--muted);font-weight:500}
+.pill:empty{display:none}
+
+main{padding-top:24px;padding-bottom:48px;outline:none}
+.view-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.scope-title{font-size:18px;margin-bottom:12px}
+.hint{font-size:13px;color:var(--muted);margin:10px 0 18px;max-width:72ch}
+.result{font-size:14px;color:var(--muted);margin:4px 0 10px}
+
+/* cards + grids */
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:18px 18px 16px;margin-top:18px}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.card-head p{font-size:13.5px;color:var(--muted)}
+.link{font-size:14px;color:var(--indigo);text-decoration:none;font-weight:500}
+.link:hover{text-decoration:underline}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-2 .card{margin-top:18px}
+
+/* KPI tiles */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:14px 16px;text-decoration:none;display:block;position:relative}
+a.kpi:hover{border-color:var(--muted)}
+.kpi .l{font-size:13.5px;color:var(--muted)}
+.kpi .v{font-family:var(--serif);font-size:28px;line-height:1.15;margin-top:4px}
+.kpi .n{font-size:13px;color:var(--muted);margin-top:4px}
+.kpi.alert{border-color:color-mix(in srgb,var(--stamp) 45%,var(--rule))}
+.kpi.alert .v{color:var(--stamp)}
+.kpis.compact .kpi{background:var(--sunk);border-color:transparent}
+.delta{font-size:12.5px;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:4px;white-space:nowrap}
+.delta.up{background:var(--warn-soft);color:var(--warn)}
+.delta.down{background:var(--moss-soft);color:var(--moss)}
+.delta.flat{background:var(--sunk);color:var(--muted)}
+.flag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:5px;font-family:var(--sans);font-weight:500}
+.flag.hi{background:var(--warn-soft);color:var(--warn)}
+.flag.lo{background:var(--stamp-soft);color:var(--stamp)}
+
+/* ledger */
+.ledger-scroll{overflow-x:auto;margin:0 -6px}
+.ledger{display:grid;grid-template-columns:repeat(14,minmax(62px,1fr));gap:6px;min-width:930px;padding:0 6px 2px}
+.wk{appearance:none;border:1px solid transparent;background:none;padding:8px 4px 10px;border-radius:var(--r);cursor:pointer;display:flex;flex-direction:column;gap:6px;text-align:center}
+.wk:hover:not(:disabled),.wk:focus-visible{background:var(--sunk)}
+.wk[aria-pressed="true"]{background:var(--sunk);border-color:var(--rule)}
+.wk:disabled{cursor:default}
+.wk .col{height:160px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+.wk .seg-bar{border-radius:2px;width:100%}
+.wk .empty{height:100%;border:1px dashed var(--mist);border-radius:var(--r-sm);display:grid;place-items:center;font-size:12px;color:var(--muted);padding:4px}
+.wk .amt{font-size:12.5px;color:var(--muted)}
+.wk .prog{display:block;font-style:normal;font-size:11px;color:var(--warn);font-weight:500}
+.wk.partial .col{background:repeating-linear-gradient(135deg,transparent 0 6px,var(--sunk) 6px 12px);border-radius:var(--r-sm)}
+.wk.partial .seg-bar{opacity:.6}
+.wk .id{font-family:var(--serif);font-size:18px;line-height:1}
+.wk .dates{font-size:11.5px;color:var(--muted)}
+.ledger .month{grid-row:2;font-size:12.5px;color:var(--muted);border-top:2px solid var(--rule);padding-top:4px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend i.line{height:3px;width:16px;vertical-align:3px}
+
+/* attention list */
+.attn{list-style:none;margin:0;padding:0}
+.attn li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.attn li:last-child{border-bottom:none}
+.attn .who{font-weight:500}
+.attn .what{font-size:13px;color:var(--muted)}
+.attn .amt{text-align:right;font-weight:500}
+.attn .empty-state{grid-template-columns:1fr;color:var(--muted)}
+
+/* chart */
+.chart svg{width:100%;height:auto;display:block}
+.chart text{font-family:var(--sans);font-size:11px;fill:var(--muted)}
+.chart .grid{stroke:var(--rule);stroke-width:1}
+.chart .lab{font-size:11.5px;font-weight:700}
+
+/* segmented control */
+.stepper{display:flex;align-items:center;gap:8px;max-width:100%}
+.seg{display:flex;gap:2px;background:var(--sunk);padding:3px;border-radius:999px;overflow-x:auto;scrollbar-width:none;max-width:calc(100vw - 130px)}
+.seg::-webkit-scrollbar{display:none}
+.seg button{appearance:none;border:none;background:none;padding:6px 11px;border-radius:999px;cursor:pointer;font-size:14px;white-space:nowrap;color:var(--muted)}
+.seg button:hover:not(:disabled){color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.seg button:disabled{opacity:.4;cursor:default}
+.seg .sep{width:1px;background:var(--rule);margin:4px 3px;flex:none}
+
+/* horizontal bars */
+.hbar{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(40px,2fr) auto;gap:10px;align-items:center;font-size:14px;padding:5px 0}
+.hbar .track{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.hbar .fill{display:block;height:100%;border-radius:4px}
+.hbar .val{text-align:right;min-width:92px}
+.hbar .val small{color:var(--muted);font-size:12px;margin-left:4px}
+button.hbar{appearance:none;border:none;background:none;width:100%;text-align:left;cursor:pointer;border-radius:var(--r-sm);padding:5px 4px;margin:0 -4px;width:calc(100% + 8px)}
+button.hbar:hover{background:var(--sunk)}
+.stack{display:flex;height:14px;border-radius:3px;overflow:hidden;margin:4px 0 10px;background:var(--sunk);gap:1px}
+.stack span{height:100%}
+
+/* filters */
+.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin:6px 0 14px}
+.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:150px}
+.field.grow{flex:1 1 260px}
+.field input,.field select{appearance:none;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:8px 11px;color:var(--ink);font-size:14.5px;min-height:40px}
+.field select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 16px) 55%,calc(100% - 11px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{appearance:none;border:1px solid var(--rule);background:var(--surface);padding:7px 13px;border-radius:999px;cursor:pointer;font-size:14px;min-height:40px}
+.chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chips button .c{font-size:12px;opacity:.75;margin-left:4px}
+.btn{appearance:none;border:1px solid var(--rule);background:var(--surface);padding:8px 14px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+
+/* tables */
+.table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface)}
+.card .table-wrap{border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--rule);white-space:nowrap;vertical-align:middle}
+thead th{font-weight:500;color:var(--muted);font-size:13px;background:var(--surface)}
+th.r,td.r{text-align:right}
+tbody tr:last-child td{border-bottom:none}
+th button.sort{appearance:none;border:none;background:none;padding:0;cursor:pointer;color:inherit;font:inherit;display:inline-flex;gap:4px;align-items:center}
+th button.sort::after{content:"↕";opacity:.35;font-size:11px}
+th[aria-sort="ascending"] button.sort::after{content:"↑";opacity:1}
+th[aria-sort="descending"] button.sort::after{content:"↓";opacity:1}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--sunk)}
+tr.grp td{background:var(--sunk);font-weight:700;font-size:13.5px}
+tr.note td{white-space:normal;background:var(--sunk);font-size:13px;color:var(--muted);padding-top:6px}
+tfoot td{font-weight:700;border-top:1px solid var(--rule);border-bottom:none}
+.empty-row td{text-align:center;color:var(--muted);padding:28px 12px;white-space:normal}
+.tag{font-size:12.5px;padding:2px 8px;border-radius:999px;display:inline-block;white-space:nowrap}
+.tag.past{background:var(--stamp-soft);color:var(--stamp);font-weight:700}
+.tag.soon{background:var(--warn-soft);color:var(--warn);font-weight:500}
+.tag.later{background:var(--sunk);color:var(--muted)}
+.tag.paid{background:var(--moss-soft);color:var(--moss)}
+.spark{display:flex;gap:2px;align-items:flex-end;height:26px}
+.spark i{display:block;width:9px;background:var(--indigo);border-radius:1px}
+.spark i.z{background:var(--mist);height:2px!important}
+.spark i.na{background:none;border-bottom:1px dashed var(--mist);height:1px!important}
+details.more{border-top:1px solid var(--rule);margin-top:12px}
+details.more summary{cursor:pointer;padding:12px 0 10px;font-weight:500;list-style-position:inside}
+details.more .table-wrap{margin-bottom:6px}
+
+/* watch */
+.watch-group{margin-bottom:26px}
+.watch-group h2{font-size:18px;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.watch-group h2 .dot{width:10px;height:10px;border-radius:50%}
+.watch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.w{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--rule);border-radius:var(--r);padding:12px 14px}
+.w[data-tag="Price"]{border-left-color:var(--amber)}
+.w[data-tag="Billing"]{border-left-color:var(--stamp)}
+.w[data-tag="Open"]{border-left-color:var(--indigo)}
+.w .t{font-weight:700}
+.w p{font-size:14px;color:var(--muted);margin-top:3px}
+
+/* drawer */
+.drawer{border:none;padding:0;margin:0 0 0 auto;height:100dvh;max-height:100dvh;width:min(560px,100vw);max-width:100vw;background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.drawer::backdrop{background:rgba(10,14,20,.45)}
+.drawer[open]{display:flex;flex-direction:column}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--rule);background:var(--surface)}
+#dr-body{padding:18px 20px 32px;overflow-y:auto}
+#dr-body .kpis{grid-template-columns:repeat(2,1fr)}
+@media (prefers-reduced-motion:no-preference){
+  .drawer[open]{animation:slide .22s ease-out}
+  @keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
+}
+
+/* tooltip */
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:var(--r);padding:8px 10px;font-size:12.5px;line-height:1.45;box-shadow:var(--shadow);min-width:170px}
+.tip .row{display:flex;justify-content:space-between;gap:14px}
+.tip b{font-family:var(--serif);font-size:14px;display:block;margin-bottom:2px}
+
+.foot{padding-top:18px;padding-bottom:40px;border-top:1px solid var(--rule);font-size:13px;color:var(--muted)}
+
+@media (max-width:860px){
+  .grid-2{grid-template-columns:1fr;gap:14px;margin-top:14px}
+  .grid-2 .card{margin-top:0}
+  .asof{display:none}
+}
+@media (max-width:560px){
+  .bar-inner,.tabs-inner,main,.foot{padding-left:14px;padding-right:14px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi .v{font-size:22px}
+  .kpi{padding:12px}
+  .card{padding:14px}
+  th,td{padding:9px 8px;font-size:13.5px}
+  .hide-sm{display:none}
+  .wk .col{height:120px}
+  .field{min-width:0;flex:1 1 140px}
+  .stepper{width:100%}
+  .seg{flex:1;max-width:none}
+}
+@media print{
+  .bar,.filters,.btn,.stepper,.skip{display:none!important}
+  .view{display:block!important}
+  body{background:#fff}
+  .card,.kpi,.table-wrap{break-inside:avoid}
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <div class="bar-inner">
+    <a class="brand" href="#overview">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span><strong>Akiro Chicago</strong><small>Purchasing</small></span>
+    </a>
+    <div class="bar-right">
+      <p class="asof" id="asof"></p>
+      <button class="icon-btn" id="theme" type="button" aria-label="Switch colour theme"></button>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="Sections">
+    <div class="tabs-inner" id="tabs">
+      <a href="#overview" data-view="overview">Overview</a>
+      <a href="#weeks" data-view="weeks">Weeks</a>
+      <a href="#owed" data-view="owed">Owed <span class="pill" id="tab-owed"></span></a>
+      <a href="#invoices" data-view="invoices">Invoices</a>
+      <a href="#vendors" data-view="vendors">Vendors</a>
+      <a href="#watch" data-view="watch">Watch list <span class="pill soft" id="tab-watch"></span></a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+  <!-- OVERVIEW -->
+  <section class="view" id="view-overview" aria-labelledby="h-overview">
+    <h1 id="h-overview" class="sr-only">Overview</h1>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>Product spend by week</h2>
+        <p>Tap a week to open it.</p>
+      </div>
+      <div class="ledger-scroll"><div class="ledger" id="ledger"></div></div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2>Needs attention</h2>
+          <a class="link" href="#owed">All owed invoices</a>
+        </div>
+        <ul class="attn" id="attention"></ul>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Cost ratios</h2>
+          <p>Purchases ÷ net sales</p>
+        </div>
+        <div id="ratio-chart" class="chart"></div>
+        <div class="legend" id="ratio-legend"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEEKS -->
+  <section class="view" id="view-weeks" aria-labelledby="h-weeks" hidden>
+    <div class="view-head">
+      <h1 id="h-weeks">Weeks</h1>
+      <div class="stepper">
+        <button class="icon-btn" id="wk-prev" type="button" aria-label="Previous week">‹</button>
+        <div class="seg" id="wk-seg" role="group" aria-label="Choose a week or month"></div>
+        <button class="icon-btn" id="wk-next" type="button" aria-label="Next week">›</button>
+      </div>
+    </div>
+    <h2 class="scope-title" id="wk-title"></h2>
+    <div class="kpis" id="wk-figs"></div>
+    <p class="hint">Ratios are purchases divided by net sales for the same days. They are purchase ratios, not food cost: stock on hand is not counted.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Where the money went</h3>
+        <div id="wk-cats"></div>
+        <h3 class="mt">Bar mix</h3>
+        <div class="stack" id="wk-barstack"></div>
+        <div id="wk-bar"></div>
+      </div>
+      <div class="card">
+        <h3>Vendors</h3>
+        <div id="wk-vend"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Invoices in this period</h3><p id="wk-inv-sum"></p></div>
+      <div class="table-wrap" id="wk-inv"></div>
+    </div>
+  </section>
+
+  <!-- OWED -->
+  <section class="view" id="view-owed" aria-labelledby="h-owed" hidden>
+    <div class="view-head">
+      <h1 id="h-owed">What we still owe</h1>
+      <button class="btn" type="button" id="owed-csv">Download CSV</button>
+    </div>
+    <div class="kpis" id="owed-kpis"></div>
+    <div class="filters">
+      <div class="chips" id="owed-chips" role="group" aria-label="Filter by due status"></div>
+      <label class="field"><span>Vendor</span><select id="owed-vendor"></select></label>
+    </div>
+    <div class="table-wrap" id="owed-table"></div>
+
+    <div class="card mt-lg">
+      <div class="card-head">
+        <h2>August carried into September</h2>
+        <p>Invoices dated 08/01 to 08/30 that were paid in September or are still open.</p>
+      </div>
+      <div class="kpis compact" id="carry"></div>
+      <details class="more"><summary>Paid in September</summary><div class="table-wrap" id="carry-paid"></div></details>
+      <details class="more"><summary>Still open</summary><div class="table-wrap" id="carry-open"></div></details>
+    </div>
+  </section>
+
+  <!-- INVOICES -->
+  <section class="view" id="view-invoices" aria-labelledby="h-invoices" hidden>
+    <div class="view-head">
+      <h1 id="h-invoices">Invoices</h1>
+      <button class="btn" type="button" id="inv-csv">Download CSV</button>
+    </div>
+    <div class="filters">
+      <label class="field grow"><span>Search</span><input type="search" id="inv-q" placeholder="Invoice number, vendor or note" autocomplete="off"></label>
+      <label class="field"><span>Month</span><select id="inv-month"><option value="">All</option><option>August</option><option>September</option><option>October</option></select></label>
+      <label class="field"><span>Status</span><select id="inv-status"><option value="">All</option><option value="open">Not paid</option><option value="paid">Paid</option></select></label>
+      <label class="field"><span>Vendor</span><select id="inv-vendor"></select></label>
+    </div>
+    <p class="result" id="inv-count" aria-live="polite"></p>
+    <div class="table-wrap" id="inv-table"></div>
+  </section>
+
+  <!-- VENDORS -->
+  <section class="view" id="view-vendors" aria-labelledby="h-vendors" hidden>
+    <div class="view-head"><h1 id="h-vendors">Vendors</h1></div>
+    <p class="hint">Small bars show each vendor against its own busiest week. Select a vendor for its invoices.</p>
+    <div class="table-wrap" id="vend-table"></div>
+  </section>
+
+  <!-- WATCH -->
+  <section class="view" id="view-watch" aria-labelledby="h-watch" hidden>
+    <div class="view-head"><h1 id="h-watch">Watch list</h1></div>
+    <div id="watch"></div>
+  </section>
+</main>
+
+<dialog id="drawer" class="drawer" aria-labelledby="dr-title">
+  <div class="drawer-head">
+    <h2 id="dr-title"></h2>
+    <button class="icon-btn" type="button" id="dr-close" aria-label="Close">×</button>
+  </div>
+  <div id="dr-body"></div>
+</dialog>
+
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<footer class="foot">
+  <p id="foot"></p>
+</footer>
+
+<script>
+// Generated from Akiro_Purchases_and_Ratios.xlsx - do not edit by hand.
+window.AKIRO_DATA = {
+ "asOf": "2026-10-06",
+ "weeks": [
+  {
+   "id": "A1",
+   "start": "07/27",
+   "end": "08/02",
+   "month": "August",
+   "entered": true,
+   "invoices": 2
+  },
+  {
+   "id": "A2",
+   "start": "08/03",
+   "end": "08/09",
+   "month": "August",
+   "entered": true,
+   "invoices": 23
+  },
+  {
+   "id": "A3",
+   "start": "08/10",
+   "end": "08/16",
+   "month": "August",
+   "entered": true,
+   "invoices": 19
+  },
+  {
+   "id": "A4",
+   "start": "08/17",
+   "end": "08/23",
+   "month": "August",
+   "entered": true,
+   "invoices": 20
+  },
+  {
+   "id": "A5",
+   "start": "08/24",
+   "end": "08/30",
+   "month": "August",
+   "entered": true,
+   "invoices": 21
+  },
+  {
+   "id": "S1",
+   "start": "08/31",
+   "end": "09/06",
+   "month": "September",
+   "entered": true,
+   "invoices": 17
+  },
+  {
+   "id": "S2",
+   "start": "09/07",
+   "end": "09/13",
+   "month": "September",
+   "entered": true,
+   "invoices": 25
+  },
+  {
+   "id": "S3",
+   "start": "09/14",
+   "end": "09/20",
+   "month": "September",
+   "entered": true,
+   "invoices": 22
+  },
+  {
+   "id": "S4",
+   "start": "09/21",
+   "end": "09/27",
+   "month": "September",
+   "entered": true,
+   "invoices": 21
+  },
+  {
+   "id": "O1",
+   "start": "09/28",
+   "end": "10/04",
+   "month": "October",
+   "entered": true,
+   "invoices": 21
+  },
+  {
+   "id": "O2",
+   "start": "10/05",
+   "end": "10/11",
+   "month": "October",
+   "entered": false,
+   "invoices": 0
+  },
+  {
+   "id": "O3",
+   "start": "10/12",
+   "end": "10/18",
+   "month": "October",
+   "entered": false,
+   "invoices": 0
+  },
+  {
+   "id": "O4",
+   "start": "10/19",
+   "end": "10/25",
+   "month": "October",
+   "entered": false,
+   "invoices": 0
+  },
+  {
+   "id": "O5",
+   "start": "10/26",
+   "end": "11/01",
+   "month": "October",
+   "entered": false,
+   "invoices": 0
+  }
+ ],
+ "categories": {
+  "Food": [
+   385.2,
+   14292.46,
+   13507.22,
+   11557.75,
+   14512.65,
+   13718.5,
+   14206.64,
+   11711.03,
+   12495.45,
+   11037.93,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Bar": [
+   0.0,
+   2782.57,
+   2456.86,
+   2696.11,
+   3537.7,
+   2646.55,
+   1745.45,
+   1526.71,
+   3229.11,
+   3167.13,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Supply": [
+   0.0,
+   330.75,
+   66.35,
+   242.77,
+   431.1,
+   171.35,
+   1261.37,
+   757.0,
+   335.19,
+   321.12,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Cleaning": [
+   62.73,
+   157.05,
+   147.2,
+   124.1,
+   113.02,
+   66.86,
+   63.45,
+   63.45,
+   31.08,
+   90.99,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "barSub": {
+  "Cocktails & liquor": [
+   0.0,
+   856.53,
+   1449.51,
+   1211.1,
+   1160.8,
+   819.9,
+   627.36,
+   64.98,
+   1212.09,
+   955.05,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Beer": [
+   0.0,
+   380.85,
+   0.0,
+   157.45,
+   0.0,
+   484.3,
+   0.0,
+   320.9,
+   502.4,
+   184.5,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Wine": [
+   0.0,
+   816.25,
+   300.0,
+   818.0,
+   1176.0,
+   447.0,
+   226.5,
+   261.0,
+   600.96,
+   1088.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Sake": [
+   0.0,
+   663.96,
+   387.0,
+   466.0,
+   707.04,
+   670.02,
+   644.04,
+   454.0,
+   484.02,
+   480.02,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Non-alcoholic": [
+   0.0,
+   64.98,
+   320.35,
+   43.56,
+   493.86,
+   225.33,
+   247.55,
+   425.83,
+   429.64,
+   459.56,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "fees": [
+  23.41,
+  287.05,
+  271.16,
+  331.76,
+  346.88,
+  197.22,
+  465.4,
+  427.48,
+  458.97,
+  340.5,
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "vendors": [
+  {
+   "name": "Martinez",
+   "weeks": [
+    313.0,
+    8047.98,
+    7648.7,
+    7171.37,
+    8634.36,
+    7938.12,
+    7305.8,
+    6499.98,
+    6290.86,
+    6346.51,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Allen Brothers",
+   "weeks": [
+    0.0,
+    2217.14,
+    3432.83,
+    1188.33,
+    2133.44,
+    3015.75,
+    2682.55,
+    1411.63,
+    2860.51,
+    1660.04,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Sysco",
+   "weeks": [
+    134.93,
+    1724.28,
+    694.42,
+    704.54,
+    1215.61,
+    1097.66,
+    1554.08,
+    2130.05,
+    1225.53,
+    663.24,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Maverick",
+   "weeks": [
+    0.0,
+    1480.21,
+    687.0,
+    1284.0,
+    1883.04,
+    1117.02,
+    870.54,
+    715.0,
+    1315.98,
+    1568.02,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "True World",
+   "weeks": [
+    0.0,
+    1275.0,
+    1125.0,
+    1500.0,
+    1175.0,
+    1125.0,
+    1125.0,
+    1125.0,
+    1125.0,
+    1125.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "US Foods",
+   "weeks": [
+    0.0,
+    1063.43,
+    794.66,
+    983.94,
+    1808.51,
+    549.47,
+    963.77,
+    1162.33,
+    1012.83,
+    759.94,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Southern Glazer's",
+   "weeks": [
+    0.0,
+    800.28,
+    1051.02,
+    887.1,
+    762.31,
+    333.9,
+    552.87,
+    0.0,
+    582.6,
+    859.04,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Regalis",
+   "weeks": [
+    0.0,
+    420.0,
+    420.0,
+    420.0,
+    420.0,
+    280.0,
+    700.0,
+    280.0,
+    280.0,
+    420.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Acorvina",
+   "weeks": [
+    0.0,
+    0.0,
+    324.0,
+    324.0,
+    324.0,
+    486.0,
+    0.0,
+    0.0,
+    324.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Lakeshore Beverage",
+   "weeks": [
+    0.0,
+    380.85,
+    0.0,
+    157.45,
+    0.0,
+    484.3,
+    0.0,
+    320.9,
+    0.0,
+    283.35,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Chef Works",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1066.8,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Cosmopolitan",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    232.2,
+    232.2,
+    232.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "El Condor",
+   "weeks": [
+    0.0,
+    153.66,
+    0.0,
+    0.0,
+    173.2,
+    0.0,
+    153.66,
+    86.16,
+    0.0,
+    84.84,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Gangnam Market",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    45.43,
+    136.29,
+    0.0,
+    194.7,
+    149.27,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Chicago Beverage Systems",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    502.4,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Whole Foods",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    88.68,
+    125.63,
+    0.0,
+    81.29,
+    132.95,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Big Apple Finer Foods",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    299.7,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "H Mart",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    41.93,
+    39.92,
+    29.94,
+    0.0,
+    23.59,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "D'Fruta La Vida",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    65.0,
+    0.0,
+    0.0,
+    65.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Eataly",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    62.93,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Supermercado El Guero",
+   "weeks": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    9.48,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "partial": [
+  "A1",
+  "O1"
+ ],
+ "partialNote": {
+  "A1": "08/01\u201308/02 only: July is not tracked",
+  "O1": "09/28\u201310/04, sales loaded; waiting for your OK that the invoices are complete"
+ },
+ "sales": {
+  "Food": [
+   0.0,
+   59830.49,
+   51866.46,
+   52483.87,
+   52601.75,
+   53768.1,
+   53177.1,
+   47132.22,
+   47878.02,
+   45640.03,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Cocktails & liquor": [
+   0.0,
+   11339.0,
+   8451.2,
+   9042.73,
+   9284.75,
+   9999.7,
+   8280.0,
+   8473.5,
+   8494.0,
+   7653.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Beer": [
+   0.0,
+   1106.0,
+   882.0,
+   907.52,
+   1046.5,
+   976.5,
+   1003.8,
+   717.5,
+   889.0,
+   728.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Wine": [
+   0.0,
+   2004.0,
+   2199.0,
+   2189.0,
+   1692.0,
+   2187.4,
+   2087.5,
+   2087.0,
+   1873.0,
+   1841.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Sake": [
+   0.0,
+   1520.0,
+   1314.25,
+   1890.0,
+   1568.0,
+   1900.8,
+   1858.0,
+   1380.0,
+   1192.0,
+   1174.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Non-alcoholic": [
+   0.0,
+   919.0,
+   734.25,
+   850.52,
+   766.5,
+   713.5,
+   665.4,
+   625.75,
+   615.25,
+   601.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "Open Drink (not allocated)": [
+   0.0,
+   167.1,
+   104.58,
+   88.24,
+   169.5,
+   204.51,
+   168.52,
+   105.02,
+   178.0,
+   370.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "TOTAL NET SALES": [
+   0.0,
+   76885.59,
+   65551.74,
+   67451.88,
+   67129.0,
+   69750.51,
+   67240.32,
+   60520.99,
+   61119.27,
+   58007.03,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "invoices": [
+  {
+   "vendor": "Martinez",
+   "number": "278161",
+   "date": "2026-08-01",
+   "week": "A1",
+   "product": 313.0,
+   "fees": 6.5,
+   "total": 319.5,
+   "status": "paid",
+   "paidOn": "2026-08-03",
+   "due": null,
+   "note": "Due 08/01 - PAID 08/03/2026 Wholesail ACH  |  week A1 (was PRE before 10/06/2026)"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924414920",
+   "date": "2026-08-01",
+   "week": "A1",
+   "product": 134.93,
+   "fees": 16.91,
+   "total": 151.84,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-08",
+   "note": "NET 7 - was due 08/08/2026 - payment not confirmed  |  week A1 (was PRE before 10/06/2026) | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "294239 (Wabash)",
+   "date": "2026-08-03",
+   "week": "A2",
+   "product": 719.76,
+   "fees": 7.95,
+   "total": 727.71,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-10",
+   "note": "NET CASH 7 ACH - was due 08/10/2026 - payment not confirmed. Cash discount at risk $21.83 | PAID - owner instruction 09/18/2026: all Wabash invoices before 302172 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end (corrected from September)"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "294814",
+   "date": "2026-08-03",
+   "week": "A2",
+   "product": 1497.38,
+   "fees": 7.95,
+   "total": 1505.33,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-10",
+   "note": "NET CASH 7 ACH - due 08/10/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all Allen Brothers invoices before 303267 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end (corrected from September)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "278396",
+   "date": "2026-08-03",
+   "week": "A2",
+   "product": 4031.45,
+   "fees": 6.5,
+   "total": 4037.95,
+   "status": "paid",
+   "paidOn": "2026-08-10",
+   "due": null,
+   "note": "Due 08/03 - PAID 08/10/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "406079",
+   "date": "2026-08-03",
+   "week": "A2",
+   "product": 420.0,
+   "fees": 0.0,
+   "total": 420.0,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-18",
+   "note": "NET 15 - due 08/18/2026 - payment not confirmed | PAID - owner instruction 10/01/2026: all August Regalis and El Condor invoices paid - owner added 10/01/2026 that it was paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924416880",
+   "date": "2026-08-03",
+   "week": "A2",
+   "product": 801.88,
+   "fees": 16.02,
+   "total": 817.9,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-10",
+   "note": "NET 7 - was due 08/10/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "2932079",
+   "date": "2026-08-03",
+   "week": "A2",
+   "product": 751.24,
+   "fees": 21.98,
+   "total": 773.22,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-02",
+   "note": "NET 30 - due 09/02/2026. Fees = $9.00 fuel less a $2.00 flyer-savings credit | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "278690",
+   "date": "2026-08-04",
+   "week": "A2",
+   "product": 180.35,
+   "fees": 6.5,
+   "total": 186.85,
+   "status": "paid",
+   "paidOn": "2026-08-10",
+   "due": null,
+   "note": "Due 08/04 - PAID 08/10/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1759259",
+   "date": "2026-08-04",
+   "week": "A2",
+   "product": 1245.21,
+   "fees": 8.97,
+   "total": 1254.18,
+   "status": "paid",
+   "paidOn": "2026-09-02",
+   "due": "2026-09-03",
+   "note": "NET 30 - due 09/03/2026 | PAID 09/02/2026 per Fintech payment report. Tax = $5.66 IL city + $3.31 IL county liquor tax"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1759513",
+   "date": "2026-08-04",
+   "week": "A2",
+   "product": 25.0,
+   "fees": 0.53,
+   "total": 25.53,
+   "status": "paid",
+   "paidOn": "2026-09-02",
+   "due": "2026-09-03",
+   "note": "NET 30 - due 09/03/2026. Tax = $0.35 IL city + $0.18 IL county liquor tax | PAID 09/02/2026 per Fintech payment report"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924418783",
+   "date": "2026-08-04",
+   "week": "A2",
+   "product": 361.17,
+   "fees": 10.0,
+   "total": 371.17,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-11",
+   "note": "NET 7 - was due 08/11/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "278960",
+   "date": "2026-08-05",
+   "week": "A2",
+   "product": 522.76,
+   "fees": 6.5,
+   "total": 529.26,
+   "status": "paid",
+   "paidOn": "2026-08-10",
+   "due": null,
+   "note": "Due 08/05 - PAID 08/10/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "02418368",
+   "date": "2026-08-05",
+   "week": "A2",
+   "product": 800.28,
+   "fees": 32.98,
+   "total": 833.26,
+   "status": "paid",
+   "paidOn": "2026-09-03",
+   "due": "2026-09-04",
+   "note": "NET 30 - due 09/04/2026. Fees are a $32.98 \"Summary Level Adjustment\" with no detail given | PAID 09/03/2026 per Fintech payment report"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "124B7643Z",
+   "date": "2026-08-05",
+   "week": "A2",
+   "product": 66.06,
+   "fees": 18.66,
+   "total": 84.72,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-13",
+   "note": "NET 7 - was due 08/13/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924421063",
+   "date": "2026-08-05",
+   "week": "A2",
+   "product": 146.95,
+   "fees": 10.0,
+   "total": 156.95,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-12",
+   "note": "NET 7 - was due 08/12/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "True World",
+   "number": "2705",
+   "date": "2026-08-05",
+   "week": "A2",
+   "product": 150.0,
+   "fees": 2.5,
+   "total": 152.5,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-12",
+   "note": "NET 7 - was due 08/12/2026 - payment not confirmed | PAID - owner instruction: all True World invoices before 4231 paid, 09/18/2026 (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Lakeshore Beverage",
+   "number": "370685",
+   "date": "2026-08-06",
+   "week": "A2",
+   "product": 380.85,
+   "fees": 19.41,
+   "total": 400.26,
+   "status": "paid",
+   "paidOn": "2026-08-07",
+   "due": "2026-08-06",
+   "note": "Due 08/06/2026. Fees = $10.00 service charge; tax = $7.18 Chicago ONP + $2.23 Cook County | PAID 08/07/2026 per Fintech payment report"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "279352",
+   "date": "2026-08-06",
+   "week": "A2",
+   "product": 614.52,
+   "fees": 6.5,
+   "total": 621.02,
+   "status": "paid",
+   "paidOn": "2026-08-10",
+   "due": null,
+   "note": "Due 08/06 - PAID 08/10/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1760328",
+   "date": "2026-08-06",
+   "week": "A2",
+   "product": 210.0,
+   "fees": 1.53,
+   "total": 211.53,
+   "status": "paid",
+   "paidOn": "2026-09-04",
+   "due": "2026-09-05",
+   "note": "NET 30 - due 09/05/2026. Tax = $1.02 IL city + $0.51 IL county liquor tax | PAID 09/04/2026 per Fintech payment report"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924423865",
+   "date": "2026-08-06",
+   "week": "A2",
+   "product": 348.22,
+   "fees": 35.76,
+   "total": 383.98,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-13",
+   "note": "NET 7 - was due 08/13/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "True World",
+   "number": "2800",
+   "date": "2026-08-06",
+   "week": "A2",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-13",
+   "note": "NET 7 - was due 08/13/2026 - payment not confirmed | PAID - owner instruction: all True World invoices before 4231 paid, 09/18/2026 (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end | CORRECTED 10/01/2026: owner says paid IN SEPTEMBER, not August; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "El Condor",
+   "number": "INV.29503",
+   "date": "2026-08-07",
+   "week": "A2",
+   "product": 153.66,
+   "fees": 30.0,
+   "total": 183.66,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-21",
+   "note": "NET 14 - due 08/21/2026 - payment not confirmed | PAID - owner instruction 10/01/2026: all August Regalis and El Condor invoices paid - owner added 10/01/2026 that it was paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "279840",
+   "date": "2026-08-08",
+   "week": "A2",
+   "product": 2698.9,
+   "fees": 6.5,
+   "total": 2705.4,
+   "status": "paid",
+   "paidOn": "2026-08-10",
+   "due": null,
+   "note": "Due 08/08 - PAID 08/10/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "205521",
+   "date": "2026-08-08",
+   "week": "A2",
+   "product": 312.19,
+   "fees": 27.81,
+   "total": 340.0,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-07",
+   "note": "NET 30 - due 09/07/2026. Fees = $9.00 fuel + $4.80 Chicago bottled water tax | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "297884 (Wabash)",
+   "date": "2026-08-10",
+   "week": "A3",
+   "product": 1364.68,
+   "fees": 7.95,
+   "total": 1372.63,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-17",
+   "note": "NET CASH 7 ACH - was due 08/17/2026 - payment not confirmed. Cash discount at risk $41.18 | PAID - owner instruction 09/18/2026: all Wabash invoices before 302172 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end (corrected from September)"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "298410",
+   "date": "2026-08-10",
+   "week": "A3",
+   "product": 2068.15,
+   "fees": 7.95,
+   "total": 2076.1,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-17",
+   "note": "NET CASH 7 ACH - due 08/17/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all Allen Brothers invoices before 303267 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end (corrected from September)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "280072",
+   "date": "2026-08-10",
+   "week": "A3",
+   "product": 4006.7,
+   "fees": 6.5,
+   "total": 4013.2,
+   "status": "paid",
+   "paidOn": "2026-08-17",
+   "due": null,
+   "note": "Due 08/10 - PAID 08/17/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "407509",
+   "date": "2026-08-10",
+   "week": "A3",
+   "product": 420.0,
+   "fees": 0.0,
+   "total": 420.0,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-25",
+   "note": "NET 15 - due 08/25/2026 - payment not confirmed | PAID - owner instruction 10/01/2026: all August Regalis and El Condor invoices paid - owner added 10/01/2026 that it was paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924432202",
+   "date": "2026-08-10",
+   "week": "A3",
+   "product": 405.51,
+   "fees": 16.66,
+   "total": 422.17,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-17",
+   "note": "NET 7 - was due 08/17/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "True World",
+   "number": "2958",
+   "date": "2026-08-10",
+   "week": "A3",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-17",
+   "note": "NET 7 - was due 08/17/2026 - payment not confirmed | PAID - owner instruction: all True World invoices before 4231 paid, 09/18/2026 (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end | CORRECTED 10/01/2026: owner says paid IN SEPTEMBER, not August; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "249391",
+   "date": "2026-08-10",
+   "week": "A3",
+   "product": 141.48,
+   "fees": 2.82,
+   "total": 144.3,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-09",
+   "note": "NET 30 WILL CALL - due 09/09/2026 - no fuel surcharge | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924434489",
+   "date": "2026-08-11",
+   "week": "A3",
+   "product": 24.95,
+   "fees": 10.0,
+   "total": 34.95,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-18",
+   "note": "NET 7 - was due 08/18/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Acorvina",
+   "number": "2049",
+   "date": "2026-08-12",
+   "week": "A3",
+   "product": 324.0,
+   "fees": 34.63,
+   "total": 358.63,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-11",
+   "note": "NET 30 - due 09/11/2026 - signed for on delivery, no payment shown (balance due $358.63). Tax = City & County spirits tax on 4.7544 gal | PAID - owner instruction 10/01/2026: all August Acorvina invoices paid - owner added that they were paid IN AUGUST; exact day not given, so Paid On is entered as 08/31/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "02427301",
+   "date": "2026-08-12",
+   "week": "A3",
+   "product": 1051.02,
+   "fees": 47.76,
+   "total": 1098.78,
+   "status": "paid",
+   "paidOn": "2026-09-10",
+   "due": "2026-09-11",
+   "note": "NET 30 - due 09/11/2026 | PAID 09/10/2026 per Fintech payment report. Fees are a $47.76 \"Summary Level Adjustment\" with no detail given"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "348299",
+   "date": "2026-08-12",
+   "week": "A3",
+   "product": 365.8,
+   "fees": 35.25,
+   "total": 401.05,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-11",
+   "note": "NET 30 - due 09/11/2026 | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "280937",
+   "date": "2026-08-13",
+   "week": "A3",
+   "product": 2374.05,
+   "fees": 6.5,
+   "total": 2380.55,
+   "status": "paid",
+   "paidOn": "2026-08-17",
+   "due": null,
+   "note": "Due 08/13 - PAID 08/17/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1762904",
+   "date": "2026-08-13",
+   "week": "A3",
+   "product": 687.0,
+   "fees": 5.56,
+   "total": 692.56,
+   "status": "paid",
+   "paidOn": "2026-09-11",
+   "due": "2026-09-12",
+   "note": "NET 30 - due 09/12/2026 | PAID 09/11/2026 per Fintech payment report. Tax = $3.53 IL city + $2.03 IL county liquor tax"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924439118",
+   "date": "2026-08-13",
+   "week": "A3",
+   "product": 263.96,
+   "fees": 10.0,
+   "total": 273.96,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-20",
+   "note": "NET 7 - was due 08/20/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "281324",
+   "date": "2026-08-14",
+   "week": "A3",
+   "product": 861.91,
+   "fees": 6.5,
+   "total": 868.41,
+   "status": "paid",
+   "paidOn": "2026-08-17",
+   "due": null,
+   "note": "Due 08/14 - PAID 08/17/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "464222",
+   "date": "2026-08-14",
+   "week": "A3",
+   "product": 48.58,
+   "fees": 0.73,
+   "total": 49.31,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-13",
+   "note": "NET 30 vendor ship, FedEx - due 09/13/2026 - no fuel surcharge | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "464223",
+   "date": "2026-08-14",
+   "week": "A3",
+   "product": 37.02,
+   "fees": 0.74,
+   "total": 37.76,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-13",
+   "note": "NET 30 vendor ship, FedEx - due 09/13/2026 - no fuel surcharge | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "281381",
+   "date": "2026-08-15",
+   "week": "A3",
+   "product": 406.04,
+   "fees": 6.5,
+   "total": 412.54,
+   "status": "paid",
+   "paidOn": "2026-08-17",
+   "due": null,
+   "note": "Due 08/15 - PAID 08/17/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "474110",
+   "date": "2026-08-15",
+   "week": "A3",
+   "product": 201.78,
+   "fees": 62.61,
+   "total": 264.39,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-14",
+   "note": "NET 30 - due 09/14/2026. Fees = $9.00 fuel + $4.80 water tax + $35.00 Pronto under-minimum | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "281639",
+   "date": "2026-08-17",
+   "week": "A4",
+   "product": 2247.17,
+   "fees": 6.5,
+   "total": 2253.67,
+   "status": "paid",
+   "paidOn": "2026-08-24",
+   "due": null,
+   "note": "Due 08/17 - PAID 08/24/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924447678",
+   "date": "2026-08-17",
+   "week": "A4",
+   "product": 359.24,
+   "fees": 16.11,
+   "total": 375.35,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-24",
+   "note": "NET 7 - was due 08/24/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "517382",
+   "date": "2026-08-17",
+   "week": "A4",
+   "product": 460.99,
+   "fees": 53.24,
+   "total": 514.23,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-16",
+   "note": "NET 30 - due 09/16/2026. Fees = $9.00 fuel + $35.00 Pronto under-minimum | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "302172 (Wabash)",
+   "date": "2026-08-18",
+   "week": "A4",
+   "product": 718.8,
+   "fees": 7.95,
+   "total": 726.75,
+   "status": "paid",
+   "paidOn": "2026-08-28",
+   "due": "2026-08-25",
+   "note": "NET CASH 7 ACH - was due 08/25/2026 - payment not confirmed. Cash discount at risk $21.80 | PAID 08/28/2026 per Wabash payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "281933",
+   "date": "2026-08-18",
+   "week": "A4",
+   "product": 487.81,
+   "fees": 6.5,
+   "total": 494.31,
+   "status": "paid",
+   "paidOn": "2026-08-24",
+   "due": null,
+   "note": "Due 08/18 - PAID 08/24/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1763711",
+   "date": "2026-08-18",
+   "week": "A4",
+   "product": 678.0,
+   "fees": 4.38,
+   "total": 682.38,
+   "status": "paid",
+   "paidOn": "2026-09-16",
+   "due": "2026-09-17",
+   "note": "NET 30 - due 09/17/2026 | PAID 09/16/2026 per Fintech payment report. Tax = $2.73 IL city + $1.65 IL county liquor tax"
+  },
+  {
+   "vendor": "True World",
+   "number": "3404",
+   "date": "2026-08-18",
+   "week": "A4",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-25",
+   "note": "NET 7 - was due 08/25/2026 - payment not confirmed | PAID - invoice named in owner instruction, 09/18/2026 (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end | CORRECTED 10/01/2026: owner says paid IN SEPTEMBER, not August; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "303267",
+   "date": "2026-08-19",
+   "week": "A4",
+   "product": 469.53,
+   "fees": 7.95,
+   "total": 477.48,
+   "status": "paid",
+   "paidOn": "2026-08-28",
+   "due": "2026-08-26",
+   "note": "NET CASH 7 ACH - due 08/26/2026 - payment not confirmed | PAID 08/28/2026 per Allen Brothers payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "409301",
+   "date": "2026-08-19",
+   "week": "A4",
+   "product": 420.0,
+   "fees": 0.0,
+   "total": 420.0,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-03",
+   "note": "NET 15 - due 09/03/2026 - payment not confirmed | PAID - owner instruction 10/01/2026: all August Regalis and El Condor invoices paid - owner added 10/01/2026 that it was paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "02436718",
+   "date": "2026-08-19",
+   "week": "A4",
+   "product": 887.1,
+   "fees": 57.81,
+   "total": 944.91,
+   "status": "paid",
+   "paidOn": "2026-09-17",
+   "due": "2026-09-18",
+   "note": "NET 30 - due 09/18/2026 | PAID 09/17/2026 per Fintech payment report. Fees are a $57.81 \"Summary Level Adjustment\" with no detail given"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924452065",
+   "date": "2026-08-19",
+   "week": "A4",
+   "product": 345.3,
+   "fees": 10.0,
+   "total": 355.3,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-26",
+   "note": "NET 7 - was due 08/26/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Lakeshore Beverage",
+   "number": "398258",
+   "date": "2026-08-20",
+   "week": "A4",
+   "product": 157.45,
+   "fees": 14.27,
+   "total": 171.72,
+   "status": "paid",
+   "paidOn": "2026-08-21",
+   "due": "2026-08-20",
+   "note": "Due 08/20/2026 | PAID 08/21/2026 per Fintech payment report. Fees = $10.00 service charge; tax = $3.26 Chicago ONP + $1.01 Cook County"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "282517",
+   "date": "2026-08-20",
+   "week": "A4",
+   "product": 1142.25,
+   "fees": 6.5,
+   "total": 1148.75,
+   "status": "paid",
+   "paidOn": "2026-08-24",
+   "due": null,
+   "note": "Due 08/20 - PAID 08/24/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1764952",
+   "date": "2026-08-20",
+   "week": "A4",
+   "product": 606.0,
+   "fees": 4.41,
+   "total": 610.41,
+   "status": "paid",
+   "paidOn": "2026-09-18",
+   "due": "2026-09-19",
+   "note": "NET 30 - due 09/19/2026 | PAID 09/18/2026 per Fintech payment report. Tax = $2.78 IL city + $1.63 IL county liquor tax"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "668100",
+   "date": "2026-08-20",
+   "week": "A4",
+   "product": 190.45,
+   "fees": 60.18,
+   "total": 250.63,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-19",
+   "note": "NET 30 - due 09/19/2026. Fees = $9.00 fuel + $35.00 Pronto under-minimum | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "677449",
+   "date": "2026-08-20",
+   "week": "A4",
+   "product": 71.43,
+   "fees": 0.71,
+   "total": 72.14,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-19",
+   "note": "NET 30 vendor ship, FedEx - due 09/19/2026 - no fuel surcharge | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "282795",
+   "date": "2026-08-21",
+   "week": "A4",
+   "product": 3294.14,
+   "fees": 6.5,
+   "total": 3300.64,
+   "status": "paid",
+   "paidOn": "2026-08-24",
+   "due": null,
+   "note": "Due 08/21 - PAID 08/24/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "True World",
+   "number": "3672",
+   "date": "2026-08-21",
+   "week": "A4",
+   "product": 375.0,
+   "fees": 2.5,
+   "total": 377.5,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-28",
+   "note": "NET 7 - was due 08/28/2026 - payment not confirmed | PAID - invoice named in owner instruction, 09/18/2026 (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end | CORRECTED 10/01/2026: owner says paid IN SEPTEMBER, not August; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "720568",
+   "date": "2026-08-21",
+   "week": "A4",
+   "product": 261.07,
+   "fees": 29.12,
+   "total": 290.19,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-20",
+   "note": "NET 30 - due 09/20/2026. Fees = $9.00 fuel + $7.20 water tax. No under-minimum fee | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Acorvina",
+   "number": "2071",
+   "date": "2026-08-22",
+   "week": "A4",
+   "product": 324.0,
+   "fees": 34.63,
+   "total": 358.63,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-21",
+   "note": "NET 30 - due 09/21/2026 - signed for on delivery 08/22 10:41 AM (Andrea), no payment shown (balance due $358.63). Tax = City & County spirits tax on 4.7544 gal | PAID - owner instruction 10/01/2026: all August Acorvina invoices paid - owner added that they were paid IN AUGUST; exact day not given, so Paid On is entered as 08/31/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "305599",
+   "date": "2026-08-24",
+   "week": "A5",
+   "product": 1389.44,
+   "fees": 7.95,
+   "total": 1397.39,
+   "status": "paid",
+   "paidOn": "2026-09-04",
+   "due": "2026-08-31",
+   "note": "NET CASH 7 ACH - due 08/31/2026 - payment not confirmed | PAID 09/04/2026 per Allen Brothers payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "D'Fruta La Vida",
+   "number": "531290",
+   "date": "2026-08-24",
+   "week": "A5",
+   "product": 65.0,
+   "fees": 28.0,
+   "total": 93.0,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-08-24",
+   "note": "DUE ON RECEIPT - due 08/24/2026. Fees = $28.00 \"Delivery Nieves\". No tax. Copy received 10/01/2026 (missing until then) | PAID - owner instruction 10/01/2026: paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "283259",
+   "date": "2026-08-24",
+   "week": "A5",
+   "product": 1282.44,
+   "fees": 6.5,
+   "total": 1288.94,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": null,
+   "note": "Due 08/24 - PAID 08/31/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924464608",
+   "date": "2026-08-24",
+   "week": "A5",
+   "product": 1215.61,
+   "fees": 15.99,
+   "total": 1231.6,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-08-31",
+   "note": "NET 7 - was due 08/31/2026 - payment not confirmed | PAID - owner instruction 09/18/2026: all August Sysco invoices paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "783267",
+   "date": "2026-08-24",
+   "week": "A5",
+   "product": 767.45,
+   "fees": 29.14,
+   "total": 796.59,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-23",
+   "note": "NET 30 - due 09/23/2026. Fees = $9.00 fuel + $4.80 water tax. No under-minimum fee | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "305660 (Wabash)",
+   "date": "2026-08-25",
+   "week": "A5",
+   "product": 744.0,
+   "fees": 7.95,
+   "total": 751.95,
+   "status": "paid",
+   "paidOn": "2026-09-04",
+   "due": "2026-09-01",
+   "note": "NET CASH 7 ACH - was due 09/01/2026 - payment not confirmed. Cash discount at risk $22.56 | PAID 09/04/2026 per Wabash payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "El Condor",
+   "number": "INV.29658",
+   "date": "2026-08-25",
+   "week": "A5",
+   "product": 173.2,
+   "fees": 30.0,
+   "total": 203.2,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-08",
+   "note": "NET 14 - due 09/08/2026 - payment not confirmed | PAID - owner instruction 10/01/2026: all August Regalis and El Condor invoices paid - owner added 10/01/2026 that it was paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "283558",
+   "date": "2026-08-25",
+   "week": "A5",
+   "product": 2214.89,
+   "fees": 6.5,
+   "total": 2221.39,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": null,
+   "note": "Due 08/25 - PAID 08/31/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1766044",
+   "date": "2026-08-25",
+   "week": "A5",
+   "product": 1883.04,
+   "fees": 14.23,
+   "total": 1897.27,
+   "status": "paid",
+   "paidOn": "2026-09-23",
+   "due": "2026-09-24",
+   "note": "NET 30 - due 09/24/2026. Tax = $9.04 IL city liquor ($3.85 + $5.19) + $5.19 IL county liquor ($2.57 + $2.62). Invoice copy received 10/01/2026 after it was found missing from the Fintech paid list | PAID 09/23/2026 per Fintech \"My Invoices\" (Paid, Maverick, invoice dates 08/01-09/30, screenshot 10/01/2026), $1,897.27"
+  },
+  {
+   "vendor": "True World",
+   "number": "3813",
+   "date": "2026-08-25",
+   "week": "A5",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-01",
+   "note": "NET 7 - was due 09/01/2026 - payment not confirmed | PAID - invoice named in owner instruction, 09/18/2026 (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end | CORRECTED 10/01/2026: owner says paid IN SEPTEMBER, not August; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "845670",
+   "date": "2026-08-25",
+   "week": "A5",
+   "product": 113.02,
+   "fees": 7.61,
+   "total": 120.63,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-24",
+   "note": "NET 30 vendor ship, FedEx - due 09/24/2026. Fees line is a CREDIT: $1.71 US Foods Direct Ship Savings | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "283798",
+   "date": "2026-08-26",
+   "week": "A5",
+   "product": 235.0,
+   "fees": 6.5,
+   "total": 241.5,
+   "status": "paid",
+   "paidOn": "2026-09-08",
+   "due": null,
+   "note": "Due 08/26 - PAID 09/08/2026 Wholesail ACH (Wholesail account statement: paid 13d late)"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "02446180",
+   "date": "2026-08-26",
+   "week": "A5",
+   "product": 762.31,
+   "fees": 42.26,
+   "total": 804.57,
+   "status": "paid",
+   "paidOn": "2026-09-24",
+   "due": "2026-09-25",
+   "note": "NET 30 - due 09/25/2026. Fees are a $42.26 \"Summary Level Adjustment\" with no detail given, as on 02418368, 02427301 and 02436718. No separate liquor tax lines. Invoice copy received 10/01/2026 after it was found missing from the Fintech paid list | PAID 09/24/2026 per Fintech \"My Invoices\" (Paid, Southern Glazer's, invoice dates 08/01-09/30, screenshot 10/01/2026), $804.57"
+  },
+  {
+   "vendor": "True World",
+   "number": "3913",
+   "date": "2026-08-26",
+   "week": "A5",
+   "product": 50.0,
+   "fees": 2.5,
+   "total": 52.5,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-02",
+   "note": "NET 7 - was due 09/02/2026 - payment not confirmed | PAID - invoice named in owner instruction, 09/18/2026 (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end | CORRECTED 10/01/2026: owner says paid IN SEPTEMBER, not August; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "884449",
+   "date": "2026-08-26",
+   "week": "A5",
+   "product": 432.68,
+   "fees": 43.65,
+   "total": 476.33,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-25",
+   "note": "NET 30 - due 09/25/2026. Fees = $9.00 fuel. No under-minimum fee | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "284154",
+   "date": "2026-08-27",
+   "week": "A5",
+   "product": 544.65,
+   "fees": 6.5,
+   "total": 551.15,
+   "status": "paid",
+   "paidOn": "2026-09-08",
+   "due": null,
+   "note": "Due 08/27 - PAID 09/08/2026 Wholesail ACH (Wholesail account statement: paid 12d late)"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "411091",
+   "date": "2026-08-27",
+   "week": "A5",
+   "product": 420.0,
+   "fees": 0.0,
+   "total": 420.0,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-11",
+   "note": "NET 15 - due 09/11/2026 - payment not confirmed | PAID - owner instruction 10/01/2026: all August Regalis and El Condor invoices paid - owner added 10/01/2026 that it was paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "937859",
+   "date": "2026-08-27",
+   "week": "A5",
+   "product": 495.36,
+   "fees": 41.47,
+   "total": 536.83,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-26",
+   "note": "NET 30 - due 09/26/2026. Fees = $9.00 fuel + $2.40 water tax. No under-minimum fee | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given) | Owner 09/18/2026: paid in August - exact date not given, Paid On set to 08/31/2026 as month-end"
+  },
+  {
+   "vendor": "Acorvina",
+   "number": "2083",
+   "date": "2026-08-28",
+   "week": "A5",
+   "product": 324.0,
+   "fees": 34.63,
+   "total": 358.63,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": "2026-09-27",
+   "note": "NET 30 - due 09/27/2026 - signed for on delivery, no payment shown (balance due $358.63). Tax = City & County spirits tax on 4.7544 gal | PAID - owner instruction 10/01/2026: all August Acorvina invoices paid - owner added that they were paid IN AUGUST; exact day not given, so Paid On is entered as 08/31/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "284515",
+   "date": "2026-08-28",
+   "week": "A5",
+   "product": 4243.75,
+   "fees": 6.5,
+   "total": 4250.25,
+   "status": "paid",
+   "paidOn": "2026-08-31",
+   "due": null,
+   "note": "Due 08/28 - PAID 08/31/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "284737",
+   "date": "2026-08-29",
+   "week": "A5",
+   "product": 113.63,
+   "fees": 6.5,
+   "total": 120.13,
+   "status": "paid",
+   "paidOn": "2026-09-08",
+   "due": null,
+   "note": "Due 08/29 - PAID 09/08/2026 Wholesail ACH (Wholesail account statement: paid 10d late)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "284964",
+   "date": "2026-08-31",
+   "week": "S1",
+   "product": 4184.96,
+   "fees": 6.5,
+   "total": 4191.46,
+   "status": "paid",
+   "paidOn": "2026-09-08",
+   "due": null,
+   "note": "due 08/31, PAID 09/08 Wholesail ACH"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924481668",
+   "date": "2026-08-31",
+   "week": "S1",
+   "product": 1097.66,
+   "fees": 14.0,
+   "total": 1111.66,
+   "status": "paid",
+   "paidOn": null,
+   "due": "2026-09-07",
+   "note": "NET 7, was due 09/07/2026 | PAID - owner instruction 09/18/2026: all Sysco and US Foods invoices through S1 paid (payment date not given)"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "1767820",
+   "date": "2026-09-01",
+   "week": "S1",
+   "product": 1117.02,
+   "fees": 8.6,
+   "total": 1125.62,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-10-01",
+   "note": "NET 30 Fintech - due 10/01/2026 | PAID 09/30/2026 per Fintech \"My Invoices\" (Paid filter, 09/01-09/30, screenshot 10/01/2026), $1,125.62"
+  },
+  {
+   "vendor": "True World",
+   "number": "4231",
+   "date": "2026-09-01",
+   "week": "S1",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "paid",
+   "paidOn": null,
+   "due": "2026-09-08",
+   "note": "NET 7 - was due 09/08/2026 | PAID - invoice named in owner instruction, 09/18/2026 (payment date not given)"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1115134",
+   "date": "2026-09-01",
+   "week": "S1",
+   "product": 136.03,
+   "fees": 13.94,
+   "total": 149.97,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": "2026-10-01",
+   "note": "NET 30 drop-ship - due 10/01/2026 | PAID 09/14/2026 ACH ref 22605771-ACH0914"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "310155 (Wabash)",
+   "date": "2026-09-02",
+   "week": "S1",
+   "product": 1122.6,
+   "fees": 7.95,
+   "total": 1130.55,
+   "status": "paid",
+   "paidOn": "2026-09-11",
+   "due": "2026-09-09",
+   "note": "NET CASH 7 ACH - was due 09/09/2026 | PAID 09/11/2026 per Wabash payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "H Mart",
+   "number": "REG 2 / Seq 3847",
+   "date": "2026-09-02",
+   "week": "S1",
+   "product": 41.93,
+   "fees": 0.78,
+   "total": 42.71,
+   "status": "paid",
+   "paidOn": "2026-09-02",
+   "due": null,
+   "note": "Paid - MasterCard *1024"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "311376",
+   "date": "2026-09-03",
+   "week": "S1",
+   "product": 1893.15,
+   "fees": 7.95,
+   "total": 1901.1,
+   "status": "paid",
+   "paidOn": "2026-09-11",
+   "due": "2026-09-10",
+   "note": "NET CASH 7 ACH - was due 09/10/2026 | PAID 09/11/2026 per Allen Brothers payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "Lakeshore Beverage",
+   "number": "425740",
+   "date": "2026-09-03",
+   "week": "S1",
+   "product": 484.3,
+   "fees": 20.26,
+   "total": 504.56,
+   "status": "paid",
+   "paidOn": "2026-09-04",
+   "due": null,
+   "note": "Fintech charge - no due date printed | PAID 09/04/2026 per Fintech payment report"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "285882",
+   "date": "2026-09-03",
+   "week": "S1",
+   "product": 995.88,
+   "fees": 6.5,
+   "total": 1002.38,
+   "status": "paid",
+   "paidOn": "2026-09-08",
+   "due": null,
+   "note": "Due 09/03 - PAID 09/08/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "412293",
+   "date": "2026-09-03",
+   "week": "S1",
+   "product": 280.0,
+   "fees": 0.0,
+   "total": 280.0,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-18",
+   "note": "NET 15 - due 09/18/2026 | PAID - owner instruction 10/01/2026: paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "05797476",
+   "date": "2026-09-03",
+   "week": "S1",
+   "product": 333.9,
+   "fees": 16.43,
+   "total": 350.33,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-05",
+   "note": "due 10/05/2026"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1206000",
+   "date": "2026-09-03",
+   "week": "S1",
+   "product": 413.44,
+   "fees": 36.03,
+   "total": 449.47,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": "2026-10-03",
+   "note": "NET 30 - due 10/03/2026 | PAID 09/14/2026 ACH ref 22605771-ACH0914"
+  },
+  {
+   "vendor": "Acorvina",
+   "number": "2089",
+   "date": "2026-09-04",
+   "week": "S1",
+   "product": 486.0,
+   "fees": 46.94,
+   "total": 532.94,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-04",
+   "note": "NET 30 - due 10/04/2026"
+  },
+  {
+   "vendor": "Gangnam Market",
+   "number": "Check 427",
+   "date": "2026-09-04",
+   "week": "S1",
+   "product": 45.43,
+   "fees": 0.71,
+   "total": 46.14,
+   "status": "paid",
+   "paidOn": "2026-09-04",
+   "due": null,
+   "note": "Paid - credit"
+  },
+  {
+   "vendor": "Whole Foods",
+   "number": "904-4825",
+   "date": "2026-09-04",
+   "week": "S1",
+   "product": 88.68,
+   "fees": 1.63,
+   "total": 90.31,
+   "status": "paid",
+   "paidOn": "2026-09-04",
+   "due": null,
+   "note": "Paid - debit *0618"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "286348",
+   "date": "2026-09-05",
+   "week": "S1",
+   "product": 2757.28,
+   "fees": 6.5,
+   "total": 2763.78,
+   "status": "paid",
+   "paidOn": "2026-09-08",
+   "due": null,
+   "note": "Due 09/05 - PAID 09/08/2026 Wholesail ACH"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "286569",
+   "date": "2026-09-07",
+   "week": "S2",
+   "product": 1082.42,
+   "fees": 6.5,
+   "total": 1088.92,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": null,
+   "note": "COD - paid 09/07/2026 | Wholesail account statement: paid 09/14/2026 (7d late), not at delivery"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924501345",
+   "date": "2026-09-07",
+   "week": "S2",
+   "product": 1190.85,
+   "fees": 15.99,
+   "total": 1206.84,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-14",
+   "note": "NET 7 - due 09/14/2026 | PAID - confirmed by owner 09/18/2026 from Sysco portal (payment date and ref not shown) | Owner 10/01/2026: paid IN SEPTEMBER (matches the owner's September COGS list); exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "313300",
+   "date": "2026-09-08",
+   "week": "S2",
+   "product": 1964.95,
+   "fees": 7.95,
+   "total": 1972.9,
+   "status": "paid",
+   "paidOn": "2026-09-18",
+   "due": "2026-09-15",
+   "note": "NET CASH 7 ACH - due 09/15/2026 | PAID 09/18/2026 per Allen Brothers payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "286766",
+   "date": "2026-09-08",
+   "week": "S2",
+   "product": 2658.76,
+   "fees": 6.5,
+   "total": 2665.26,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": null,
+   "note": "COD - paid 09/08/2026 | Wholesail account statement: paid 09/14/2026 (6d late), not at delivery"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "413135",
+   "date": "2026-09-08",
+   "week": "S2",
+   "product": 420.0,
+   "fees": 0.0,
+   "total": 420.0,
+   "status": "paid",
+   "paidOn": null,
+   "due": "2026-09-23",
+   "note": "NET 15 - due 09/23/2026 | PAID - owner instruction 10/01/2026 (payment date not given)"
+  },
+  {
+   "vendor": "True World",
+   "number": "4577",
+   "date": "2026-09-08",
+   "week": "S2",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-15",
+   "note": "NET 7 - due 09/15/2026"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "313375 (Wabash)",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 717.6,
+   "fees": 7.95,
+   "total": 725.55,
+   "status": "paid",
+   "paidOn": "2026-09-18",
+   "due": "2026-09-16",
+   "note": "NET CASH 7 ACH - due 09/16/2026 | PAID 09/18/2026 per Wabash payment portal (outstanding 0.00)"
+  },
+  {
+   "vendor": "Gangnam Market",
+   "number": "Check 278",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 136.29,
+   "fees": 2.13,
+   "total": 138.42,
+   "status": "paid",
+   "paidOn": "2026-09-09",
+   "due": null,
+   "note": "Paid - debit *0618"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "287100",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 392.48,
+   "fees": 6.5,
+   "total": 398.98,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": null,
+   "note": "COD - paid 09/09/2026 | Wholesail account statement: paid 09/14/2026 (5d late), not at delivery"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "1770105",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 226.5,
+   "fees": 1.87,
+   "total": 228.37,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-09",
+   "note": "NET 30 Fintech - due 10/09/2026"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "1770112",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 644.04,
+   "fees": 6.11,
+   "total": 650.15,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-09",
+   "note": "NET 30 Fintech - due 10/09/2026"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "2464461",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 552.87,
+   "fees": 37.14,
+   "total": 590.01,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-09",
+   "note": "Fintech 30 - due 10/09/2026"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924505959",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 363.23,
+   "fees": 23.12,
+   "total": 386.35,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-16",
+   "note": "NET 7 - due 09/16/2026 | PAID - confirmed by owner 09/18/2026 from Sysco portal (payment date and ref not shown) | Owner 10/01/2026: paid IN SEPTEMBER (matches the owner's September COGS list); exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1405225",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 520.9,
+   "fees": 29.55,
+   "total": 550.45,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": "2026-10-09",
+   "note": "NET 30 - due 10/09/2026 | PAID 09/14/2026 ACH ref 22605771-ACH0914"
+  },
+  {
+   "vendor": "Whole Foods",
+   "number": "204-9652",
+   "date": "2026-09-09",
+   "week": "S2",
+   "product": 59.12,
+   "fees": 1.19,
+   "total": 60.31,
+   "status": "paid",
+   "paidOn": "2026-09-09",
+   "due": null,
+   "note": "Paid - debit *0618"
+  },
+  {
+   "vendor": "Chef Works",
+   "number": "IN3895199",
+   "date": "2026-09-10",
+   "week": "S2",
+   "product": 1066.8,
+   "fees": 196.01,
+   "total": 1262.81,
+   "status": "paid",
+   "paidOn": "2026-09-10",
+   "due": "2026-09-10",
+   "note": "Chef Works (uniforms) - 20 white chef coats with 3 embroidered logos each, 80 pieces, ordered 08/28 (OR1959434), shipped UPS ground to Matilda, 1252 N Wells St. Fees = $75.95 ground freight. Tax $120.06 = state $71.45 + county $20.01 + city $14.30 + special $14.30. Terms VISA, amount due $0.00 | PAID 09/10/2026 - charged to VISA at invoicing. On the owner's September payment list this $1,262.81 was grouped under Allen Brothers/Wabash and appeared twice; owner confirmed 10/01/2026 it is one payment and it is this invoice (supplies)"
+  },
+  {
+   "vendor": "El Condor",
+   "number": "INV.29798",
+   "date": "2026-09-10",
+   "week": "S2",
+   "product": 153.66,
+   "fees": 30.0,
+   "total": 183.66,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-24",
+   "note": "NET 14 - due 09/24/2026"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "287416",
+   "date": "2026-09-10",
+   "week": "S2",
+   "product": 447.23,
+   "fees": 6.5,
+   "total": 453.73,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": null,
+   "note": "COD - paid 09/10/2026 | Wholesail account statement: paid 09/14/2026 (4d late), not at delivery"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "287694",
+   "date": "2026-09-11",
+   "week": "S2",
+   "product": 2724.91,
+   "fees": 6.5,
+   "total": 2731.41,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": null,
+   "note": "COD - paid 09/11/2026 | Wholesail account statement: paid 09/14/2026 (3d late), not at delivery"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "413840",
+   "date": "2026-09-11",
+   "week": "S2",
+   "product": 280.0,
+   "fees": 0.0,
+   "total": 280.0,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-26",
+   "note": "NET 15 - due 09/26/2026"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1519873",
+   "date": "2026-09-11",
+   "week": "S2",
+   "product": 292.97,
+   "fees": 20.64,
+   "total": 313.61,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": "2026-10-11",
+   "note": "NET 30 - due 10/11/2026 | PAID 09/14/2026 ACH ref 22605771-ACH0914"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1529890",
+   "date": "2026-09-11",
+   "week": "S2",
+   "product": 97.22,
+   "fees": -0.78,
+   "total": 96.44,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": "2026-10-11",
+   "note": "NET 30 vendor ship, FedEx - due 10/11/2026. Fees line is a CREDIT: $2.24 US Foods Direct Ship Savings | PAID 09/14/2026 ACH ref 22605771-ACH0914"
+  },
+  {
+   "vendor": "H Mart",
+   "number": "Seq 5854 / REG 4",
+   "date": "2026-09-12",
+   "week": "S2",
+   "product": 39.92,
+   "fees": 0.75,
+   "total": 40.67,
+   "status": "paid",
+   "paidOn": "2026-09-12",
+   "due": null,
+   "note": "Paid - debit *0618"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1540699",
+   "date": "2026-09-12",
+   "week": "S2",
+   "product": 52.68,
+   "fees": 49.48,
+   "total": 102.16,
+   "status": "paid",
+   "paidOn": "2026-09-14",
+   "due": "2026-10-12",
+   "note": "NET 30 - due 10/12/2026 | PAID 09/14/2026 ACH ref 22605771-ACH0914"
+  },
+  {
+   "vendor": "Whole Foods",
+   "number": "203-99444",
+   "date": "2026-09-12",
+   "week": "S2",
+   "product": 66.51,
+   "fees": 1.3,
+   "total": 67.81,
+   "status": "paid",
+   "paidOn": "2026-09-12",
+   "due": null,
+   "note": "Paid - debit *0618"
+  },
+  {
+   "vendor": "Cosmopolitan",
+   "number": "1439277",
+   "date": "2026-09-14",
+   "week": "S3",
+   "product": 232.2,
+   "fees": 103.63,
+   "total": 335.83,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-10-10",
+   "note": "NET 10th PROX - due 10/10/2026. Fees = Linen care $65.31 + Service-SEED charge $29.90 + Floor care $1.45. Tax = IL sales lease tax 3.0% on the rental items. CHECK - invoice shows $1,660.45 already past due (1-30 days) on the account; no earlier Cosmopolitan invoices are in this workbook | PAID - owner instruction 10/01/2026: paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "288094",
+   "date": "2026-09-14",
+   "week": "S3",
+   "product": 1025.51,
+   "fees": 6.5,
+   "total": 1032.01,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-14",
+   "note": "COD - due 09/14/2026. Fees = $6.50 delivery fuel charge. Wholesail statement of 09/18 shows it open, 4 days past due | PAID 09/21/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 7d late\" on a COD due date of 09/14), $1,032.01"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924519033",
+   "date": "2026-09-14",
+   "week": "S3",
+   "product": 1467.4,
+   "fees": 39.26,
+   "total": 1506.66,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-21",
+   "note": "NET 7 - due 09/21/2026. Fees = $10.00 fuel surcharge. Tax $29.26 on the film, labels, liners and fuel | PAID 09/21/2026 SyscoPay payment 260921-RtLW8yUU, ACH from Akiro bank account -8500"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "316251 (Wabash)",
+   "date": "2026-09-15",
+   "week": "S3",
+   "product": 1094.8,
+   "fees": 7.95,
+   "total": 1102.75,
+   "status": "paid",
+   "paidOn": "2026-09-25",
+   "due": "2026-09-22",
+   "note": "NET 7 DAYS ACH - due 09/22/2026. Fees = $7.95 fuel surcharge. Cash-discounted price: $1,135.83 if paid by anything other than check, ACH or wire ($33.08 discount at risk). Wabash portal on 09/18 showed it Not Yet Due | PAID 09/25/2026 per Wabash payment portal (screenshot 10/01/2026, balance 0.00), $1,102.75 - 3 days after the due date"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "288371",
+   "date": "2026-09-15",
+   "week": "S3",
+   "product": 2285.31,
+   "fees": 6.5,
+   "total": 2291.81,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-15",
+   "note": "COD - due 09/15/2026. Fees = $6.50 delivery fuel charge. Wholesail statement of 09/18 shows it open, 3 days past due | PAID 09/21/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 6d late\" on a COD due date of 09/15), $2,291.81"
+  },
+  {
+   "vendor": "True World",
+   "number": "4981",
+   "date": "2026-09-15",
+   "week": "S3",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-22",
+   "note": "Net 7 - due 09/22/2026. Fees = $2.50 freight"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1646677",
+   "date": "2026-09-15",
+   "week": "S3",
+   "product": 30.3,
+   "fees": 0.45,
+   "total": 30.75,
+   "status": "paid",
+   "paidOn": "2026-09-22",
+   "due": "2026-10-15",
+   "note": "NET 30 DAYS - due 10/15/2026. Tax = 1.50% ($0.45). Shipped by FedEx 09/14 | PAID 09/22/2026 ACH ref 22819924-ACH0922 (listed as \"Vendor Ship #\" on the remittance)"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "317507",
+   "date": "2026-09-16",
+   "week": "S3",
+   "product": 316.83,
+   "fees": 7.95,
+   "total": 324.78,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-09-23",
+   "note": "NET 7 DAYS ACH - due 09/23/2026 (shipped 09/17). Fees = $7.95 fuel surcharge. Cash-discounted price: $334.52 if paid by anything other than check, ACH or wire ($9.74 discount at risk). Allen Brothers portal on 09/18 showed it Not Yet Due | PAID - owner instruction 10/01/2026 (payment date not given) | Owner's September payment list (10/01/2026) includes $324.78 - paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder)"
+  },
+  {
+   "vendor": "El Condor",
+   "number": "INV.29851",
+   "date": "2026-09-16",
+   "week": "S3",
+   "product": 86.16,
+   "fees": 30.0,
+   "total": 116.16,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-30",
+   "note": "NET 14 - due 09/30/2026. Fees = $30.00 delivery service charge. Aji amarillo pasta supplied at $0.00 in exchange for the aji panca pasta"
+  },
+  {
+   "vendor": "H Mart",
+   "number": "Seq 1278",
+   "date": "2026-09-16",
+   "week": "S3",
+   "product": 29.94,
+   "fees": 0.6,
+   "total": 30.54,
+   "status": "paid",
+   "paidOn": "2026-09-16",
+   "due": null,
+   "note": "Paid - debit *8329 (a different card from the usual *0618)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "288661",
+   "date": "2026-09-16",
+   "week": "S3",
+   "product": 936.8,
+   "fees": 6.5,
+   "total": 943.3,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-16",
+   "note": "COD - due 09/16/2026. Fees = $6.50 delivery fuel charge. Wholesail statement of 09/18 shows it open, 2 days past due | PAID 09/21/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 5d late\" on a COD due date of 09/16), $943.30"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1772787",
+   "date": "2026-09-16",
+   "week": "S3",
+   "product": 715.0,
+   "fees": 6.15,
+   "total": 721.15,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-16",
+   "note": "Net 30 - due 10/16/2026. Payment method Fintech. Tax = $3.97 Chicago + $2.18 Cook County liquor tax"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1686665",
+   "date": "2026-09-16",
+   "week": "S3",
+   "product": 328.03,
+   "fees": 37.88,
+   "total": 365.91,
+   "status": "paid",
+   "paidOn": "2026-09-22",
+   "due": "2026-10-16",
+   "note": "NET 30 DAYS - due 10/16/2026. Fees = $10.00 fuel surcharge. Tax = 8.50% on $328.03 | PAID 09/22/2026 ACH ref 22819924-ACH0922"
+  },
+  {
+   "vendor": "D'Fruta La Vida",
+   "number": "531294",
+   "date": "2026-09-17",
+   "week": "S3",
+   "product": 65.0,
+   "fees": 28.0,
+   "total": 93.0,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": null,
+   "note": "Due on receipt - 09/17/2026. Fees = $28.00 delivery. New vendor, billed to Daniel Briceno | PAID - owner instruction 10/01/2026: paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Lakeshore Beverage",
+   "number": "452004",
+   "date": "2026-09-17",
+   "week": "S3",
+   "product": 320.9,
+   "fees": 17.69,
+   "total": 338.59,
+   "status": "paid",
+   "paidOn": "2026-09-18",
+   "due": null,
+   "note": "Terms FINTECH - charged to the Fintech account, no payment date yet (Lakeshore Fintech payments have landed the next day). Fees = $10.00 service charge. Tax = $5.87 Chicago ONP + $1.82 Cook County. Invoice says last month total $538.30 | PAID 09/18/2026 per Fintech \"My Invoices\" (Paid filter, 09/01-09/30, screenshot 10/01/2026), $338.59"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "288993",
+   "date": "2026-09-17",
+   "week": "S3",
+   "product": 443.47,
+   "fees": 6.5,
+   "total": 449.97,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-17",
+   "note": "COD - due 09/17/2026. Fees = $6.50 delivery fuel charge. Wholesail statement of 09/18 shows it open, 1 day past due | PAID 09/21/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 4d late\" on a COD due date of 09/17), $449.97"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1741622",
+   "date": "2026-09-17",
+   "week": "S3",
+   "product": 38.5,
+   "fees": 45.78,
+   "total": 84.28,
+   "status": "paid",
+   "paidOn": "2026-09-22",
+   "due": "2026-10-17",
+   "note": "NET 30 DAYS - due 10/17/2026. Fees = $10.00 fuel surcharge + $35.00 \"PRONTO UNDER MIN\" under-minimum fee. Tax printed $0.78 (2.000% of $38.50 is $0.77 - 1 cent over) | PAID 09/22/2026 ACH ref 22819924-ACH0922"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "289282",
+   "date": "2026-09-18",
+   "week": "S3",
+   "product": 971.66,
+   "fees": 6.5,
+   "total": 978.16,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-18",
+   "note": "COD - due 09/18/2026. Fees = $6.50 delivery fuel charge | PAID 09/21/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 3d late\" on a COD due date of 09/18), $978.16"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "10367 (delivery ticket)",
+   "date": "2026-09-18",
+   "week": "S3",
+   "product": 280.0,
+   "fees": 0.0,
+   "total": 280.0,
+   "status": "open",
+   "paidOn": null,
+   "due": null,
+   "note": "DELIVERY TICKET, NOT THE FINAL INVOICE - \"Final invoice will be sent separately\". Received by Alberto. Replace this number with the final Regalis invoice number when it arrives; do not enter the final invoice as a second purchase"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924529114",
+   "date": "2026-09-18",
+   "week": "S3",
+   "product": 662.65,
+   "fees": 35.32,
+   "total": 697.97,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-25",
+   "note": "NET 7 - due 09/25/2026. Fees = $10.00 fuel surcharge + $4.80 Chicago bottled water tax. Tax $20.52 on the liner, tissue, towels, wipes and fuel | PAID 09/21/2026 SyscoPay payment 260921-RtLW8yUU, ACH from Akiro bank account -8500"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1796765",
+   "date": "2026-09-18",
+   "week": "S3",
+   "product": 765.5,
+   "fees": 25.32,
+   "total": 790.82,
+   "status": "paid",
+   "paidOn": "2026-09-22",
+   "due": "2026-10-18",
+   "note": "NET 30 DAYS - due 10/18/2026. Fees = $10.00 fuel surcharge. Tax printed $15.32 (2.00% of $765.50 is $15.31 - 1 cent over). Signed for by the manager 09/18 | PAID 09/22/2026 ACH ref 22819924-ACH0922"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "289467",
+   "date": "2026-09-19",
+   "week": "S3",
+   "product": 837.23,
+   "fees": 6.5,
+   "total": 843.73,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-19",
+   "note": "COD - due 09/19/2026. Fees = $6.50 delivery fuel charge. Wholesail copy shows it open, 1 day past due | PAID 09/21/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 2d late\" on a COD due date of 09/19), $843.73"
+  },
+  {
+   "vendor": "Cosmopolitan",
+   "number": "1440132",
+   "date": "2026-09-21",
+   "week": "S4",
+   "product": 232.2,
+   "fees": 103.63,
+   "total": 335.83,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": "2026-10-10",
+   "note": "NET 10th PROX - due 10/10/2026. Fees = Linen care $65.31 + Service-SEED charge $29.90 + Floor care $1.45. Tax = IL sales lease tax 3.0%. Identical to 1439277 (09/14), $335.83. Aging printed: current $671.20, 1-30 days $1,660.45 (still past due), total $2,331.65 | PAID - owner instruction 10/01/2026: paid IN SEPTEMBER; exact day not given, so Paid On is entered as 09/30/2026 (month-end placeholder - replace with the real date if known)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "289683",
+   "date": "2026-09-21",
+   "week": "S4",
+   "product": 3400.84,
+   "fees": 6.5,
+   "total": 3407.34,
+   "status": "paid",
+   "paidOn": "2026-09-28",
+   "due": "2026-09-21",
+   "note": "COD - due 09/21/2026. Taken 09/20, shipped and invoiced 09/21. Fees = $6.50 delivery fuel charge. \"Delevery en el basement\". No payment record | PAID 09/28/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 7d late\" on a COD due date of 09/21), $3,407.34"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924537352",
+   "date": "2026-09-21",
+   "week": "S4",
+   "product": 913.29,
+   "fees": 10.0,
+   "total": 923.29,
+   "status": "paid",
+   "paidOn": "2026-09-21",
+   "due": "2026-09-28",
+   "note": "NET 7 - due 09/28/2026. Fees = $10.00 fuel surcharge. No tax on this invoice. Two pages; sweet potato out of stock, yam substituted | PAID 09/21/2026 SyscoPay payment 260921-RtLW8yUU, ACH from Akiro bank account -8500"
+  },
+  {
+   "vendor": "Acorvina",
+   "number": "2115",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 324.0,
+   "fees": 34.63,
+   "total": 358.63,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-22",
+   "note": "Net 30 - due 10/22/2026. Fees = $10.00 fuel surcharge. Tax = $24.63 City & County spirits tax on 4.7544 GAL. Same order and total as 2049, 2071 and 2083"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "320652",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 2140.75,
+   "fees": 7.95,
+   "total": 2148.7,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-29",
+   "note": "NET CASH 7 DAYS ACH - due 09/29/2026 (shipped 09/23). Fees = $7.95 fuel surcharge. Cash-discounted price: $2,213.16 if paid by anything other than check, ACH or wire ($64.46 at risk)"
+  },
+  {
+   "vendor": "Chicago Beverage Systems",
+   "number": "101137316",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 502.4,
+   "fees": 21.18,
+   "total": 523.58,
+   "status": "paid",
+   "paidOn": "2026-09-23",
+   "due": null,
+   "note": "Terms FINTECH - receipt shows payment type \"Charge\" to the Fintech account, no payment date yet. Fees = $10.00 fuel charge. Tax = $8.53 Chicago + $2.65 Cook County. 14 CS, 29.4 GAL | PAID 09/23/2026 per Fintech \"My Invoices\" (Paid filter, 09/01-09/30, screenshot 10/01/2026), $523.58"
+  },
+  {
+   "vendor": "Eataly",
+   "number": "755397",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 62.93,
+   "fees": 1.87,
+   "total": 64.8,
+   "status": "paid",
+   "paidOn": "2026-09-22",
+   "due": null,
+   "note": "Store receipt - PAID at the register 09/22/2026 by debit card (LLC/Akiro Chicago, acct ending 0618, approval 443927). Fees = $0.30 Chicago bag tax (2 bags). Tax $1.57 = 2.50% on $62.93 qualified food"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1774755",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 1315.98,
+   "fees": 22.16,
+   "total": 1338.14,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-22",
+   "note": "NET 30 - due 10/22/2026. Payment method Fintech - no payment record yet. Tax = $12.41 Chicago liquor ($1.93 <14%, $3.05 14-20%, $7.43 >=20%) + $9.75 Cook County ($1.28, $1.54, $6.93); gallonage checked against the bottles"
+  },
+  {
+   "vendor": "True World",
+   "number": "5363",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-29",
+   "note": "Net 7 - due 09/29/2026. Fees = $2.50 freight"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1911151",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 243.4,
+   "fees": 57.91,
+   "total": 301.31,
+   "status": "paid",
+   "paidOn": "2026-09-29",
+   "due": "2026-10-22",
+   "note": "NET 30 DAYS - due 10/22/2026. Fees = $12.00 fuel surcharge (up from $10.00) + $35.00 \"PRONTO UNDER MIN\" under-minimum fee. 16 pieces ordered, 6 shipped - Coke, Diet Coke, Sprite and both Saratoga waters (10 CS) not shipped. Tax printed $10.91 (VAR %) - about 8.50% on the club soda plus 2.00% on the rest ($10.89) | PAID 09/29/2026 ACH ref 23011492-ACH0929"
+  },
+  {
+   "vendor": "Whole Foods",
+   "number": "219-16956",
+   "date": "2026-09-22",
+   "week": "S4",
+   "product": 81.29,
+   "fees": 1.22,
+   "total": 82.51,
+   "status": "paid",
+   "paidOn": "2026-09-22",
+   "due": null,
+   "note": "Paid - debit *0618 at the register 09/22/2026 10:00 AM, Lincoln Park. Tax $1.22 = 1.50% of $81.29. No bag charge"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "320324 (Wabash)",
+   "date": "2026-09-23",
+   "week": "S4",
+   "product": 719.76,
+   "fees": 7.95,
+   "total": 727.71,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-30",
+   "note": "NET CASH 7 DAYS ACH - due 09/30/2026. Fees = $7.95 fuel surcharge. Cash-discounted price: $749.54 if paid by anything other than check, ACH or wire ($21.83 at risk)"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "2483258",
+   "date": "2026-09-23",
+   "week": "S4",
+   "product": 582.6,
+   "fees": 41.24,
+   "total": 623.84,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-23",
+   "note": "Fintech 30 - due 10/23/2026. Fees = $13.00 delivery charge. Tax = $13.62 Cook County + $14.62 Chicago excise. $102.00 of discounts taken. DUPLICATE copy. No Summary Level Adjustment this time"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "1958976",
+   "date": "2026-09-23",
+   "week": "S4",
+   "product": 456.35,
+   "fees": 63.11,
+   "total": 519.46,
+   "status": "paid",
+   "paidOn": "2026-09-29",
+   "due": "2026-10-23",
+   "note": "NET 30 DAYS - due 10/23/2026. Fees = $12.00 fuel surcharge + $35.00 \"PRONTO UNDER MIN\" under-minimum fee. 8 pieces ordered, 5 shipped - Diet Coke, Coke and Sprite not shipped again. Tax printed $16.11 (VAR %) | PAID 09/29/2026 ACH ref 23011492-ACH0929"
+  },
+  {
+   "vendor": "Gangnam Market",
+   "number": "Check 378",
+   "date": "2026-09-24",
+   "week": "S4",
+   "product": 194.7,
+   "fees": 3.6,
+   "total": 198.3,
+   "status": "paid",
+   "paidOn": "2026-09-24",
+   "due": null,
+   "note": "Paid - debit *0618 09/24/2026 2:16 PM (approval 101261). Fees = $0.60 bag tax (4 bags). Tax printed $3.00 - 1.54% of $194.70, where the 09/04 and 09/09 receipts taxed at 1.23% (about $2.40 here)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "290532",
+   "date": "2026-09-24",
+   "week": "S4",
+   "product": 1936.02,
+   "fees": 6.5,
+   "total": 1942.52,
+   "status": "paid",
+   "paidOn": "2026-09-28",
+   "due": "2026-09-24",
+   "note": "COD - due 09/24/2026. Taken 09/23, shipped and invoiced 09/24. Fees = $6.50 delivery fuel charge. No payment record | PAID 09/28/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 4d late\" on a COD due date of 09/24), $1,942.52"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "416594",
+   "date": "2026-09-24",
+   "week": "S4",
+   "product": 280.0,
+   "fees": 0.0,
+   "total": 280.0,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-09",
+   "note": "15 DAYS NET - due 10/09/2026. Regalis vehicle, route Chi Downtown. Entered as a separate 09/24 delivery; it does not reference delivery ticket 10367 (09/18). If it is the final invoice for that ticket, it replaces 10367 instead"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "290827",
+   "date": "2026-09-25",
+   "week": "S4",
+   "product": 954.0,
+   "fees": 6.5,
+   "total": 960.5,
+   "status": "paid",
+   "paidOn": "2026-09-28",
+   "due": "2026-09-25",
+   "note": "COD - due 09/25/2026. Taken 09/24, shipped and invoiced 09/25. Fees = $6.50 delivery fuel charge. Micro cilantro line struck through by hand - see Line Items. No payment record | PAID 09/28/2026 per Martinez payment portal (screenshot 10/01/2026: \"Paid 3d late\" on a COD due date of 09/25), $960.50"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924547236",
+   "date": "2026-09-25",
+   "week": "S4",
+   "product": 218.59,
+   "fees": 17.68,
+   "total": 236.27,
+   "status": "paid",
+   "paidOn": "2026-09-28",
+   "due": "2026-10-02",
+   "note": "NET 7 - due 10/02/2026. Fees = $10.00 fuel surcharge + $4.80 Chicago bottled water tax. Tax $2.88 ($2.76 on the towels, $0.12 on fuel) | PAID 09/28/2026 SyscoPay payment 260928-ohWBetAI, ACH from Akiro bank account -8500"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924552015",
+   "date": "2026-09-26",
+   "week": "S4",
+   "product": 93.65,
+   "fees": 10.0,
+   "total": 103.65,
+   "status": "paid",
+   "paidOn": "2026-09-28",
+   "due": "2026-10-03",
+   "note": "NET 7 - due 10/03/2026. Fees = $10.00 fuel surcharge on a single $93.65 case of miso, the day after the 09/25 delivery | PAID 09/28/2026 SyscoPay payment 260928-ohWBetAI, ACH from Akiro bank account -8500"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "2088987",
+   "date": "2026-09-26",
+   "week": "S4",
+   "product": 313.08,
+   "fees": 32.84,
+   "total": 345.92,
+   "status": "paid",
+   "paidOn": "2026-09-29",
+   "due": "2026-10-26",
+   "note": "NET 30 DAYS - due 10/26/2026. Fees = $12.00 fuel surcharge; no under-minimum fee. Tax printed $20.84 (VAR %). Photographed upside down; read and verified line by line | PAID 09/29/2026 ACH ref 23011492-ACH0929"
+  },
+  {
+   "vendor": "Big Apple Finer Foods",
+   "number": "733921",
+   "date": "2026-09-28",
+   "week": "O1",
+   "product": 299.7,
+   "fees": 0.0,
+   "total": 299.7,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-28",
+   "note": "Net 30 - due 10/28/2026. NEW VENDOR - Big Apple Finer Foods, 2345 N Clark St (customer #5476). No freight, no tax. Micro cilantro listed at 0.00 - not shipped, not billed"
+  },
+  {
+   "vendor": "Cosmopolitan",
+   "number": "1440981",
+   "date": "2026-09-28",
+   "week": "O1",
+   "product": 232.2,
+   "fees": 103.63,
+   "total": 335.83,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-10",
+   "note": "NET 10th PROX - due 10/10/2026. Fees = Linen care $65.31 + Service-SEED charge $29.90 + Floor care $1.45. Tax = IL sales lease tax 3.0% on the rental items. Invoice Total box blank; PRE-BILLED $335.83. SEED charge photographs as 29.8x - $29.90 is the only reading that ties to the $328.86 subtotal. Aging printed: Past Due $0.00, Current $1,007.03 - the $1,660.45 past due shown on 09/14 and 09/21 is gone"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "291244",
+   "date": "2026-09-28",
+   "week": "O1",
+   "product": 1256.43,
+   "fees": 6.5,
+   "total": 1262.93,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-28",
+   "note": "COD - due 09/28/2026. Taken 09/27, shipped and invoiced 09/28. Fees = $6.50 delivery fuel charge. Two pages. No payment record yet"
+  },
+  {
+   "vendor": "Regalis",
+   "number": "417221",
+   "date": "2026-09-28",
+   "week": "O1",
+   "product": 420.0,
+   "fees": 0.0,
+   "total": 420.0,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-13",
+   "note": "15 Days - Net - due 10/13/2026. Regalis vehicle, route Chi Downtown. 3 tins"
+  },
+  {
+   "vendor": "Whole Foods",
+   "number": "201-16076",
+   "date": "2026-09-28",
+   "week": "O1",
+   "product": 132.95,
+   "fees": 1.99,
+   "total": 134.94,
+   "status": "paid",
+   "paidOn": "2026-09-28",
+   "due": null,
+   "note": "Paid - debit *0618 at the register 09/28/2026 11:03 AM, One Chicago store (3 W Chicago Ave). Tax $1.99 = 1.50% of $132.95. No bag charge. Gorgonzola entered piece by piece so each weighed line ties"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "291553",
+   "date": "2026-09-29",
+   "week": "O1",
+   "product": 3183.43,
+   "fees": 6.5,
+   "total": 3189.93,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-09-29",
+   "note": "COD - due 09/29/2026. Taken 09/28, shipped and invoiced 09/29. Fees = $6.50 delivery fuel charge. Single line: half a 108 KG Spain bluefin. No payment record yet"
+  },
+  {
+   "vendor": "True World",
+   "number": "5745",
+   "date": "2026-09-29",
+   "week": "O1",
+   "product": 1125.0,
+   "fees": 2.5,
+   "total": 1127.5,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-06",
+   "note": "Net 7 - due 10/06/2026. Fees = $2.50 freight. Order 8010, ordered 09/28"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "325020",
+   "date": "2026-09-30",
+   "week": "O1",
+   "product": 1180.2,
+   "fees": 7.95,
+   "total": 1188.15,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-07",
+   "note": "NET CASH 7 DAYS ACH - due 10/07/2026 (shipped 10/01, handwritten \"Received 10/1\"). Fees = $7.95 fuel surcharge. Cash-discounted price: $1,223.79 if paid by anything other than check, ACH or wire ($35.64 at risk)"
+  },
+  {
+   "vendor": "H Mart",
+   "number": "Seq 5912 / REG 4",
+   "date": "2026-09-30",
+   "week": "O1",
+   "product": 23.59,
+   "fees": 0.35,
+   "total": 23.94,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": null,
+   "note": "Paid - debit *0618 09/30/2026 1:28 PM, 711 W Jackson (approval 157351). No bag charge. Tax $0.35"
+  },
+  {
+   "vendor": "Southern Glazer's",
+   "number": "2492867",
+   "date": "2026-09-30",
+   "week": "O1",
+   "product": 859.04,
+   "fees": 52.2,
+   "total": 911.24,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-30",
+   "note": "Fintech 30 - due 10/30/2026. Night bill, DUPLICATE copy, 2 pages. Fees = $13.00 delivery charge. Tax = $18.90 Cook County + $20.30 Chicago excise. $99.80 of discounts taken (gross $1,011.04). No Summary Level Adjustment"
+  },
+  {
+   "vendor": "Supermercado El Guero",
+   "number": "00057645",
+   "date": "2026-09-30",
+   "week": "O1",
+   "product": 9.48,
+   "fees": 0.29,
+   "total": 9.77,
+   "status": "paid",
+   "paidOn": "2026-09-30",
+   "due": null,
+   "note": "Paid at the register 09/30/2026 1:16 PM by Visa *7768 - not the usual debit *0618. NEW VENDOR - Supermercado El Guero #10, 4023 S Archer Ave. Fees = $0.15 Chicago bag tax. Tax $0.14"
+  },
+  {
+   "vendor": "Allen Brothers",
+   "number": "325175 (Wabash)",
+   "date": "2026-10-01",
+   "week": "O1",
+   "product": 479.84,
+   "fees": 7.95,
+   "total": 487.79,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-08",
+   "note": "NET CASH 7 DAYS ACH - due 10/08/2026. Wabash Seafood c/o Allen Brothers. Fees = $7.95 fuel surcharge. Cash-discounted price: $502.42 if paid by anything other than check, ACH or wire ($14.63 at risk)"
+  },
+  {
+   "vendor": "Lakeshore Beverage",
+   "number": "478656",
+   "date": "2026-10-01",
+   "week": "O1",
+   "product": 283.35,
+   "fees": 14.27,
+   "total": 297.62,
+   "status": "open",
+   "paidOn": null,
+   "due": null,
+   "note": "Terms FINTECH - charged to the Fintech account, no due date printed. Fees = $10.00 service charge. Tax = $3.26 Chicago ONP + $1.01 Cook County. 8 cases"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "292254",
+   "date": "2026-10-01",
+   "week": "O1",
+   "product": 678.43,
+   "fees": 6.5,
+   "total": 684.93,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-01",
+   "note": "COD - due 10/01/2026. Taken 09/30, shipped and invoiced 10/01. Fees = $6.50 delivery fuel charge. Invoice note \"WASABI FROZNE NAMA - OUT\". No payment record yet"
+  },
+  {
+   "vendor": "Sysco",
+   "number": "924565162",
+   "date": "2026-10-01",
+   "week": "O1",
+   "product": 663.24,
+   "fees": 28.66,
+   "total": 691.9,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-08",
+   "note": "NET 7 - payable on or before 10/08/2026. Two pages. Fees = $10.00 fuel surcharge + $3.60 Chicago bottled water tax (3 CS). Tax $15.06 ($5.52 on the towels + $9.33 on the soap; $0.21 not itemized, as on 924547236)"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "292447",
+   "date": "2026-10-02",
+   "week": "O1",
+   "product": 783.17,
+   "fees": 6.5,
+   "total": 789.67,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-02",
+   "note": "COD - due 10/02/2026. Taken 10/01, shipped and invoiced 10/02. Fees = $6.50 delivery fuel charge. CHECK - two hamachi lines (24.76 + 24.91 LB) - see Line Items. No payment record yet"
+  },
+  {
+   "vendor": "Maverick",
+   "number": "INV1778434",
+   "date": "2026-10-02",
+   "week": "O1",
+   "product": 1568.02,
+   "fees": 10.76,
+   "total": 1578.78,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-11-01",
+   "note": "Net 30 - due 11/01/2026. Payment method Fintech. Tax = $6.81 Chicago liquor ($3.11 <14%, $3.70 14-20%) + $3.95 Cook County ($2.08, $1.87). 2 CS + 52 BTL. Babich Sauvignon Blanc listed at 0, $0.00"
+  },
+  {
+   "vendor": "US Foods",
+   "number": "2337540",
+   "date": "2026-10-02",
+   "week": "O1",
+   "product": 759.94,
+   "fees": 44.7,
+   "total": 804.64,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-11-01",
+   "note": "NET 30 DAYS - due 11/01/2026. Fees = $13.00 fuel surcharge (up from $12.00); no under-minimum fee. Tax printed $31.70 (VAR %). 21 pieces ordered, 21 shipped. Printed total is an estimate at time of shipping"
+  },
+  {
+   "vendor": "El Condor",
+   "number": "INV.30003",
+   "date": "2026-10-03",
+   "week": "O1",
+   "product": 84.84,
+   "fees": 30.0,
+   "total": 114.84,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-17",
+   "note": "NET 14 - due 10/17/2026. PO SO-04497. Fees = $30.00 delivery service charge. No tax"
+  },
+  {
+   "vendor": "Gangnam Market",
+   "number": "Check 192",
+   "date": "2026-10-03",
+   "week": "O1",
+   "product": 149.27,
+   "fees": 2.75,
+   "total": 152.02,
+   "status": "paid",
+   "paidOn": "2026-10-03",
+   "due": null,
+   "note": "Paid - debit *0618 10/03/2026 11:51 AM (approval 115316). Receipt is dated 10/03; the upload was labelled 10/04 - both are S5. Fees = $0.45 bag tax (3 bags). Tax $2.30"
+  },
+  {
+   "vendor": "Martinez",
+   "number": "292641",
+   "date": "2026-10-03",
+   "week": "O1",
+   "product": 445.05,
+   "fees": 6.5,
+   "total": 451.55,
+   "status": "open",
+   "paidOn": null,
+   "due": "2026-10-03",
+   "note": "COD - due 10/03/2026. Taken 10/02, shipped and invoiced 10/03. Fees = $6.50 delivery fuel charge. No payment record yet"
+  }
+ ],
+ "watch": [
+  {
+   "tag": "Open",
+   "title": "New week rule: 09/28\u201310/04 is O1",
+   "body": "Weeks follow the Kayao calendar. A week that crosses a month end belongs to the month with more of its days, so S5 is gone and 09/28\u201310/04 is O1; October runs O1\u2013O5 to 11/01. A1 (07/27\u201308/02) stays in August as the one exception. Old A1\u2013A4 are now A2\u2013A5 (same dates and totals). Older notes use the old labels."
+  },
+  {
+   "tag": "Price",
+   "title": "O1 sales in: food 24.2%, bar 25.6%",
+   "body": "ProductMix 09/28\u201310/04: $58,007.03 net, the lowest week on file. Bar is high because of the 10/02 Maverick wine and sake restock (wine 59.1%, non-alcoholic 76.5%). The $200 gift card is excluded."
+  },
+  {
+   "tag": "Open",
+   "title": "O1 entered - 21 invoices, $14,617.17",
+   "body": "Invoices dated 09/28\u201310/03, each checked line by line against the photo; all 21 tie to the cent. O1 sales are loaded."
+  },
+  {
+   "tag": "Open",
+   "title": "Martinez O1 not paid yet: $6,379.01",
+   "body": "Five COD invoices (291244, 291553, 292254, 292447, 292641) have no payment record, so they count as past due. Send the Martinez portal screenshot and they move to paid."
+  },
+  {
+   "tag": "Billing",
+   "title": "Martinez 292447: two hamachi lines",
+   "body": "Hamachi KAIJIN billed twice on one 10/02 invoice - 24.76 LB (ordered column prints the same weight) and 24.91 LB, $720.22. Every other delivery that week was one case. If only one came, $359.02 is a credit."
+  },
+  {
+   "tag": "Billing",
+   "title": "Wasabi kizami now billed by the bag",
+   "body": "New item at $46.50 per bag (10 packs). 10/01 shipped 0.1 bag = $4.65; 10/03 billed 3 bags = $139.50. If 3 packs came, not 30, the line should be $13.95 - a $125.55 credit."
+  },
+  {
+   "tag": "Open",
+   "title": "Cosmopolitan past due shows $0.00",
+   "body": "The 09/28 invoice prints Past Due $0.00, Current $1,007.03. The $1,660.45 past due on the 09/14 and 09/21 copies is gone - likely paid. Confirm with the statement before closing."
+  },
+  {
+   "tag": "Billing",
+   "title": "Chuck flap over-shipped again (+19%)",
+   "body": "Allen Brothers 325020: ordered 17.00 LB, billed 20.30 LB - $42.87 over the order. Fourth delivery in a row over 17 LB (18.15, 18.70, 18.05, 20.30)."
+  },
+  {
+   "tag": "Price",
+   "title": "Atlantic salmon up 27% in five days",
+   "body": "Martinez: $5.95/LB (12/14, 09/28), $6.80 (14/16, 10/01), $7.55 (14/16, 10/03)."
+  },
+  {
+   "tag": "Price",
+   "title": "Two new vendors",
+   "body": "Big Apple Finer Foods (Net 30, $299.70): mayo $99.50/CS and red onion $17.95, both under Sysco. Supermercado El Guero ($9.77, buns) paid with Visa *7768, not the usual debit *0618."
+  },
+  {
+   "tag": "Open",
+   "title": "$1,262.81 was Chef Works, not Allen Brothers",
+   "body": "One payment, not two: Chef Works IN3895199 (09/10), 20 chef coats with logos, $1,262.81 on VISA. Added under Supplies. Allen Brothers now matches your September list at $9,306.97."
+  },
+  {
+   "tag": "Open",
+   "title": "Two missing August bar invoices added",
+   "body": "Maverick INV1766044 ($1,897.27, paid 09/23) and Southern Glazer's 02446180 ($804.57, paid 09/24), both found by checking Fintech's paid list. A4 bar ratio is now 24.4% (was 6.1%); August bar 19.0%."
+  },
+  {
+   "tag": "Open",
+   "title": "Sysco paid up: $3,467.84",
+   "body": "SyscoPay 09/21 paid 924519033, 924529114 and 924537352 ($3,127.92); 09/28 paid 924547236 and 924552015 ($339.92). Nothing owed to Sysco."
+  },
+  {
+   "tag": "Open",
+   "title": "US Foods paid up: $2,438.45",
+   "body": "ACH 09/22 paid the four S3 invoices ($1,271.76); ACH 09/29 paid the three S4 invoices ($1,166.69). Nothing owed to US Foods."
+  },
+  {
+   "tag": "Open",
+   "title": "Martinez paid up: $12,849.34",
+   "body": "Portal shows all nine S3-S4 invoices paid: six on 09/21 ($6,538.98) and three on 09/28 ($6,310.36). Any hamachi or cilantro dispute now comes back as a credit."
+  },
+  {
+   "tag": "Open",
+   "title": "S3 and S4 are final",
+   "body": "Both confirmed complete on 10/01. S3: 22 invoices, $14,058.19. S4: 21 invoices, $16,090.83. Every week A1-S4 is now in the comparisons."
+  },
+  {
+   "tag": "Open",
+   "title": "S4 ratios: food 26.1%, bar 24.4%",
+   "body": "S4 net sales $61,119.27 (+1.0% on S3). Food rose from 24.8% on bluefin and wagyu; bar is a restock week (S3+S4 together 17.9%). Non-alcoholic still near 70%."
+  },
+  {
+   "tag": "Open",
+   "title": "Akiro shirts rung as Open Food again",
+   "body": "$70.00 of shirts in S4 food sales, after $140.00 in S3. Ring merchandise under its own category."
+  },
+  {
+   "tag": "Billing",
+   "title": "Hamachi at 32.41 LB five times",
+   "body": "Martinez billed hamachi at exactly 32.41 LB on 09/15, twice on 09/18, 09/21 and 09/25. Weigh the next delivery."
+  },
+  {
+   "tag": "Billing",
+   "title": "$70 of US Foods under-minimum fees on shorted orders",
+   "body": "1911151 (09/22) and 1958976 (09/23) both left out the sodas and both charged $35.00. Both were paid by ACH on 09/29, so ask for a $70.00 credit."
+  },
+  {
+   "tag": "Price",
+   "title": "Atlantic salmon 16/18 at $7.99/LB",
+   "body": "Martinez 289683 (09/21), 52.85 LB. Atlantic 14/16 was $5.95 on 09/14-09/17: $107.39 more for this case."
+  },
+  {
+   "tag": "Price",
+   "title": "Yam substituted for sweet potato",
+   "body": "Sysco 09/21: sweet potato out of stock, yam sent at $30.95 against $22.75. Mayonnaise still $101.79 at Sysco."
+  },
+  {
+   "tag": "Open",
+   "title": "New vendor: Chicago Beverage Systems",
+   "body": "Beer: 10 cases Asahi at $35.98 and 4 Cusquena at $35.65 on 09/22, charged to Fintech ($523.58)."
+  },
+  {
+   "tag": "Billing",
+   "title": "US Foods shorted 10 cases, still charged $35",
+   "body": "1911151 (09/22): Coke, Diet Coke, Sprite and both Saratoga waters not shipped. The smaller order tripped the $35.00 under-minimum fee. Ask for it back, and check the bar has soda."
+  },
+  {
+   "tag": "Price",
+   "title": "Lime 150 CT up 22% at US Foods",
+   "body": "$56.57 a case on 09/22 against $46.41 on 09/11. US Foods fuel surcharge also rose to $12.00 from $10.00."
+  },
+  {
+   "tag": "Price",
+   "title": "Mi Campo tequila back to $108",
+   "body": "$108.00 a case on 09/23 after a $42.00 promo, against $138.00 on 09/03. Toki by the case at $35.60 a bottle against $37.89 loose."
+  },
+  {
+   "tag": "Billing",
+   "title": "Wabash cash discount on 320324",
+   "body": "$21.83 holds only if paid by check, ACH or wire (full price $749.54). Due 09/30. The scallops tie this time: 3 GAL, 24 LB."
+  },
+  {
+   "tag": "Open",
+   "title": "Regalis 416594: new delivery or the final invoice?",
+   "body": "2 tins, $280.00, dated 09/24. Entered as a new delivery beside ticket 10367 (09/18, also 2 tins). If it is the final invoice for that ticket, one row comes out and S4 drops $280."
+  },
+  {
+   "tag": "Price",
+   "title": "Spain bluefin belly at $19.95/LB",
+   "body": "Martinez 290532 (09/24), new item code 1005001024, 82.68 LB. Spain (100+) ran $17.25-$17.75 in September; at $17.75 this is $181.90 less."
+  },
+  {
+   "tag": "Price",
+   "title": "Alejandrina avocado up 28%",
+   "body": "$45.95 a case on 09/24 against $35.95 on 09/09 and $37.95 on 09/03."
+  },
+  {
+   "tag": "Billing",
+   "title": "Allen Brothers cash discount on 320652",
+   "body": "$64.46 holds only if paid by check, ACH or wire (full price $2,213.16). Due 09/29."
+  },
+  {
+   "tag": "Billing",
+   "title": "Martinez 290827: doubled line and struck-out cilantro",
+   "body": "Two identical 4.63 LB hamachi JAPAN lines ($138.80). The micro cilantro line is crossed out by hand but billed ($30.95 by the invoice total). Ask for a credit if it didn't arrive."
+  },
+  {
+   "tag": "Price",
+   "title": "New Sancerre is 19% dearer",
+   "body": "Maverick 09/22: Mellot Moussiere at $33.33/BTL against Delaporte at $28.00 in August. Also new: Barker Espresso Martini 1.75 L at $38.50/BTL."
+  },
+  {
+   "tag": "Price",
+   "title": "Sysco lychee up 7.5%",
+   "body": "$167.89 a case on 09/25 against $156.14 on 08/04."
+  },
+  {
+   "tag": "Billing",
+   "title": "$10 fuel on a one-case Sysco order",
+   "body": "924552015 (09/26) was a single $93.65 case of red miso the day after the 09/25 drop. Add strays to the regular order."
+  },
+  {
+   "tag": "Open",
+   "title": "New vendor: Eataly",
+   "body": "Pergamena di pane, 7 packs at $8.99 retail on 09/22, paid by debit card ($64.80)."
+  },
+  {
+   "tag": "Billing",
+   "title": "Regalis 10367 is a delivery ticket",
+   "body": "$280.00 of caviar on 09/18, entered from the ticket. The final invoice must replace it, not be added again."
+  },
+  {
+   "tag": "Billing",
+   "title": "Cosmopolitan says $1,660.45 is past due",
+   "body": "Both linen invoices (09/14 and 09/21) show $1,660.45 overdue and a $2,331.65 balance. None of the earlier invoices are in the books, so Supply spend is understated. Ask for a statement and copies."
+  },
+  {
+   "tag": "Billing",
+   "title": "Martinez credits not in the books",
+   "body": "285339 (-$198.50) and 285998 (-$426.00) were applied by Martinez; no credit memo on file."
+  },
+  {
+   "tag": "Price",
+   "title": "Mexican bluefin up to $19.95/LB",
+   "body": "New SKU: $19.50 on 09/16, $19.95 on 09/19. Spain (100+) runs $17.25-$17.75."
+  },
+  {
+   "tag": "Open",
+   "title": "S3 sales down 10% on S2",
+   "body": "$60,520.99 net for 09/14-09/20 against $67,240.32 in S2, the lowest week on file. Food sales fell $6,044.88."
+  },
+  {
+   "tag": "Billing",
+   "title": "T-shirt rung as Open Food",
+   "body": "An \"Akiro T Shirt\" ($140.00) was rung as Open Food in S3, so it counts as food sales. Ring merchandise separately."
+  },
+  {
+   "tag": "Price",
+   "title": "Wabash snow crab up 22%",
+   "body": "$16.50/LB on 09/15, up from $13.50 on 08/10 and 09/02. $90.00 more on a 30 LB case."
+  },
+  {
+   "tag": "Billing",
+   "title": "US Foods $35 under-minimum fee",
+   "body": "1741622 (09/17): a single $38.50 stabilizer with $45.00 of fees. Add small items to a regular order."
+  },
+  {
+   "tag": "Price",
+   "title": "Babich Sauvignon Blanc up 36%",
+   "body": "$11.00 a bottle all August, $15.00 on 09/01 (Maverick)."
+  },
+  {
+   "tag": "Price",
+   "title": "High West bourbon: buy by the case",
+   "body": "$27.04 for a single bottle on 08/12, $20.00 a bottle by the case on 08/19."
+  },
+  {
+   "tag": "Price",
+   "title": "Mi Campo tequila keeps moving",
+   "body": "$120, then $108, then $138 a case across August and early September."
+  },
+  {
+   "tag": "Price",
+   "title": "Takatenjin sake billed high once",
+   "body": "$38.00 on 08/20 against $35.00 on every other invoice."
+  },
+  {
+   "tag": "Billing",
+   "title": "Southern Glazer's adjustments",
+   "body": "$138.55 of \"Summary Level Adjustments\" across three August invoices, none explained."
+  },
+  {
+   "tag": "Billing",
+   "title": "Scallop overbilling at Wabash",
+   "body": "About $479 across 294239 and 313375, both paid in full. Needs a credit, not a short payment."
+  },
+  {
+   "tag": "Open",
+   "title": "Allen Brothers 305599 and 305660",
+   "body": "Portals show paid 09/04. Waiting on whether to count them as August."
+  },
+  {
+   "tag": "Open",
+   "title": "Regalis August invoices paid",
+   "body": "Owner confirmed 10/01 that all four August Regalis invoices ($1,680.00) and both August El Condor invoices ($386.86) were paid in September. Exact days not given; entered as 09/30."
+  },
+  {
+   "tag": "Price",
+   "title": "Sysco beef femur bones up",
+   "body": "$7.799/LB on 09/14, up from $7.659 in August."
+  },
+  {
+   "tag": "Open",
+   "title": "Orange juice: bar or kitchen?",
+   "body": "Sysco 4/1 GAL orange juice ($64.98) is counted as a bar mixer. Move it to Food if the kitchen uses it."
+  },
+  {
+   "tag": "Price",
+   "title": "Bluefin back up to $17.75/LB",
+   "body": "95.7 LB on 09/15, after $17.25 on 09/11."
+  },
+  {
+   "tag": "Open",
+   "title": "Nori: 25 cases since 08/06",
+   "body": "Nine True World orders, $9,375.00, price never moves (latest 09/22). Count the nori before the next order."
+  },
+  {
+   "tag": "Billing",
+   "title": "Wabash cash discount on 316251",
+   "body": "$33.08 holds only if paid by check, ACH or wire (full price $1,135.83). Due 09/22."
+  },
+  {
+   "tag": "Price",
+   "title": "Sake bought by the bottle again",
+   "body": "Kanbara at $30.00 and Tentaka at $31.00 per bottle on 09/16, against $26.67 by the case on 09/09."
+  },
+  {
+   "tag": "Open",
+   "title": "New vendor: D'Fruta La Vida",
+   "body": "Lucuma nieve $65.00 plus $28.00 delivery on 09/17, due on receipt."
+  }
+ ]
+};
+</script>
+<script>
+/* Akiro purchasing dashboard (Kayao calendar). Reads window.AKIRO_DATA. No dependencies. */
+(function () {
+  "use strict";
+  const D = window.AKIRO_DATA;
+  if (!D) { document.getElementById("main").innerHTML = '<p class="hint">The data block did not load. Rebuild this page from the Akiro workbook.</p>'; return; }
+
+  /* ---------- helpers ---------- */
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const sum = a => a.reduce((x, y) => x + (+y || 0), 0);
+  const money = (n, d = 0) => (n < 0 ? "−" : "") + "$" + Math.abs(n).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const money2 = n => money(n, 2);
+  const pct = n => (n * 100).toFixed(1) + "%";
+  const md = s => s ? s.slice(5, 7) + "/" + s.slice(8, 10) : "–";
+  const asOf = new Date(D.asOf + "T12:00:00");
+  const daysTo = s => Math.round((new Date(s + "T12:00:00") - asOf) / 864e5);
+
+  const W = D.weeks;
+  const CATS = ["Food", "Bar", "Supply", "Cleaning"];
+  const CAT_C = { Food: "var(--indigo)", Bar: "var(--amber)", Supply: "var(--stone)", Cleaning: "var(--mist)" };
+  const SUBS = ["Cocktails & liquor", "Beer", "Wine", "Sake", "Non-alcoholic"];
+  const SUB_C = { "Cocktails & liquor": "var(--liquor)", Beer: "var(--beer)", Wine: "var(--wine)", Sake: "var(--sake)", "Non-alcoholic": "var(--na)" };
+  const DRINK_SALES = ["Cocktails & liquor", "Beer", "Wine", "Sake", "Non-alcoholic", "Open Drink (not allocated)"];
+  const product = i => sum(CATS.map(c => D.categories[c][i]));
+  const hasSales = i => (D.sales.Food || [])[i] > 0;
+  const foodSales = i => (D.sales.Food || [])[i] || 0;
+  const drinkSales = i => sum(DRINK_SALES.map(k => (D.sales[k] || [])[i] || 0));
+  const entered = W.map((w, i) => i).filter(i => W[i].entered);
+  const PARTIAL = new Set(D.partial || []);
+  const isPartial = i => PARTIAL.has(W[i].id);
+  const complete = entered.filter(i => !isPartial(i));
+  const lastIdx = (complete.length ? complete : entered).slice(-1)[0];
+  const partialIds = entered.filter(isPartial).map(i => W[i].id);
+
+  const INV = D.invoices.map(x => ({ ...x }));
+  INV.forEach(x => {
+    x.month = x.week === "PRE" ? "PRE" : x.week === "POST" ? "POST" : (x.week || "")[0] === "A" ? "August" : (x.week || "")[0] === "O" ? "October" : "September";
+    if (x.status === "open") {
+      const d = x.due ? daysTo(x.due) : null;
+      x.bucket = d === null ? "later" : d < 0 ? "past" : d <= 7 ? "soon" : "later";
+      x.dueText = d === null ? "no due date" : d < 0 ? `${-d} day${d === -1 ? "" : "s"} past due` : d === 0 ? "due today" : d <= 7 ? `due in ${d} day${d === 1 ? "" : "s"}` : "due " + md(x.due);
+    }
+  });
+  const OPEN = INV.filter(x => x.status === "open");
+  const VENDORS = D.vendors.map(v => v.name);
+  const allProduct = sum(entered.map(product));
+
+  const statusTag = x => x.status === "paid"
+    ? `<span class="tag paid">paid${x.paidOn ? " " + md(x.paidOn) : ""}</span>`
+    : `<span class="tag ${x.bucket}">${esc(x.dueText)}</span>`;
+
+  /* ---------- theme ---------- */
+  const root = document.documentElement, themeBtn = $("#theme");
+  const curTheme = () => root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const paintTheme = () => { themeBtn.textContent = curTheme() === "dark" ? "☀" : "☾"; themeBtn.setAttribute("aria-label", curTheme() === "dark" ? "Switch to light theme" : "Switch to dark theme"); };
+  try { const t = localStorage.getItem("akiro-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  paintTheme();
+  themeBtn.addEventListener("click", () => { root.dataset.theme = curTheme() === "dark" ? "light" : "dark"; try { localStorage.setItem("akiro-theme", root.dataset.theme); } catch (e) {} paintTheme(); });
+
+  /* ---------- header ---------- */
+  $("#asof").innerHTML = `Updated <b>${asOf.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</b><br>Invoices through ${W[lastIdx].id} (${W[lastIdx].end})${partialIds.length ? ", " + partialIds.join(", ") + " partial" : ""}`;
+  const past = OPEN.filter(x => x.bucket === "past");
+  $("#tab-owed").textContent = past.length || "";
+  $("#tab-owed").setAttribute("aria-label", past.length + " past due");
+  $("#tab-watch").textContent = D.watch.length || "";
+  $("#foot").textContent = `Built from Akiro_Purchases_and_Ratios.xlsx. Weeks run Monday to Sunday by invoice date, Kayao calendar. July is not tracked, so A1 (07/27–08/02) covers the two 08/01 invoices only and stays in August. A week that crosses a month end belongs to the month with more of its days, so September is S1–S4 and October runs O1 (09/28–10/04) to O5 (10/26–11/01).`;
+
+  /* ---------- tooltip ---------- */
+  const tip = $("#tip");
+  const showTip = (html, el) => {
+    tip.innerHTML = html; tip.hidden = false;
+    const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    let x = r.left + r.width / 2 - t.width / 2, y = r.top - t.height - 8;
+    if (y < 8) y = r.bottom + 8;
+    x = Math.max(8, Math.min(x, innerWidth - t.width - 8));
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  };
+  const hideTip = () => { tip.hidden = true; };
+  addEventListener("scroll", hideTip, { passive: true });
+
+  /* ---------- generic sortable table ---------- */
+  function table(host, cols, rows, opts = {}) {
+    const st = host._sort || (host._sort = { key: opts.sortKey || null, dir: opts.sortDir || 1 });
+    const draw = () => {
+      let data = rows.slice();
+      if (st.key) {
+        const c = cols.find(c => c.key === st.key);
+        const val = c.sort || (r => r[c.key]);
+        data.sort((a, b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * st.dir; });
+      }
+      let h = "<table><thead><tr>";
+      cols.forEach(c => {
+        const aria = st.key === c.key ? (st.dir > 0 ? "ascending" : "descending") : "none";
+        h += `<th class="${c.r ? "r " : ""}${c.cls || ""}" aria-sort="${aria}">${c.nosort ? esc(c.label) : `<button class="sort" type="button" data-k="${c.key}">${esc(c.label)}</button>`}</th>`;
+      });
+      h += "</tr></thead><tbody>";
+      if (!data.length) h += `<tr class="empty-row"><td colspan="${cols.length}">${esc(opts.empty || "Nothing matches these filters.")}</td></tr>`;
+      data.forEach((r, i) => {
+        h += `<tr${opts.onRow ? ` class="click" tabindex="0" data-i="${rows.indexOf(r)}"` : ""}>`;
+        cols.forEach(c => { h += `<td class="${c.r ? "r num " : ""}${c.cls || ""}">${c.html ? c.html(r) : esc(r[c.key])}</td>`; });
+        h += "</tr>";
+        if (opts.expand && opts.expanded && opts.expanded.has(r)) h += `<tr class="note"><td colspan="${cols.length}">${opts.expand(r)}</td></tr>`;
+      });
+      h += "</tbody>";
+      if (opts.foot) h += `<tfoot><tr>${opts.foot(data)}</tr></tfoot>`;
+      host.innerHTML = h + "</table>";
+      $$("button.sort", host).forEach(b => b.addEventListener("click", () => {
+        const k = b.dataset.k; st.dir = st.key === k ? -st.dir : 1; st.key = k; draw();
+      }));
+      if (opts.onRow) $$("tr.click", host).forEach(tr => {
+        const go = () => opts.onRow(rows[+tr.dataset.i], draw);
+        tr.addEventListener("click", go);
+        tr.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+      });
+    };
+    draw();
+  }
+
+  function csv(name, cols, rows) {
+    const q = v => { const s = String(v ?? ""); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const text = [cols.map(c => q(c[0])).join(",")].concat(rows.map(r => cols.map(c => q(c[1](r))).join(","))).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: "text/csv" }));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  const hbar = (label, v, tot, color, attrs = "") => {
+    const w = tot ? Math.max(0, v / tot * 100) : 0;
+    const tagName = attrs ? "button" : "div";
+    return `<${tagName} class="hbar" ${attrs}${attrs ? ' type="button"' : ""}><span>${esc(label)}</span><span class="track"><span class="fill" style="width:${w.toFixed(1)}%;background:${color}"></span></span><span class="val num">${money(v)}<small>${tot ? w.toFixed(0) + "%" : ""}</small></span></${tagName}>`;
+  };
+  const legend = (host, items, line) => { host.innerHTML = items.map(([n, c]) => `<span><i class="${line ? "line" : ""}" style="background:${c}"></i>${esc(n)}</span>`).join(""); };
+
+  /* ---------- ratios ---------- */
+  // Same rule as the workbook: month and total ratios use only the weeks that have sales loaded.
+  function ratiosFor(ix) {
+    ix = ix.filter(hasSales);
+    if (!ix.length) return { food: null, bar: null };
+    return {
+      food: sum(ix.map(i => D.categories.Food[i])) / sum(ix.map(foodSales)),
+      bar: sum(ix.map(i => D.categories.Bar[i])) / sum(ix.map(drinkSales)),
+    };
+  }
+  const salesIx = entered.filter(hasSales);
+  const AVG = ratiosFor(salesIx);
+
+  /* =========================================================
+     OVERVIEW
+     ========================================================= */
+  function renderOverview() {
+    const last = lastIdx, prev = complete[complete.indexOf(last) - 1];
+    const pLast = product(last), pPrev = prev != null ? product(prev) : null;
+    const ch = pPrev ? (pLast - pPrev) / pPrev : null;
+    const r = ratiosFor([last]);
+    const pastSum = sum(past.map(x => x.total));
+    const carry = carryData();
+    const deltaTag = (c, invert) => c === null ? "" : `<span class="delta ${Math.abs(c) < .01 ? "flat" : (c > 0) !== !!invert ? "up" : "down"}">${c > 0 ? "+" : ""}${(c * 100).toFixed(1)}%</span>`;
+    $("#kpis").innerHTML = [
+      `<a class="kpi${past.length ? " alert" : ""}" href="#owed"><div class="l">Still owed</div><div class="v num">${money2(sum(OPEN.map(x => x.total)))}</div><div class="n">${past.length ? `${money2(pastSum)} past due on ${past.length} invoices` : "Nothing past due"}</div></a>`,
+      `<a class="kpi" href="#weeks/${W[last].id}"><div class="l">Spend in ${W[last].id}</div><div class="v num">${money(pLast)}</div><div class="n">${pPrev ? `vs ${W[prev].id} ${deltaTag(ch)}` : ""}</div></a>`,
+      `<a class="kpi" href="#weeks/${W[last].id}"><div class="l">Food ratio, ${W[last].id}</div><div class="v num">${r.food === null ? "–" : pct(r.food)}</div><div class="n">${AVG.food !== null ? "average " + pct(AVG.food) : "No sales figures yet"}</div></a>`,
+      `<a class="kpi" href="#weeks/${W[last].id}"><div class="l">Bar ratio, ${W[last].id}</div><div class="v num">${r.bar === null ? "–" : pct(r.bar)}</div><div class="n">${AVG.bar !== null ? "average " + pct(AVG.bar) : "No sales figures yet"}</div></a>`,
+      `<a class="kpi" href="#owed"><div class="l">Carried from August</div><div class="v num">${money2(carry.total)}</div><div class="n">${money2(carry.open)} still open</div></a>`,
+    ].join("");
+
+    // ledger
+    const maxP = Math.max(...entered.map(product));
+    let h = "";
+    W.forEach((w, i) => {
+      let col = '<span class="col">';
+      if (w.entered) CATS.slice().reverse().forEach(c => { const v = D.categories[c][i]; if (v > 0) col += `<span class="seg-bar" style="height:${(v / maxP * 100).toFixed(2)}%;background:${CAT_C[c]}"></span>`; });
+      else col += '<span class="empty">not in yet</span>';
+      col += "</span>";
+      h += `<button class="wk${isPartial(i) ? " partial" : ""}" type="button" data-i="${i}" ${w.entered ? "" : "disabled"} aria-label="${w.id}, ${w.start} to ${w.end}${w.entered ? ", " + money(product(i)) : ", not uploaded yet"}">${col}<span class="amt num">${w.entered ? money(product(i)) : "&nbsp;"}${isPartial(i) ? '<em class="prog">part week</em>' : ""}</span><span class="id">${w.id}</span><span class="dates">${w.start}–${w.end}</span></button>`;
+    });
+    let col = 1;
+    ["August", "September", "October"].forEach(m => { const n = W.filter(w => w.month === m).length; if (n) { h += `<span class="month" style="grid-column:${col}/${col + n}">${m}</span>`; col += n; } });
+    const L = $("#ledger"); L.innerHTML = h;
+    $$(".wk", L).forEach(b => {
+      const i = +b.dataset.i;
+      b.addEventListener("click", () => { go("weeks/" + W[i].id); });
+      if (!W[i].entered) return;
+      const t = () => `<b>${W[i].id}, ${W[i].start}–${W[i].end}</b>` + CATS.map(c => `<div class="row"><span>${c}</span><span class="num">${money(D.categories[c][i])}</span></div>`).join("") + `<div class="row"><span>${W[i].invoices} invoices${isPartial(i) ? ". " + (D.partialNote || {})[W[i].id] : ""}</span></div>`;
+      b.addEventListener("mouseenter", () => showTip(t(), b)); b.addEventListener("mouseleave", hideTip);
+      b.addEventListener("focus", () => showTip(t(), b)); b.addEventListener("blur", hideTip);
+    });
+    const sc = $(".ledger-scroll"), lb = $(`.wk[data-i="${lastIdx}"]`, L);
+    requestAnimationFrame(() => { if (sc.scrollWidth > sc.clientWidth) sc.scrollLeft = lb.offsetLeft - sc.clientWidth / 2 + lb.offsetWidth / 2; });
+    legend($("#legend"), CATS.map(c => [c, CAT_C[c]]));
+
+    // attention
+    const soon = OPEN.filter(x => x.bucket === "soon");
+    const list = past.concat(soon).sort((a, b) => (a.due || "") < (b.due || "") ? -1 : 1).slice(0, 7);
+    const extra = past.length + soon.length - list.length;
+    $("#attention").innerHTML = list.length
+      ? list.map(x => `<li><span class="who">${esc(x.vendor)} ${esc(x.number)}</span><span class="amt num">${money2(x.total)}</span><span class="what">${statusTag(x)} dated ${md(x.date)}</span><span></span></li>`).join("") + (extra > 0 ? `<li><span class="what">and ${extra} more</span></li>` : "")
+      : `<li class="empty-state">Nothing is past due or due in the next 7 days.</li>`;
+
+    ratioChart();
+  }
+
+  function ratioChart() {
+    const ix = salesIx;
+    if (!ix.length) { $("#ratio-chart").innerHTML = '<p class="hint">Ratios appear once sales figures are in.</p>'; return; }
+    const series = [["Food", ix.map(i => D.categories.Food[i] / foodSales(i)), "var(--indigo)"], ["Bar", ix.map(i => D.categories.Bar[i] / drinkSales(i)), "var(--amber)"]];
+    const Wd = 520, H = 230, pl = 36, pr = 56, pt = 14, pb = 28;
+    const max = Math.max(0.3, Math.ceil(Math.max(...series.flatMap(s => s[1])) * 10) / 10);
+    const x = k => pl + (ix.length === 1 ? (Wd - pl - pr) / 2 : k * (Wd - pl - pr) / (ix.length - 1));
+    const y = v => pt + (1 - v / max) * (H - pt - pb);
+    let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Food and bar purchase ratios by week">`;
+    for (let g = 0; g <= max + 1e-9; g += 0.1) s += `<line class="grid" x1="${pl}" x2="${Wd - pr}" y1="${y(g)}" y2="${y(g)}"/><text x="${pl - 6}" y="${y(g) + 4}" text-anchor="end">${Math.round(g * 100)}%</text>`;
+    ix.forEach((i, k) => { s += `<text x="${x(k)}" y="${H - 8}" text-anchor="middle">${W[i].id}</text>`; });
+    series.forEach(([n, vals, c]) => {
+      s += `<polyline fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round" points="${vals.map((v, k) => x(k) + "," + y(v)).join(" ")}"/>`;
+      vals.forEach((v, k) => { s += `<circle cx="${x(k)}" cy="${y(v)}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"><title>${n} ${W[ix[k]].id}: ${pct(v)}</title></circle>`; });
+      const lv = vals[vals.length - 1];
+      s += `<text class="lab" x="${x(vals.length - 1) + 8}" y="${y(lv) + 4}" style="fill:${c}">${pct(lv)}</text>`;
+    });
+    $("#ratio-chart").innerHTML = s + "</svg>";
+    legend($("#ratio-legend"), series.map(s => [s[0] + " purchases ÷ " + (s[0] === "Food" ? "food" : "drink") + " sales", s[2]]), true);
+  }
+
+  /* =========================================================
+     WEEKS
+     ========================================================= */
+  const SCOPES = W.map((w, i) => ({ key: w.id, label: w.id, ix: [i], disabled: !w.entered, week: i }))
+    .concat([{ key: "aug", label: "August", ix: entered.filter(i => W[i].month === "August") },
+             { key: "sep", label: "September", ix: entered.filter(i => W[i].month === "September") },
+             { key: "oct", label: "October", ix: entered.filter(i => W[i].month === "October") }].filter(s => s.ix.length));
+  let scopeKey = W[lastIdx].id;
+
+  function renderWeeks(key) {
+    if (key) scopeKey = key;
+    const sc = SCOPES.find(s => s.key === scopeKey) || SCOPES[lastIdx];
+    const seg = $("#wk-seg");
+    if (!seg.childElementCount) {
+      seg.innerHTML = SCOPES.map((s, k) => (k === W.length ? '<span class="sep" aria-hidden="true"></span>' : "") + `<button type="button" data-k="${s.key}" ${s.disabled ? "disabled" : ""}>${s.label}</button>`).join("");
+      $$("button", seg).forEach(b => b.addEventListener("click", () => { go("weeks/" + b.dataset.k); }));
+    }
+    $$("button", seg).forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === sc.key)));
+    const active = $(`button[aria-pressed="true"]`, seg); if (active) active.scrollIntoView({ block: "nearest", inline: "center" });
+    const pos = entered.indexOf(sc.week);
+    $("#wk-prev").disabled = !(sc.week != null && pos > 0);
+    $("#wk-next").disabled = !(sc.week != null && pos < entered.length - 1);
+
+    const ix = sc.ix;
+    const S = arr => sum(ix.map(i => arr[i]));
+    const prod = sum(ix.map(product)), fees = S(D.fees), inv = sum(ix.map(i => W[i].invoices));
+    const food = S(D.categories.Food), bar = S(D.categories.Bar);
+    const r = ratiosFor(ix);
+    const noSales = ix.filter(i => !hasSales(i)).map(i => W[i].id);
+    $("#wk-title").textContent = sc.week != null ? `${W[sc.week].id}, ${W[sc.week].start} to ${W[sc.week].end}${isPartial(sc.week) ? " (" + (D.partialNote || {})[W[sc.week].id] + ")" : ""}` : sc.label + ", " + ix.map(i => W[i].id).join(" + ");
+
+    // previous comparable
+    let prev = null;
+    if (sc.week != null && pos > 0) prev = [entered[pos - 1]];
+    const prevP = prev ? sum(prev.map(product)) : null;
+    const dP = prevP ? (prod - prevP) / prevP : null;
+    const pr = prev ? ratiosFor(prev) : null;
+    const pts = (a, b) => a === null || b === null ? "" : `<span class="delta ${Math.abs(a - b) < .002 ? "flat" : a > b ? "up" : "down"}">${a > b ? "+" : "−"}${Math.abs((a - b) * 100).toFixed(1)} pts</span>`;
+    const flag = (v, avg) => v === null || sc.week == null || avg === null ? "" : v > avg * 1.25 ? '<span class="flag hi">high for us</span>' : v < avg * .6 ? '<span class="flag lo">unusually low</span>' : "";
+    const vs = prev ? ` vs ${W[prev[0]].id}` : "";
+    $("#wk-figs").innerHTML = [
+      ["Product spend", money(prod), `${inv} invoices` + (dP !== null ? `${vs} <span class="delta ${Math.abs(dP) < .01 ? "flat" : dP > 0 ? "up" : "down"}">${dP > 0 ? "+" : ""}${(dP * 100).toFixed(1)}%</span>` : "")],
+      ["Freight, fees and tax", money(fees), prod ? pct(fees / prod) + " of product" : ""],
+      ["Food ratio", r.food === null ? "–" : pct(r.food) + flag(r.food, AVG.food), r.food === null ? "No sales figures for this period" : (sc.week == null && noSales.length ? `Without ${noSales.join(", ")} (no sales yet)` : `${money(food)} of food` + (pr ? vs + " " + pts(r.food, pr.food) : ""))],
+      ["Bar ratio", r.bar === null ? "–" : pct(r.bar) + flag(r.bar, AVG.bar), r.bar === null ? "No sales figures for this period" : (sc.week == null && noSales.length ? `Without ${noSales.join(", ")} (no sales yet)` : `${money(bar)} of bar` + (pr ? vs + " " + pts(r.bar, pr.bar) : ""))],
+    ].map(f => `<div class="kpi"><div class="l">${f[0]}</div><div class="v num">${f[1]}</div><div class="n">${f[2]}</div></div>`).join("");
+
+    $("#wk-cats").innerHTML = CATS.map(c => hbar(c, S(D.categories[c]), prod, CAT_C[c])).join("");
+    const bt = sum(SUBS.map(s => S(D.barSub[s])));
+    $("#wk-barstack").innerHTML = bt ? SUBS.map(s => `<span title="${esc(s)}" style="width:${(S(D.barSub[s]) / bt * 100).toFixed(2)}%;background:${SUB_C[s]}"></span>`).join("") : "";
+    $("#wk-bar").innerHTML = SUBS.map(s => hbar(s, S(D.barSub[s]), bt, SUB_C[s])).join("");
+    const vs2 = D.vendors.map(v => ({ n: v.name, t: S(v.weeks) })).filter(v => v.t > 0).sort((a, b) => b.t - a.t);
+    $("#wk-vend").innerHTML = vs2.map(v => hbar(v.n, v.t, prod, "var(--indigo)", `data-v="${esc(v.n)}" aria-label="Open ${esc(v.n)}"`)).join("") || '<p class="hint">No purchases.</p>';
+    $$("#wk-vend .hbar").forEach(b => b.addEventListener("click", () => openVendor(b.dataset.v)));
+
+    const ids = new Set(ix.map(i => W[i].id));
+    const rows = INV.filter(x => ids.has(x.week));
+    $("#wk-inv-sum").textContent = `${rows.length} invoices, ${money2(sum(rows.map(x => x.total)))} including fees and tax`;
+    const host = $("#wk-inv"); host._sort = null;
+    table(host, [
+      { key: "date", label: "Dated", html: x => md(x.date) },
+      { key: "vendor", label: "Vendor" },
+      { key: "number", label: "Invoice", cls: "hide-sm" },
+      { key: "product", label: "Product", r: 1, html: x => money2(x.product), cls: "hide-sm" },
+      { key: "total", label: "Total", r: 1, html: x => money2(x.total) },
+      { key: "status", label: "Status", sort: x => x.status + (x.due || ""), html: statusTag },
+    ], rows, { sortKey: "date" });
+  }
+  $("#wk-prev").addEventListener("click", () => step(-1));
+  $("#wk-next").addEventListener("click", () => step(1));
+  function step(d) {
+    const sc = SCOPES.find(s => s.key === scopeKey); if (!sc || sc.week == null) return;
+    const p = entered.indexOf(sc.week) + d; if (p < 0 || p >= entered.length) return;
+    go("weeks/" + W[entered[p]].id);
+  }
+  addEventListener("keydown", e => {
+    if (current !== "weeks" || e.target.closest("input,select,textarea,dialog")) return;
+    if (e.key === "ArrowLeft") step(-1); if (e.key === "ArrowRight") step(1);
+  });
+
+  /* =========================================================
+     OWED
+     ========================================================= */
+  function carryData() {
+    const isAug = d => d >= "2026-08-01" && d <= "2026-08-30";
+    const paidSep = INV.filter(x => isAug(x.date) && x.status === "paid" && x.paidOn && x.paidOn >= "2026-09-01");
+    const openAug = OPEN.filter(x => isAug(x.date));
+    const p = sum(paidSep.map(x => x.total)), o = sum(openAug.map(x => x.total));
+    return { paidSep, openAug, paid: p, open: o, total: p + o };
+  }
+  const owedState = { bucket: "all", vendor: "" };
+  function renderOwed() {
+    const B = { all: OPEN, past: OPEN.filter(x => x.bucket === "past"), soon: OPEN.filter(x => x.bucket === "soon"), later: OPEN.filter(x => x.bucket === "later") };
+    $("#owed-kpis").innerHTML = [
+      ["Total owed", B.all, ""], ["Past due", B.past, "alert"], ["Due in the next 7 days", B.soon, ""], ["Due later", B.later, ""],
+    ].map(([l, a, c]) => `<div class="kpi ${a.length && c ? c : ""}"><div class="l">${l}</div><div class="v num">${money2(sum(a.map(x => x.total)))}</div><div class="n">${a.length} invoice${a.length === 1 ? "" : "s"}</div></div>`).join("");
+    const chips = $("#owed-chips");
+    chips.innerHTML = [["all", "All"], ["past", "Past due"], ["soon", "Next 7 days"], ["later", "Later"]]
+      .map(([k, l]) => `<button type="button" data-b="${k}" aria-pressed="${owedState.bucket === k}">${l}<span class="c">${B[k].length}</span></button>`).join("");
+    $$("button", chips).forEach(b => b.addEventListener("click", () => { owedState.bucket = b.dataset.b; renderOwed(); }));
+    const sel = $("#owed-vendor");
+    if (!sel.childElementCount) {
+      const vs = [...new Set(OPEN.map(x => x.vendor))].sort();
+      sel.innerHTML = '<option value="">All vendors</option>' + vs.map(v => `<option>${esc(v)}</option>`).join("");
+      sel.addEventListener("change", () => { owedState.vendor = sel.value; renderOwed(); });
+    }
+    const rows = B[owedState.bucket].filter(x => !owedState.vendor || x.vendor === owedState.vendor);
+    const cols = [
+      { key: "vendor", label: "Vendor" },
+      { key: "number", label: "Invoice" },
+      { key: "date", label: "Dated", html: x => `${md(x.date)} <span class="muted">${esc(x.week)}</span>`, cls: "hide-sm" },
+      { key: "due", label: "Status", sort: x => x.due || "9999", html: statusTag },
+      { key: "total", label: "Amount", r: 1, html: x => money2(x.total) },
+    ];
+    table($("#owed-table"), cols, rows, {
+      sortKey: "due", empty: "Nothing owed in this group.",
+      foot: d => `<td colspan="2">${d.length} invoice${d.length === 1 ? "" : "s"}</td><td class="hide-sm"></td><td></td><td class="r num">${money2(sum(d.map(x => x.total)))}</td>`,
+      onRow: x => openVendor(x.vendor),
+    });
+    $("#owed-csv").onclick = () => csv("akiro-owed-" + D.asOf + ".csv",
+      [["Vendor", x => x.vendor], ["Invoice", x => x.number], ["Dated", x => x.date], ["Week", x => x.week], ["Due", x => x.due || ""], ["Status", x => x.dueText], ["Amount", x => x.total.toFixed(2)]], rows);
+
+    const c = carryData();
+    $("#carry").innerHTML = [["Carried into September", c.total], [`Paid in September (${c.paidSep.length})`, c.paid], [`Still open (${c.openAug.length})`, c.open]]
+      .map(([l, v]) => `<div class="kpi"><div class="l">${l}</div><div class="v num">${money2(v)}</div></div>`).join("");
+    const small = [{ key: "vendor", label: "Vendor" }, { key: "number", label: "Invoice" }, { key: "date", label: "Dated", html: x => md(x.date) }];
+    table($("#carry-paid"), small.concat([{ key: "paidOn", label: "Paid", html: x => md(x.paidOn) }, { key: "total", label: "Amount", r: 1, html: x => money2(x.total) }]), c.paidSep,
+      { sortKey: "vendor", foot: d => `<td colspan="4">Total</td><td class="r num">${money2(sum(d.map(x => x.total)))}</td>` });
+    table($("#carry-open"), small.concat([{ key: "due", label: "Status", html: statusTag }, { key: "total", label: "Amount", r: 1, html: x => money2(x.total) }]), c.openAug,
+      { sortKey: "vendor", foot: d => `<td colspan="4">Total</td><td class="r num">${money2(sum(d.map(x => x.total)))}</td>` });
+  }
+
+  /* =========================================================
+     INVOICES
+     ========================================================= */
+  const expanded = new Set();
+  function renderInvoices() {
+    const sel = $("#inv-vendor");
+    if (!sel.childElementCount) {
+      sel.innerHTML = '<option value="">All vendors</option>' + [...new Set(INV.map(x => x.vendor))].sort().map(v => `<option>${esc(v)}</option>`).join("");
+      ["#inv-q", "#inv-month", "#inv-status", "#inv-vendor"].forEach(s => $(s).addEventListener(s === "#inv-q" ? "input" : "change", renderInvoices));
+    }
+    const q = $("#inv-q").value.trim().toLowerCase(), m = $("#inv-month").value, st = $("#inv-status").value, v = sel.value;
+    const rows = INV.filter(x => (!m || x.month === m) && (!st || x.status === st) && (!v || x.vendor === v) &&
+      (!q || (x.vendor + " " + x.number + " " + x.note).toLowerCase().includes(q)));
+    $("#inv-count").textContent = `${rows.length} of ${INV.length} invoices, ${money2(sum(rows.map(x => x.total)))}`;
+    table($("#inv-table"), [
+      { key: "date", label: "Dated", html: x => md(x.date) },
+      { key: "vendor", label: "Vendor" },
+      { key: "number", label: "Invoice" },
+      { key: "week", label: "Week", cls: "hide-sm" },
+      { key: "product", label: "Product", r: 1, html: x => money2(x.product), cls: "hide-sm" },
+      { key: "fees", label: "Fees & tax", r: 1, html: x => money2(x.fees), cls: "hide-sm" },
+      { key: "total", label: "Total", r: 1, html: x => money2(x.total) },
+      { key: "status", label: "Status", sort: x => x.status + (x.due || x.paidOn || ""), html: statusTag },
+    ], rows, {
+      sortKey: "date", expanded, expand: x => esc(x.note || "No notes."),
+      onRow: (x, redraw) => { expanded.has(x) ? expanded.delete(x) : expanded.add(x); redraw(); },
+      foot: d => `<td colspan="3">${d.length} invoices</td><td class="hide-sm"></td><td class="r num hide-sm">${money2(sum(d.map(x => x.product)))}</td><td class="r num hide-sm">${money2(sum(d.map(x => x.fees)))}</td><td class="r num">${money2(sum(d.map(x => x.total)))}</td><td></td>`,
+    });
+    $("#inv-csv").onclick = () => csv("akiro-invoices-" + D.asOf + ".csv",
+      [["Dated", x => x.date], ["Vendor", x => x.vendor], ["Invoice", x => x.number], ["Week", x => x.week], ["Product", x => x.product.toFixed(2)], ["Fees and tax", x => x.fees.toFixed(2)], ["Total", x => x.total.toFixed(2)], ["Status", x => x.status === "paid" ? "Paid" : "Not paid"], ["Paid on", x => x.paidOn || ""], ["Due", x => x.due || ""], ["Note", x => x.note]], rows);
+  }
+
+  /* =========================================================
+     VENDORS
+     ========================================================= */
+  function spark(weeks) {
+    const vm = Math.max(...weeks);
+    return `<span class="spark" aria-hidden="true">${weeks.map((x, i) => !W[i].entered ? '<i class="na"></i>' : x > 0 ? `<i style="height:${Math.max(2, x / vm * 26).toFixed(1)}px"></i>` : '<i class="z"></i>').join("")}</span>`;
+  }
+  function renderVendors() {
+    const rows = D.vendors.map(v => {
+      const inv = INV.filter(x => x.vendor === v.name), op = inv.filter(x => x.status === "open");
+      return { name: v.name, weeks: v.weeks, total: sum(v.weeks), share: sum(v.weeks) / allProduct, count: inv.length, owed: sum(op.map(x => x.total)), past: op.some(x => x.bucket === "past") };
+    });
+    table($("#vend-table"), [
+      { key: "name", label: "Vendor", html: r => esc(r.name) },
+      { key: "weeks", label: "A1 to S5", nosort: 1, html: r => spark(r.weeks), cls: "hide-sm" },
+      { key: "total", label: "To date", r: 1, html: r => money(r.total) },
+      { key: "share", label: "Share", r: 1, html: r => pct(r.share), cls: "hide-sm" },
+      { key: "count", label: "Invoices", r: 1, cls: "hide-sm" },
+      { key: "owed", label: "Owed", r: 1, html: r => r.owed ? `<span class="${r.past ? "tag past" : ""}">${money2(r.owed)}</span>` : '<span class="muted">–</span>' },
+    ], rows, { sortKey: "total", sortDir: -1, onRow: r => openVendor(r.name) });
+  }
+
+  const drawer = $("#drawer");
+  $("#dr-close").addEventListener("click", () => drawer.close());
+  drawer.addEventListener("click", e => { if (e.target === drawer) drawer.close(); });
+  function openVendor(name) {
+    const v = D.vendors.find(v => v.name === name); if (!v) return;
+    const inv = INV.filter(x => x.vendor === name), op = inv.filter(x => x.status === "open");
+    const t = sum(v.weeks), vm = Math.max(...v.weeks, 1);
+    $("#dr-title").textContent = name;
+    let bars = `<div class="ledger" style="min-width:0;grid-template-columns:repeat(${W.length},1fr);padding:0">`;
+    W.forEach((w, i) => { bars += `<div class="wk" style="cursor:default;padding:4px 0"><span class="col" style="height:90px">${w.entered ? (v.weeks[i] > 0 ? `<span class="seg-bar" style="height:${(v.weeks[i] / vm * 100).toFixed(1)}%;background:var(--indigo)" title="${w.id} ${money(v.weeks[i])}"></span>` : "") : '<span class="empty" style="font-size:10px">–</span>'}</span><span class="dates">${w.id}</span></div>`; });
+    bars += "</div>";
+    $("#dr-body").innerHTML = `<div class="kpis"><div class="kpi"><div class="l">Product to date</div><div class="v num">${money(t)}</div><div class="n">${pct(t / allProduct)} of all spend</div></div><div class="kpi ${op.some(x => x.bucket === "past") ? "alert" : ""}"><div class="l">Owed</div><div class="v num">${money2(sum(op.map(x => x.total)))}</div><div class="n">${op.length} open of ${inv.length} invoices</div></div></div><h3 class="mt">Product spend by week</h3>${bars}<h3 class="mt">Invoices</h3><div class="table-wrap" id="dr-inv"></div>`;
+    table($("#dr-inv"), [
+      { key: "date", label: "Dated", html: x => md(x.date) },
+      { key: "number", label: "Invoice" },
+      { key: "total", label: "Total", r: 1, html: x => money2(x.total) },
+      { key: "status", label: "Status", sort: x => x.status + (x.due || x.paidOn || ""), html: statusTag },
+    ], inv, { sortKey: "date", sortDir: -1 });
+    if (!drawer.open) drawer.showModal();
+  }
+
+  /* =========================================================
+     WATCH
+     ========================================================= */
+  function renderWatch() {
+    const groups = [["Billing", "Billing issues", "var(--stamp)"], ["Price", "Price changes", "var(--amber)"], ["Open", "Open questions", "var(--indigo)"]];
+    $("#watch").innerHTML = groups.map(([k, l, c]) => {
+      const items = D.watch.filter(w => w.tag === k); if (!items.length) return "";
+      return `<div class="watch-group"><h2><span class="dot" style="background:${c}"></span>${l}</h2><div class="watch-grid">${items.map(w => `<div class="w" data-tag="${k}"><div class="t">${esc(w.title)}</div><p>${esc(w.body)}</p></div>`).join("")}</div></div>`;
+    }).join("") || '<p class="hint">Nothing on the watch list.</p>';
+  }
+
+  /* =========================================================
+     ROUTER
+     ========================================================= */
+  const VIEWS = { overview: renderOverview, weeks: renderWeeks, owed: renderOwed, invoices: renderInvoices, vendors: renderVendors, watch: renderWatch };
+  const done = new Set();
+  let current = null;
+  // Navigation is handled in JS (not by the browser following "#" links), so tabs also work
+  // where hash navigation is blocked, e.g. file previews and sandboxed frames.
+  let path = "overview";
+  try { path = decodeURIComponent(location.hash.slice(1)) || "overview"; } catch (e) {}
+  function go(p) {
+    path = p || "overview";
+    try { if (location.hash.slice(1) !== path) history.pushState(null, "", "#" + path); } catch (e) {}
+    route();
+  }
+  document.addEventListener("click", e => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const target = link.getAttribute("href").slice(1);
+    if (!VIEWS[target.split("/")[0]]) return; // e.g. the skip link
+    e.preventDefault();
+    go(target);
+  });
+  function route() {
+    hideTip();
+    const [view, arg] = (path || "overview").split("/");
+    const v = VIEWS[view] ? view : "overview";
+    const changed = v !== current;
+    current = v;
+    $$(".view").forEach(s => { s.hidden = s.id !== "view-" + v; });
+    $$("#tabs a").forEach(a => { if (a.dataset.view === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    const tab = $(`#tabs a[data-view="${v}"]`); if (tab) tab.scrollIntoView({ block: "nearest", inline: "nearest" });
+    if (v === "weeks") renderWeeks(arg ? decodeURIComponent(arg) : null);
+    else if (!done.has(v)) { VIEWS[v](); done.add(v); }
+    if (changed) { window.scrollTo(0, 0); $("#main").focus({ preventScroll: true }); }
+    document.title = `Akiro Chicago purchasing: ${$(`#tabs a[data-view="${v}"]`).firstChild.textContent.trim()}`;
+  }
+  const fromUrl = () => { try { const h = decodeURIComponent(location.hash.slice(1)); if (h && h !== path) { path = h; route(); } } catch (e) {} };
+  addEventListener("hashchange", fromUrl);
+  addEventListener("popstate", fromUrl);
+  route();
+})();
+
+</script>
+</body>
+</html>
