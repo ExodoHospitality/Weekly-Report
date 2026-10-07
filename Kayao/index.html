@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kayao purchasing</title>
+<meta name="description" content="Weekly purchasing, cost ratios and accounts payable for Kayao, 1252 N Wells St, Chicago.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Kayao dashboard — tokens (Akiro palette) */
+:root{
+  --paper:#F6F5F1; --surface:#FFFFFF; --sunk:#EFEDE7; --ink:#1B2433; --muted:#626873; --rule:#DEDAD0;
+  --indigo:#2E4A7A; --indigo-soft:#E3E9F3; --amber:#B07A2A; --stone:#8C9199; --mist:#C3C7CD;
+  --stamp:#B8322A; --stamp-soft:#F6E3E0; --moss:#4F7443; --moss-soft:#E4ECDF; --warn:#8F6210; --warn-soft:#F5ECD9;
+  --liquor:#7A4B1E; --beer:#C9962E; --wine:#7D2E3F; --sake:#6E8FB5; --na:#8FA57C;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",Georgia,"Times New Roman",serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --r-sm:4px; --r:8px; --r-lg:12px;
+  --shadow:0 12px 40px rgba(20,28,40,.18);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11151C; --surface:#181D26; --sunk:#141922; --ink:#E7E5E0; --muted:#9BA1AB; --rule:#2B323E;
+    --indigo:#86A3D9; --indigo-soft:#1F2A3D; --amber:#D6A04E; --stone:#8E949D; --mist:#4A515C;
+    --stamp:#E26A5F; --stamp-soft:#3A2120; --moss:#8DB47F; --moss-soft:#1F2C1D; --warn:#DDAE55; --warn-soft:#332A17;
+    --liquor:#C08A55; --beer:#DDB25A; --wine:#C0697D; --sake:#8FB0D6; --na:#A9C095;
+    --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11151C; --surface:#181D26; --sunk:#141922; --ink:#E7E5E0; --muted:#9BA1AB; --rule:#2B323E;
+  --indigo:#86A3D9; --indigo-soft:#1F2A3D; --amber:#D6A04E; --stone:#8E949D; --mist:#4A515C;
+  --stamp:#E26A5F; --stamp-soft:#3A2120; --moss:#8DB47F; --moss-soft:#1F2C1D; --warn:#DDAE55; --warn-soft:#332A17;
+  --liquor:#C08A55; --beer:#DDB25A; --wine:#C0697D; --sake:#8FB0D6; --na:#A9C095;
+  --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:120px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0;letter-spacing:.01em;line-height:1.25}
+h1{font-size:clamp(26px,3.6vw,34px)}
+h2{font-size:20px}
+h3{font-size:16.5px;margin-bottom:10px}
+p{margin:0}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:8px 12px;border-radius:var(--r-sm);z-index:50}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px;border-radius:var(--r-sm)}
+#main:focus,#main:focus-visible{outline:none}
+.mt{margin-top:22px}.mt-lg{margin-top:36px}
+
+/* header + tabs */
+.bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--rule)}
+.bar-inner,.tabs-inner,main,.foot{max-width:1160px;margin:0 auto;padding-left:20px;padding-right:20px}
+.bar-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:8px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:34px;height:34px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);font-family:var(--serif);font-weight:700;display:grid;place-items:center;font-size:17px;transform:rotate(-8deg)}
+.brand strong{display:block;font-family:var(--serif);font-size:18px;line-height:1.1}
+.brand small{display:block;font-size:12.5px;color:var(--muted)}
+.bar-right{display:flex;align-items:center;gap:10px}
+.asof{font-size:12.5px;color:var(--muted);text-align:right;line-height:1.35}
+.asof b{color:var(--ink);font-weight:500}
+.icon-btn{appearance:none;border:1px solid var(--rule);background:var(--surface);width:36px;height:36px;border-radius:50%;cursor:pointer;display:inline-grid;place-items:center;font-size:18px;line-height:1;flex:none}
+.icon-btn:hover{border-color:var(--muted)}
+.icon-btn:disabled{opacity:.35;cursor:default}
+.tabs-inner{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs-inner::-webkit-scrollbar{display:none}
+.tabs a{white-space:nowrap;text-decoration:none;padding:10px 12px 11px;color:var(--muted);border-bottom:2px solid transparent;font-size:14.5px;display:flex;align-items:center;gap:6px}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:500}
+.pill{font-size:11.5px;background:var(--stamp);color:#fff;border-radius:999px;padding:0 7px;line-height:18px;font-weight:700}
+.pill.soft{background:var(--sunk);color:var(--muted);font-weight:500}
+.pill:empty{display:none}
+
+main{padding-top:24px;padding-bottom:48px;outline:none}
+.view-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.scope-title{font-size:18px;margin-bottom:12px}
+.hint{font-size:13px;color:var(--muted);margin:10px 0 18px;max-width:72ch}
+.result{font-size:14px;color:var(--muted);margin:4px 0 10px}
+
+/* cards + grids */
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:18px 18px 16px;margin-top:18px}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.card-head p{font-size:13.5px;color:var(--muted)}
+.link{font-size:14px;color:var(--indigo);text-decoration:none;font-weight:500}
+.link:hover{text-decoration:underline}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-2 .card{margin-top:18px}
+
+/* KPI tiles */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:14px 16px;text-decoration:none;display:block;position:relative}
+a.kpi:hover{border-color:var(--muted)}
+.kpi .l{font-size:13.5px;color:var(--muted)}
+.kpi .v{font-family:var(--serif);font-size:28px;line-height:1.15;margin-top:4px}
+.kpi .n{font-size:13px;color:var(--muted);margin-top:4px}
+.kpi.alert{border-color:color-mix(in srgb,var(--stamp) 45%,var(--rule))}
+.kpi.alert .v{color:var(--stamp)}
+.kpis.compact .kpi{background:var(--sunk);border-color:transparent}
+.delta{font-size:12.5px;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:4px;white-space:nowrap}
+.delta.up{background:var(--warn-soft);color:var(--warn)}
+.delta.down{background:var(--moss-soft);color:var(--moss)}
+.delta.flat{background:var(--sunk);color:var(--muted)}
+.flag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:5px;font-family:var(--sans);font-weight:500}
+.flag.hi{background:var(--warn-soft);color:var(--warn)}
+.flag.lo{background:var(--stamp-soft);color:var(--stamp)}
+
+/* ledger */
+.ledger-scroll{overflow-x:auto;margin:0 -6px}
+.ledger{display:grid;grid-template-columns:repeat(15,minmax(62px,1fr));gap:6px;min-width:990px;padding:0 6px 2px}
+.wk{appearance:none;border:1px solid transparent;background:none;padding:8px 4px 10px;border-radius:var(--r);cursor:pointer;display:flex;flex-direction:column;gap:6px;text-align:center}
+.wk:hover:not(:disabled),.wk:focus-visible{background:var(--sunk)}
+.wk[aria-pressed="true"]{background:var(--sunk);border-color:var(--rule)}
+.wk:disabled{cursor:default}
+.wk .col{height:160px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+.wk .seg-bar{border-radius:2px;width:100%}
+.wk .empty{height:100%;border:1px dashed var(--mist);border-radius:var(--r-sm);display:grid;place-items:center;font-size:12px;color:var(--muted);padding:4px}
+.wk .amt{font-size:12.5px;color:var(--muted)}
+.wk .prog{display:block;font-style:normal;font-size:11px;color:var(--warn);font-weight:500}
+.wk.partial .col{background:repeating-linear-gradient(135deg,transparent 0 6px,var(--sunk) 6px 12px);border-radius:var(--r-sm)}
+.wk.partial .seg-bar{opacity:.6}
+.wk .id{font-family:var(--serif);font-size:18px;line-height:1}
+.wk .dates{font-size:11.5px;color:var(--muted)}
+.ledger .month{grid-row:2;font-size:12.5px;color:var(--muted);border-top:2px solid var(--rule);padding-top:4px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend i.line{height:3px;width:16px;vertical-align:3px}
+
+/* attention list */
+.attn{list-style:none;margin:0;padding:0}
+.attn li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.attn li:last-child{border-bottom:none}
+.attn .who{font-weight:500}
+.attn .what{font-size:13px;color:var(--muted)}
+.attn .amt{text-align:right;font-weight:500}
+.attn .empty-state{grid-template-columns:1fr;color:var(--muted)}
+
+/* chart */
+.chart svg{width:100%;height:auto;display:block}
+.chart text{font-family:var(--sans);font-size:11px;fill:var(--muted)}
+.chart .grid{stroke:var(--rule);stroke-width:1}
+.chart .lab{font-size:11.5px;font-weight:700}
+
+/* segmented control */
+.stepper{display:flex;align-items:center;gap:8px;max-width:100%}
+.seg{display:flex;gap:2px;background:var(--sunk);padding:3px;border-radius:999px;overflow-x:auto;scrollbar-width:none;max-width:calc(100vw - 130px)}
+.seg::-webkit-scrollbar{display:none}
+.seg button{appearance:none;border:none;background:none;padding:6px 11px;border-radius:999px;cursor:pointer;font-size:14px;white-space:nowrap;color:var(--muted)}
+.seg button:hover:not(:disabled){color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.seg button:disabled{opacity:.4;cursor:default}
+.seg .sep{width:1px;background:var(--rule);margin:4px 3px;flex:none}
+
+/* horizontal bars */
+.hbar{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(40px,2fr) auto;gap:10px;align-items:center;font-size:14px;padding:5px 0}
+.hbar .track{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.hbar .fill{display:block;height:100%;border-radius:4px}
+.hbar .val{text-align:right;min-width:92px}
+.hbar .val small{color:var(--muted);font-size:12px;margin-left:4px}
+button.hbar{appearance:none;border:none;background:none;width:100%;text-align:left;cursor:pointer;border-radius:var(--r-sm);padding:5px 4px;margin:0 -4px;width:calc(100% + 8px)}
+button.hbar:hover{background:var(--sunk)}
+.stack{display:flex;height:14px;border-radius:3px;overflow:hidden;margin:4px 0 10px;background:var(--sunk);gap:1px}
+.stack span{height:100%}
+
+/* filters */
+.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin:6px 0 14px}
+.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:150px}
+.field.grow{flex:1 1 260px}
+.field input,.field select{appearance:none;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:8px 11px;color:var(--ink);font-size:14.5px;min-height:40px}
+.field select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 16px) 55%,calc(100% - 11px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{appearance:none;border:1px solid var(--rule);background:var(--surface);padding:7px 13px;border-radius:999px;cursor:pointer;font-size:14px;min-height:40px}
+.chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chips button .c{font-size:12px;opacity:.75;margin-left:4px}
+.btn{appearance:none;border:1px solid var(--rule);background:var(--surface);padding:8px 14px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+
+/* tables */
+.table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface)}
+.card .table-wrap{border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--rule);white-space:nowrap;vertical-align:middle}
+thead th{font-weight:500;color:var(--muted);font-size:13px;background:var(--surface)}
+th.r,td.r{text-align:right}
+tbody tr:last-child td{border-bottom:none}
+th button.sort{appearance:none;border:none;background:none;padding:0;cursor:pointer;color:inherit;font:inherit;display:inline-flex;gap:4px;align-items:center}
+th button.sort::after{content:"↕";opacity:.35;font-size:11px}
+th[aria-sort="ascending"] button.sort::after{content:"↑";opacity:1}
+th[aria-sort="descending"] button.sort::after{content:"↓";opacity:1}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--sunk)}
+tr.grp td{background:var(--sunk);font-weight:700;font-size:13.5px}
+tr.note td{white-space:normal;background:var(--sunk);font-size:13px;color:var(--muted);padding-top:6px}
+tfoot td{font-weight:700;border-top:1px solid var(--rule);border-bottom:none}
+.empty-row td{text-align:center;color:var(--muted);padding:28px 12px;white-space:normal}
+.tag{font-size:12.5px;padding:2px 8px;border-radius:999px;display:inline-block;white-space:nowrap}
+.tag.past{background:var(--stamp-soft);color:var(--stamp);font-weight:700}
+.tag.soon{background:var(--warn-soft);color:var(--warn);font-weight:500}
+.tag.later{background:var(--sunk);color:var(--muted)}
+.tag.paid{background:var(--moss-soft);color:var(--moss)}
+.spark{display:flex;gap:2px;align-items:flex-end;height:26px}
+.spark i{display:block;width:9px;background:var(--indigo);border-radius:1px}
+.spark i.z{background:var(--mist);height:2px!important}
+.spark i.na{background:none;border-bottom:1px dashed var(--mist);height:1px!important}
+details.more{border-top:1px solid var(--rule);margin-top:12px}
+details.more summary{cursor:pointer;padding:12px 0 10px;font-weight:500;list-style-position:inside}
+details.more .table-wrap{margin-bottom:6px}
+
+/* watch */
+.watch-group{margin-bottom:26px}
+.watch-group h2{font-size:18px;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.watch-group h2 .dot{width:10px;height:10px;border-radius:50%}
+.watch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.w{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--rule);border-radius:var(--r);padding:12px 14px}
+.w[data-tag="Price"]{border-left-color:var(--amber)}
+.w[data-tag="Billing"]{border-left-color:var(--stamp)}
+.w[data-tag="Open"]{border-left-color:var(--indigo)}
+.w .t{font-weight:700}
+.w p{font-size:14px;color:var(--muted);margin-top:3px}
+
+/* drawer */
+.drawer{border:none;padding:0;margin:0 0 0 auto;height:100dvh;max-height:100dvh;width:min(560px,100vw);max-width:100vw;background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.drawer::backdrop{background:rgba(10,14,20,.45)}
+.drawer[open]{display:flex;flex-direction:column}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--rule);background:var(--surface)}
+#dr-body{padding:18px 20px 32px;overflow-y:auto}
+#dr-body .kpis{grid-template-columns:repeat(2,1fr)}
+@media (prefers-reduced-motion:no-preference){
+  .drawer[open]{animation:slide .22s ease-out}
+  @keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
+}
+
+/* tooltip */
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:var(--r);padding:8px 10px;font-size:12.5px;line-height:1.45;box-shadow:var(--shadow);min-width:170px}
+.tip .row{display:flex;justify-content:space-between;gap:14px}
+.tip b{font-family:var(--serif);font-size:14px;display:block;margin-bottom:2px}
+
+.foot{padding-top:18px;padding-bottom:40px;border-top:1px solid var(--rule);font-size:13px;color:var(--muted)}
+
+@media (max-width:860px){
+  .grid-2{grid-template-columns:1fr;gap:14px;margin-top:14px}
+  .grid-2 .card{margin-top:0}
+  .asof{display:none}
+}
+@media (max-width:560px){
+  .bar-inner,.tabs-inner,main,.foot{padding-left:14px;padding-right:14px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi .v{font-size:22px}
+  .kpi{padding:12px}
+  .card{padding:14px}
+  th,td{padding:9px 8px;font-size:13.5px}
+  .hide-sm{display:none}
+  .wk .col{height:120px}
+  .field{min-width:0;flex:1 1 140px}
+  .stepper{width:100%}
+  .seg{flex:1;max-width:none}
+}
+@media print{
+  .bar,.filters,.btn,.stepper,.skip{display:none!important}
+  .view{display:block!important}
+  body{background:#fff}
+  .card,.kpi,.table-wrap{break-inside:avoid}
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <div class="bar-inner">
+    <a class="brand" href="#overview">
+      <span class="brand-mark" aria-hidden="true">K</span>
+      <span><strong>Kayao</strong><small>Purchasing</small></span>
+    </a>
+    <div class="bar-right">
+      <p class="asof" id="asof"></p>
+      <button class="icon-btn" id="theme" type="button" aria-label="Switch colour theme"></button>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="Sections">
+    <div class="tabs-inner" id="tabs">
+      <a href="#overview" data-view="overview">Overview</a>
+      <a href="#weeks" data-view="weeks">Weeks</a>
+      <a href="#owed" data-view="owed">Owed <span class="pill" id="tab-owed"></span></a>
+      <a href="#invoices" data-view="invoices">Invoices</a>
+      <a href="#vendors" data-view="vendors">Vendors</a>
+      <a href="#watch" data-view="watch">Watch list <span class="pill soft" id="tab-watch"></span></a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+  <!-- OVERVIEW -->
+  <section class="view" id="view-overview" aria-labelledby="h-overview">
+    <h1 id="h-overview" class="sr-only">Overview</h1>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>Product spend by week</h2>
+        <p>Tap a week to open it.</p>
+      </div>
+      <div class="ledger-scroll"><div class="ledger" id="ledger"></div></div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2>Needs attention</h2>
+          <a class="link" href="#owed">All owed invoices</a>
+        </div>
+        <ul class="attn" id="attention"></ul>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Cost ratios</h2>
+          <p>Purchases ÷ net sales</p>
+        </div>
+        <div id="ratio-chart" class="chart"></div>
+        <div class="legend" id="ratio-legend"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEEKS -->
+  <section class="view" id="view-weeks" aria-labelledby="h-weeks" hidden>
+    <div class="view-head">
+      <h1 id="h-weeks">Weeks</h1>
+      <div class="stepper">
+        <button class="icon-btn" id="wk-prev" type="button" aria-label="Previous week">‹</button>
+        <div class="seg" id="wk-seg" role="group" aria-label="Choose a week or month"></div>
+        <button class="icon-btn" id="wk-next" type="button" aria-label="Next week">›</button>
+      </div>
+    </div>
+    <h2 class="scope-title" id="wk-title"></h2>
+    <div class="kpis" id="wk-figs"></div>
+    <p class="hint">Ratios are purchases divided by net sales for the same days. They are purchase ratios, not food cost: stock on hand is not counted.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Where the money went</h3>
+        <div id="wk-cats"></div>
+        <h3 class="mt">Bar mix</h3>
+        <div class="stack" id="wk-barstack"></div>
+        <div id="wk-bar"></div>
+      </div>
+      <div class="card">
+        <h3>Vendors</h3>
+        <div id="wk-vend"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Invoices in this period</h3><p id="wk-inv-sum"></p></div>
+      <div class="table-wrap" id="wk-inv"></div>
+    </div>
+  </section>
+
+  <!-- OWED -->
+  <section class="view" id="view-owed" aria-labelledby="h-owed" hidden>
+    <div class="view-head">
+      <h1 id="h-owed">What we still owe</h1>
+      <button class="btn" type="button" id="owed-csv">Download CSV</button>
+    </div>
+    <div class="kpis" id="owed-kpis"></div>
+    <div class="filters">
+      <div class="chips" id="owed-chips" role="group" aria-label="Filter by due status"></div>
+      <label class="field"><span>Vendor</span><select id="owed-vendor"></select></label>
+    </div>
+    <div class="table-wrap" id="owed-table"></div>
+
+    <div class="card mt-lg">
+      <div class="card-head">
+        <h2>August carried into September</h2>
+        <p>Invoices dated 08/01 to 08/30 that were paid in September or are still open.</p>
+      </div>
+      <div class="kpis compact" id="carry"></div>
+      <details class="more"><summary>Paid in September</summary><div class="table-wrap" id="carry-paid"></div></details>
+      <details class="more"><summary>Still open</summary><div class="table-wrap" id="carry-open"></div></details>
+    </div>
+  </section>
+
+  <!-- INVOICES -->
+  <section class="view" id="view-invoices" aria-labelledby="h-invoices" hidden>
+    <div class="view-head">
+      <h1 id="h-invoices">Invoices</h1>
+      <button class="btn" type="button" id="inv-csv">Download CSV</button>
+    </div>
+    <div class="filters">
+      <label class="field grow"><span>Search</span><input type="search" id="inv-q" placeholder="Invoice number, vendor or note" autocomplete="off"></label>
+      <label class="field"><span>Month</span><select id="inv-month"><option value="">All</option><option>August</option><option>September</option><option>October</option></select></label>
+      <label class="field"><span>Status</span><select id="inv-status"><option value="">All</option><option value="open">Not paid</option><option value="paid">Paid</option></select></label>
+      <label class="field"><span>Vendor</span><select id="inv-vendor"></select></label>
+    </div>
+    <p class="result" id="inv-count" aria-live="polite"></p>
+    <div class="table-wrap" id="inv-table"></div>
+  </section>
+
+  <!-- VENDORS -->
+  <section class="view" id="view-vendors" aria-labelledby="h-vendors" hidden>
+    <div class="view-head"><h1 id="h-vendors">Vendors</h1></div>
+    <p class="hint">Small bars show each vendor against its own busiest week. Select a vendor for its invoices.</p>
+    <div class="table-wrap" id="vend-table"></div>
+  </section>
+
+  <!-- WATCH -->
+  <section class="view" id="view-watch" aria-labelledby="h-watch" hidden>
+    <div class="view-head"><h1 id="h-watch">Watch list</h1></div>
+    <div id="watch"></div>
+  </section>
+</main>
+
+<dialog id="drawer" class="drawer" aria-labelledby="dr-title">
+  <div class="drawer-head">
+    <h2 id="dr-title"></h2>
+    <button class="icon-btn" type="button" id="dr-close" aria-label="Close">×</button>
+  </div>
+  <div id="dr-body"></div>
+</dialog>
+
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<footer class="foot">
+  <p id="foot"></p>
+</footer>
+
+<script>
+// Generated from Kayao_Invoices_September_2026.xlsx - do not edit by hand.
+window.KAYAO_DATA = {"asOf": "2026-10-06", "weeks": [{"id": "A1", "start": "07/27", "end": "08/02", "month": "August", "entered": true, "invoices": 10}, {"id": "A2", "start": "08/03", "end": "08/09", "month": "August", "entered": true, "invoices": 35}, {"id": "A3", "start": "08/10", "end": "08/16", "month": "August", "entered": true, "invoices": 33}, {"id": "A4", "start": "08/17", "end": "08/23", "month": "August", "entered": true, "invoices": 26}, {"id": "A5", "start": "08/24", "end": "08/30", "month": "August", "entered": true, "invoices": 27}, {"id": "S1", "start": "08/31", "end": "09/06", "month": "September", "entered": true, "invoices": 31}, {"id": "S2", "start": "09/07", "end": "09/13", "month": "September", "entered": true, "invoices": 29}, {"id": "S3", "start": "09/14", "end": "09/20", "month": "September", "entered": true, "invoices": 25}, {"id": "S4", "start": "09/21", "end": "09/27", "month": "September", "entered": true, "invoices": 27}, {"id": "O1", "start": "09/28", "end": "10/04", "month": "October", "entered": true, "invoices": 35}, {"id": "O2", "start": "10/05", "end": "10/11", "month": "October", "entered": false, "invoices": 0}, {"id": "O3", "start": "10/12", "end": "10/18", "month": "October", "entered": false, "invoices": 0}, {"id": "O4", "start": "10/19", "end": "10/25", "month": "October", "entered": false, "invoices": 0}, {"id": "O5", "start": "10/26", "end": "11/01", "month": "October", "entered": false, "invoices": 0}], "categories": {"Food": [2519.02, 12220.61, 10530.7, 11682.91, 12361.43, 10049.69, 10521.54, 7698.14, 8259.83, 9878.41, 0.0, 0.0, 0.0, 0.0], "Bar": [296.52, 2934.64, 4195.11, 2415.31, 2057.52, 2798.58, 2004.85, 2678.83, 1367.47, 3087.81, 0.0, 0.0, 0.0, 0.0], "Supply": [97.9, 331.13, 395.9, 576.67, 364.52, 226.43, 456.34, 135.63, 345.21, 490.94, 0.0, 0.0, 0.0, 0.0], "Cleaning": [0.0, 361.93, 122.85, 111.65, 245.35, 576.35, 0.0, 113.01, 0.0, 291.6, 0.0, 0.0, 0.0, 0.0]}, "barSub": {"Cocktails & liquor": [243.0, 1298.59, 2595.73, 1003.11, 1132.98, 1114.84, 1215.2, 1294.71, 792.66, 1243.22, 0.0, 0.0, 0.0, 0.0], "Beer": [0.0, 534.75, 126.0, 140.0, 0.0, 84.0, 0.0, 168.0, 0.0, 660.75, 0.0, 0.0, 0.0, 0.0], "Wine": [39.0, 580.06, 900.48, 857.99, 464.41, 1091.18, 563.14, 616.04, 543.82, 673.39, 0.0, 0.0, 0.0, 0.0], "Non-alcoholic": [14.52, 521.24, 572.9, 414.21, 460.13, 508.56, 226.51, 600.08, 30.99, 510.45, 0.0, 0.0, 0.0, 0.0]}, "fees": [112.2, 460.04, 475.89, 357.6, 391.69, 427.47, 370.89, 353.81, 245.99, 413.22, 0.0, 0.0, 0.0, 0.0], "vendors": [{"name": "Fortune Fish & Gourmet", "weeks": [963.67, 3342.44, 4079.38, 4441.58, 2631.22, 3440.53, 3174.69, 2549.91, 2981.12, 2778.17, 0.0, 0.0, 0.0, 0.0]}, {"name": "Allen Brothers", "weeks": [342.52, 4067.32, 2671.19, 2518.23, 4919.89, 1886.88, 3016.68, 2167.47, 1745.41, 2837.18, 0.0, 0.0, 0.0, 0.0]}, {"name": "US Foods", "weeks": [840.0, 2452.16, 2550.47, 1981.03, 3252.81, 2668.2, 2255.37, 2153.14, 1329.16, 2109.68, 0.0, 0.0, 0.0, 0.0]}, {"name": "Testa Produce", "weeks": [404.25, 1401.65, 1601.15, 1375.8, 1814.65, 1262.55, 1956.95, 934.0, 1844.35, 1102.65, 0.0, 0.0, 0.0, 0.0]}, {"name": "Sysco", "weeks": [0.0, 1493.17, 0.0, 1686.8, 0.0, 1468.27, 42.32, 0.0, 169.9, 1193.01, 0.0, 0.0, 0.0, 0.0]}, {"name": "Maverick Beverage", "weeks": [0.0, 528.06, 835.48, 831.99, 425.41, 1091.18, 485.14, 577.04, 543.82, 634.39, 0.0, 0.0, 0.0, 0.0]}, {"name": "Southern Glazer's", "weeks": [0.0, 481.34, 622.4, 587.13, 555.0, 495.48, 545.24, 808.71, 387.66, 919.22, 0.0, 0.0, 0.0, 0.0]}, {"name": "Acorvina & Company", "weeks": [282.0, 775.96, 470.0, 441.98, 616.98, 567.0, 747.96, 525.0, 405.0, 363.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "El Condor", "weeks": [0.0, 442.46, 310.16, 456.0, 402.86, 279.96, 429.38, 268.67, 296.59, 311.83, 0.0, 0.0, 0.0, 0.0]}, {"name": "Four Star Mushrooms", "weeks": [81.0, 249.0, 330.0, 246.0, 330.0, 327.0, 249.0, 246.0, 168.0, 81.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "Windy City (Chicago Beverage System)", "weeks": [0.0, 534.75, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 534.75, 0.0, 0.0, 0.0, 0.0]}, {"name": "Closed Loop Farms", "weeks": [0.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "Breakthru Beverage", "weeks": [0.0, 0.0, 687.83, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "Winebow", "weeks": [0.0, 0.0, 538.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "JDI Imports", "weeks": [0.0, 0.0, 126.0, 0.0, 0.0, 84.0, 0.0, 168.0, 0.0, 126.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "Big Apple Finer Foods", "weeks": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 21.5, 438.28, 0.0, 0.0, 0.0, 0.0]}, {"name": "Cream Wine Company", "weeks": [0.0, 0.0, 342.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "Seafood Merchants", "weeks": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 206.5, 0.0, 0.0, 0.0, 0.0]}, {"name": "Lakeshore Beverage", "weeks": [0.0, 0.0, 0.0, 140.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "D'Fruta La Vida", "weeks": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 130.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "The Fresh Market", "weeks": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 17.67, 0.0, 33.1, 0.0, 0.0, 0.0, 0.0]}], "partial": ["A1"], "partialNote": {"A1": "08/01–08/02 only: July invoices not loaded"}, "sales": {"Food": [43477.16, 44761.22, 46041.16, 42081.15, 43068.59, 41167.51, 40813.54, 35789.3, 40193.11, 41142.2, 0.0, 0.0, 0.0, 0.0], "Cocktails & liquor": [13129.25, 12920.0, 13705.7, 12393.0, 12051.05, 12196.35, 10860.0, 10129.85, 10084.27, 10631.5, 0.0, 0.0, 0.0, 0.0], "Beer": [1372.2, 1049.2, 1000.45, 866.0, 1013.0, 1032.45, 770.75, 784.0, 683.0, 877.0, 0.0, 0.0, 0.0, 0.0], "Wine": [3499.8, 3262.0, 3641.0, 1865.1, 2731.0, 2422.5, 3037.0, 2170.45, 3034.0, 2871.0, 0.0, 0.0, 0.0, 0.0], "Non-alcoholic": [1130.2, 1683.5, 1344.2, 1304.0, 1543.26, 1650.5, 1403.45, 1341.5, 1531.5, 1348.01, 0.0, 0.0, 0.0, 0.0], "TOTAL NET SALES": [62608.61, 63675.92, 65732.51, 58509.25, 60406.9, 58469.31, 56884.74, 50215.1, 55525.88, 56869.71, 0.0, 0.0, 0.0, 0.0]}, "invoices": [{"vendor": "Acorvina & Company", "number": "2031", "date": "2026-08-01", "week": "A1", "product": 282.0, "fees": 28.83, "total": 310.83, "status": "paid", "paidOn": "2026-08-26", "due": "2026-08-31", "note": "NET 30 - due 08/31/2026 (AUGUST)  |  PAID 08/26/2026 per owner confirmation (10/03). Acorvina's 10/02 open-balance report still shows it open - payment not yet applied by the vendor"}, {"vendor": "Allen Brothers", "number": "293926 (Wabash)", "date": "2026-08-01", "week": "A1", "product": 342.52, "fees": 7.95, "total": 350.47, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-08", "note": "NET CASH 7 ACH - due 08/08/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Fortune Fish & Gourmet", "number": "591118-26-01", "date": "2026-08-01", "week": "A1", "product": 764.2, "fees": 5.0, "total": 769.2, "status": "paid", "paidOn": "2026-08-04", "due": "2026-08-02", "note": "ACH - due 08/02/2026 (AUGUST)  |  PAID 08/04/2026 per Fortune portal (status Paid, amount $769.20)"}, {"vendor": "Fortune Fish & Gourmet", "number": "591126-26-01", "date": "2026-08-01", "week": "A1", "product": 103.98, "fees": 0.0, "total": 103.98, "status": "paid", "paidOn": "2026-08-04", "due": "2026-08-02", "note": "ACH - due 08/02/2026 (AUGUST)  |  PAID 08/04/2026 per Fortune portal (status Paid, amount $103.98)"}, {"vendor": "Fortune Fish & Gourmet", "number": "591149-26-01", "date": "2026-08-01", "week": "A1", "product": 17.5, "fees": 0.0, "total": 17.5, "status": "paid", "paidOn": "2026-08-04", "due": "2026-08-02", "note": "ACH - due 08/02/2026 (AUGUST)  |  PAID 08/04/2026 per Fortune portal (status Paid, amount $17.50)"}, {"vendor": "Fortune Fish & Gourmet", "number": "592076-26-01", "date": "2026-08-01", "week": "A1", "product": 77.99, "fees": 0.0, "total": 77.99, "status": "paid", "paidOn": "2026-08-04", "due": "2026-08-02", "note": "ACH - due 08/02/2026 (AUGUST)  |  PAID 08/04/2026 per Fortune portal (status Paid, amount $77.99)"}, {"vendor": "Four Star Mushrooms", "number": "FSM27763", "date": "2026-08-01", "week": "A1", "product": 81.0, "fees": 0.0, "total": 81.0, "status": "paid", "paidOn": "2026-08-16", "due": "2026-08-16", "note": "NET 15 - PAID IN FULL (was due 08/16/2026) (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06225840", "date": "2026-08-01", "week": "A1", "product": 404.25, "fees": 2.95, "total": 407.2, "status": "paid", "paidOn": "2026-09-03", "due": "2026-08-22", "note": "due 08/22/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "2889233", "date": "2026-08-01", "week": "A1", "product": 423.61, "fees": 55.8, "total": 479.41, "status": "paid", "paidOn": "2026-08-11", "due": "2026-08-31", "note": "NET 30 - due 08/31/2026 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "US Foods", "number": "2890292", "date": "2026-08-01", "week": "A1", "product": 416.39, "fees": 11.67, "total": 428.06, "status": "paid", "paidOn": "2026-08-11", "due": "2026-08-31", "note": "NET 30 - due 08/31/2026 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "Allen Brothers", "number": "294181 (Wabash)", "date": "2026-08-03", "week": "A2", "product": 484.02, "fees": 7.95, "total": 491.97, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-10", "note": "NET CASH 7 ACH - due 08/10/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Allen Brothers", "number": "294660", "date": "2026-08-03", "week": "A2", "product": 618.12, "fees": 7.95, "total": 626.07, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-11", "note": "NET CASH 7 ACH - due 08/11/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Allen Brothers", "number": "294789", "date": "2026-08-03", "week": "A2", "product": 513.21, "fees": 0.0, "total": 513.21, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-11", "note": "NET CASH 7 ACH - due 08/11/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "El Condor", "number": "INV.29464", "date": "2026-08-03", "week": "A2", "product": 442.46, "fees": 30.0, "total": 472.46, "status": "paid", "paidOn": "2026-08-17", "due": "2026-08-17", "note": "NET 14 - due 08/17/2026 (AUGUST)  |  PAID 08/17/2026 on its due date (owner confirms)"}, {"vendor": "Fortune Fish & Gourmet", "number": "593508-26-01", "date": "2026-08-03", "week": "A2", "product": 596.66, "fees": 5.0, "total": 601.66, "status": "paid", "paidOn": "2026-08-05", "due": "2026-08-04", "note": "ACH - due 08/04/2026 (AUGUST)  |  PAID 08/05/2026 per Fortune portal (status Paid, amount $601.66)"}, {"vendor": "Fortune Fish & Gourmet", "number": "593957-26-01", "date": "2026-08-03", "week": "A2", "product": 234.8, "fees": 0.0, "total": 234.8, "status": "paid", "paidOn": "2026-08-05", "due": "2026-08-04", "note": "ACH - due 08/04/2026 (AUGUST)  |  PAID 08/05/2026 per Fortune portal (status Paid, amount $234.80)"}, {"vendor": "Four Star Mushrooms", "number": "FSM27786", "date": "2026-08-03", "week": "A2", "product": 84.0, "fees": 0.0, "total": 84.0, "status": "paid", "paidOn": "2026-08-18", "due": "2026-08-18", "note": "NET 15 - PAID IN FULL (was due 08/18/2026) (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06226519", "date": "2026-08-03", "week": "A2", "product": 685.15, "fees": 2.95, "total": 688.1, "status": "paid", "paidOn": "2026-09-03", "due": "2026-08-24", "note": "due 08/24/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "Testa Produce", "number": "06226531", "date": "2026-08-03", "week": "A2", "product": 36.85, "fees": 0.0, "total": 36.85, "status": "paid", "paidOn": "2026-09-03", "due": "2026-08-24", "note": "due 08/24/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "2932108", "date": "2026-08-03", "week": "A2", "product": 524.52, "fees": 30.34, "total": 554.86, "status": "paid", "paidOn": "2026-08-11", "due": "2026-09-02", "note": "NET 30 - due 09/02/2026 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "US Foods", "number": "2932109", "date": "2026-08-03", "week": "A2", "product": 1130.65, "fees": 32.34, "total": 1162.99, "status": "paid", "paidOn": "2026-08-11", "due": "2026-09-02", "note": "NET 30 - due 09/02/2026 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "Allen Brothers", "number": "295011 (Wabash)", "date": "2026-08-04", "week": "A2", "product": 296.52, "fees": 7.95, "total": 304.47, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-11", "note": "NET CASH 7 ACH - due 08/11/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Closed Loop Farms", "number": "78571", "date": "2026-08-04", "week": "A2", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-08-19", "due": "2026-08-19", "note": "Wholesail autopay (credit card), net 15 - due 08/19/2026 (printed)  |  PAID 08/19/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Closed Loop Farms", "number": "CM 78789", "date": "2026-08-04", "week": "A2", "product": 0.0, "fees": -9.0, "total": -9.0, "status": "paid", "paidOn": "2026-08-19", "due": null, "note": "CREDIT MEMO - box deposit refund, 3 boxes returned at $3.00  |  USED 08/19/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "595605-26-01", "date": "2026-08-04", "week": "A2", "product": 589.32, "fees": 5.0, "total": 594.32, "status": "paid", "paidOn": "2026-08-06", "due": "2026-08-05", "note": "ACH - due 08/05/2026 (AUGUST)  |  PAID 08/06/2026 per Fortune portal (status Paid, amount $594.32)"}, {"vendor": "Southern Glazer's", "number": "02415790", "date": "2026-08-04", "week": "A2", "product": 481.34, "fees": 35.48, "total": 516.82, "status": "paid", "paidOn": "2026-08-10", "due": "2026-08-11", "note": "due 08/11/2026 (AUGUST)  |  PAID 08/10/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Sysco", "number": "924419171", "date": "2026-08-04", "week": "A2", "product": 1493.17, "fees": 52.26, "total": 1545.43, "status": "paid", "paidOn": "2026-08-10", "due": "2026-08-11", "note": "NET 7 - due 08/11/2026 (AUGUST)  |  PAID 08/10/2026 SyscoPay ACH (BofA 1164) ref 260809-3bkACOCJ"}, {"vendor": "US Foods", "number": "33135", "date": "2026-08-04", "week": "A2", "product": 183.46, "fees": 55.41, "total": 238.87, "status": "paid", "paidOn": "2026-08-11", "due": "2026-09-03", "note": "NET 30 - due 09/03/2026 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "Windy City (Chicago Beverage System)", "number": "101094693", "date": "2026-08-04", "week": "A2", "product": 534.75, "fees": 21.98, "total": 556.73, "status": "paid", "paidOn": "2026-08-05", "due": "2026-08-04", "note": "Due on receipt - 08/04/2026 (AUGUST)  |  PAID 08/05/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Allen Brothers", "number": "295600 (Wabash)", "date": "2026-08-05", "week": "A2", "product": 636.52, "fees": 7.95, "total": 644.47, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-12", "note": "NET CASH 7 ACH - due 08/12/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Maverick Beverage", "number": "INV1759335", "date": "2026-08-05", "week": "A2", "product": 27.0, "fees": 0.24, "total": 27.24, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-04", "note": "NET 30 - due 09/04/2026 (AUGUST)  |  PAID 09/03/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Maverick Beverage", "number": "INV1759348", "date": "2026-08-05", "week": "A2", "product": 501.06, "fees": 4.16, "total": 505.22, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-04", "note": "NET 30 - due 09/04/2026 (AUGUST)  |  PAID 09/03/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Acorvina & Company", "number": "2036", "date": "2026-08-06", "week": "A2", "product": 775.96, "fees": 63.84, "total": 839.8, "status": "paid", "paidOn": "2026-08-26", "due": "2026-09-05", "note": "NET 30 - due 09/05/2026 (AUGUST)  |  PAID 08/26/2026 per owner confirmation (10/03). Acorvina's 10/02 open-balance report still shows it open - payment not yet applied by the vendor"}, {"vendor": "Allen Brothers", "number": "296235 (Wabash)", "date": "2026-08-06", "week": "A2", "product": 447.14, "fees": 7.95, "total": 455.09, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-13", "note": "NET CASH 7 ACH - due 08/13/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Fortune Fish & Gourmet", "number": "599360-26-01", "date": "2026-08-06", "week": "A2", "product": 473.74, "fees": 5.0, "total": 478.74, "status": "paid", "paidOn": "2026-08-11", "due": "2026-08-07", "note": "ACH - due 08/07/2026 (AUGUST)  |  PAID 08/11/2026 per Fortune portal (status Paid, amount $478.74)"}, {"vendor": "Four Star Mushrooms", "number": "FSM27944", "date": "2026-08-06", "week": "A2", "product": 165.0, "fees": 0.0, "total": 165.0, "status": "paid", "paidOn": "2026-08-21", "due": "2026-08-21", "note": "NET 15 - PAID IN FULL (was due 08/21/2026) (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06228933", "date": "2026-08-06", "week": "A2", "product": 389.4, "fees": 2.95, "total": 392.35, "status": "paid", "paidOn": "2026-09-03", "due": "2026-08-27", "note": "due 08/27/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "CM 2976409", "date": "2026-08-06", "week": "A2", "product": -32.98, "fees": -0.66, "total": -33.64, "status": "paid", "paidOn": "2026-08-11", "due": null, "note": "CREDIT MEMO against inv 2932109 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "Allen Brothers", "number": "297525", "date": "2026-08-07", "week": "A2", "product": 1071.79, "fees": 7.95, "total": 1079.74, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-17", "note": "NET CASH 7 ACH - due 08/17/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Closed Loop Farms", "number": "78677", "date": "2026-08-07", "week": "A2", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-08-22", "due": "2026-08-22", "note": "Wholesail autopay (credit card), net 15 - due 08/22/2026 (printed)  |  PAID 08/22/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "601532-26-01", "date": "2026-08-07", "week": "A2", "product": 602.75, "fees": 5.0, "total": 607.75, "status": "paid", "paidOn": "2026-08-11", "due": "2026-08-08", "note": "ACH - due 08/08/2026 (AUGUST)  |  PAID 08/11/2026 per Fortune portal (status Paid, amount $607.75)"}, {"vendor": "US Foods", "number": "186813", "date": "2026-08-07", "week": "A2", "product": 602.64, "fees": 28.44, "total": 631.08, "status": "paid", "paidOn": "2026-08-11", "due": "2026-09-06", "note": "NET 30 - due 09/06/2026 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "US Foods", "number": "195463", "date": "2026-08-07", "week": "A2", "product": 43.87, "fees": 0.66, "total": 44.53, "status": "paid", "paidOn": "2026-08-11", "due": "2026-09-06", "note": "NET 30 - due 09/06/2026 (AUGUST)  |  PAID 08/11/2026 ACH ref 21644623-ACH0811"}, {"vendor": "Fortune Fish & Gourmet", "number": "603590-26-01", "date": "2026-08-08", "week": "A2", "product": 845.17, "fees": 5.0, "total": 850.17, "status": "paid", "paidOn": "2026-08-11", "due": "2026-08-09", "note": "ACH - due 08/09/2026 (AUGUST)  |  PAID 08/11/2026 per Fortune portal (status Paid, amount $850.17)"}, {"vendor": "Testa Produce", "number": "06230512", "date": "2026-08-08", "week": "A2", "product": 290.25, "fees": 2.95, "total": 293.2, "status": "paid", "paidOn": "2026-09-03", "due": "2026-08-29", "note": "due 08/29/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "Allen Brothers", "number": "297883 (Wabash)", "date": "2026-08-10", "week": "A3", "product": 342.52, "fees": 7.95, "total": 350.47, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-17", "note": "NET CASH 7 ACH - due 08/17/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "El Condor", "number": "INV.29520", "date": "2026-08-10", "week": "A3", "product": 310.16, "fees": 30.0, "total": 340.16, "status": "paid", "paidOn": "2026-08-24", "due": "2026-08-24", "note": "NET 14 - due 08/24/2026 (AUGUST)  |  PAID 08/24/2026 on its due date (owner confirms)"}, {"vendor": "Fortune Fish & Gourmet", "number": "605568-26-01", "date": "2026-08-10", "week": "A3", "product": 1148.81, "fees": 5.0, "total": 1153.81, "status": "paid", "paidOn": "2026-08-12", "due": "2026-08-11", "note": "ACH - due 08/11/2026 (AUGUST)  |  PAID 08/12/2026 per Fortune portal (status Paid, amount $1,153.81)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28056", "date": "2026-08-10", "week": "A3", "product": 165.0, "fees": 0.0, "total": 165.0, "status": "paid", "paidOn": "2026-08-25", "due": "2026-08-25", "note": "NET 15 - PAID IN FULL (was due 08/25/2026) (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06231021", "date": "2026-08-10", "week": "A3", "product": 493.9, "fees": 2.95, "total": 496.85, "status": "paid", "paidOn": "2026-09-03", "due": "2026-08-31", "note": "due 08/31/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "247744", "date": "2026-08-10", "week": "A3", "product": 532.57, "fees": 31.11, "total": 563.68, "status": "paid", "paidOn": "2026-08-18", "due": "2026-09-09", "note": "NET 30 - due 09/09/2026 (AUGUST)  |  PAID 08/18/2026 ACH ref 21859311-ACH0818"}, {"vendor": "US Foods", "number": "247746", "date": "2026-08-10", "week": "A3", "product": 1227.15, "fees": 40.05, "total": 1267.2, "status": "paid", "paidOn": "2026-08-18", "due": "2026-09-09", "note": "NET 30 - due 09/09/2026 (AUGUST)  |  PAID 08/18/2026 ACH ref 21859311-ACH0818"}, {"vendor": "Allen Brothers", "number": "298574 (Wabash)", "date": "2026-08-11", "week": "A3", "product": 603.49, "fees": 7.95, "total": 611.44, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-18", "note": "NET CASH 7 ACH - due 08/18/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Closed Loop Farms", "number": "78833", "date": "2026-08-11", "week": "A3", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-08-26", "due": "2026-08-26", "note": "Wholesail autopay (credit card), net 15 - due 08/26/2026 (printed)  |  PAID 08/26/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "607593-26-01", "date": "2026-08-11", "week": "A3", "product": 263.99, "fees": 5.0, "total": 268.99, "status": "paid", "paidOn": "2026-08-13", "due": "2026-08-12", "note": "ACH - due 08/12/2026 (AUGUST)  |  PAID 08/13/2026 per Fortune portal (status Paid, amount $268.99)"}, {"vendor": "JDI Imports", "number": "014307", "date": "2026-08-11", "week": "A3", "product": 126.0, "fees": 2.4, "total": 128.4, "status": "paid", "paidOn": "2026-08-14", "due": "2026-08-15", "note": "due 08/15/2026 (AUGUST)  |  PAID 08/14/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Maverick Beverage", "number": "INV1761585", "date": "2026-08-11", "week": "A3", "product": 835.48, "fees": 7.13, "total": 842.61, "status": "paid", "paidOn": "2026-09-09", "due": "2026-09-10", "note": "NET 30 - due 09/10/2026 (AUGUST)  |  PAID 09/09/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Southern Glazer's", "number": "02424848", "date": "2026-08-11", "week": "A3", "product": 622.4, "fees": 47.22, "total": 669.62, "status": "paid", "paidOn": "2026-08-17", "due": "2026-08-18", "note": "due 08/18/2026 (AUGUST)  |  PAID 08/17/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Winebow", "number": "IL1155177", "date": "2026-08-11", "week": "A3", "product": 538.5, "fees": 35.93, "total": 574.43, "status": "paid", "paidOn": "2026-09-09", "due": "2026-09-10", "note": "NET 30 - due 09/10/2026 (AUGUST)  |  PAID 09/09/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Fortune Fish & Gourmet", "number": "609826-26-01", "date": "2026-08-12", "week": "A3", "product": 531.05, "fees": 0.0, "total": 531.05, "status": "paid", "paidOn": "2026-08-14", "due": "2026-08-13", "note": "ACH - due 08/13/2026 (AUGUST)  |  PAID 08/14/2026 per Fortune portal (status Paid, amount $531.05)"}, {"vendor": "Testa Produce", "number": "06232454", "date": "2026-08-12", "week": "A3", "product": 428.55, "fees": 2.95, "total": 431.5, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-02", "note": "due 09/02/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "348524", "date": "2026-08-12", "week": "A3", "product": 360.77, "fees": 51.22, "total": 411.99, "status": "paid", "paidOn": "2026-08-18", "due": "2026-09-11", "note": "NET 30 - due 09/11/2026 (AUGUST)  |  PAID 08/18/2026 ACH ref 21859311-ACH0818"}, {"vendor": "Acorvina & Company", "number": "2046", "date": "2026-08-13", "week": "A3", "product": 470.0, "fees": 41.37, "total": 511.37, "status": "paid", "paidOn": "2026-08-26", "due": "2026-09-12", "note": "NET 30 - due 09/12/2026 (AUGUST)  |  PAID 08/26/2026 per owner confirmation (10/03). Acorvina's 10/02 open-balance report still shows it open - payment not yet applied by the vendor"}, {"vendor": "Breakthru Beverage", "number": "0128375371", "date": "2026-08-13", "week": "A3", "product": 687.83, "fees": 36.27, "total": 724.1, "status": "paid", "paidOn": "2026-08-13", "due": "2026-08-13", "note": "Due on receipt - 08/13/2026 (AUGUST)  |  PAID 08/13/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Fortune Fish & Gourmet", "number": "611871-26-01", "date": "2026-08-13", "week": "A3", "product": 426.47, "fees": 0.0, "total": 426.47, "status": "paid", "paidOn": "2026-08-17", "due": "2026-08-14", "note": "ACH - due 08/14/2026 (AUGUST)  |  PAID 08/17/2026 per Fortune portal (status Paid, amount $426.47)"}, {"vendor": "Allen Brothers", "number": "300595 (Wabash)", "date": "2026-08-14", "week": "A3", "product": 342.52, "fees": 0.0, "total": 342.52, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-21", "note": "NET CASH 7 ACH - due 08/21/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Allen Brothers", "number": "301063", "date": "2026-08-14", "week": "A3", "product": 253.52, "fees": 7.95, "total": 261.47, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-22", "note": "NET CASH 7 ACH - due 08/22/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Allen Brothers", "number": "301065", "date": "2026-08-14", "week": "A3", "product": 832.62, "fees": 7.95, "total": 840.57, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-24", "note": "NET CASH 7 ACH - due 08/24/2026 (AUGUST)  |  PAID IN AUGUST per owner (exact date unknown - Paid On entered as 08/31/2026 so it counts in August)"}, {"vendor": "Closed Loop Farms", "number": "78935", "date": "2026-08-14", "week": "A3", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-08-29", "due": "2026-08-29", "note": "Wholesail autopay (credit card), net 15 - due 08/29/2026 (printed)  |  PAID 08/29/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Cream Wine Company", "number": "522210", "date": "2026-08-14", "week": "A3", "product": 342.0, "fees": 12.31, "total": 354.31, "status": "paid", "paidOn": "2026-08-20", "due": "2026-08-21", "note": "due 08/21/2026 (AUGUST)  |  PAID 08/20/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Fortune Fish & Gourmet", "number": "613567-26-01", "date": "2026-08-14", "week": "A3", "product": 72.89, "fees": 5.0, "total": 77.89, "status": "paid", "paidOn": "2026-08-18", "due": "2026-08-15", "note": "ACH - due 08/15/2026 (AUGUST)  |  PAID 08/18/2026 per Fortune portal (status Paid, amount $77.89)"}, {"vendor": "Fortune Fish & Gourmet", "number": "613572-26-01", "date": "2026-08-14", "week": "A3", "product": 491.32, "fees": 0.0, "total": 491.32, "status": "paid", "paidOn": "2026-08-18", "due": "2026-08-15", "note": "ACH - due 08/15/2026 (AUGUST)  |  PAID 08/18/2026 per Fortune portal (status Paid, amount $491.32)"}, {"vendor": "Testa Produce", "number": "06234063", "date": "2026-08-14", "week": "A3", "product": 360.85, "fees": 2.95, "total": 363.8, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-04", "note": "due 09/04/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "453649", "date": "2026-08-14", "week": "A3", "product": 429.98, "fees": 36.33, "total": 466.31, "status": "paid", "paidOn": "2026-08-18", "due": "2026-09-13", "note": "NET 30 - due 09/13/2026 (AUGUST)  |  PAID 08/18/2026 ACH ref 21859311-ACH0818"}, {"vendor": "Allen Brothers", "number": "301176 (Wabash)", "date": "2026-08-15", "week": "A3", "product": 296.52, "fees": 7.95, "total": 304.47, "status": "paid", "paidOn": "2026-08-28", "due": "2026-08-22", "note": "NET CASH 7 ACH - due 08/22/2026 (AUGUST)  |  PAID 08/28/2026 per Allen Brothers portal"}, {"vendor": "Fortune Fish & Gourmet", "number": "615342-26-01", "date": "2026-08-15", "week": "A3", "product": 1144.85, "fees": 5.0, "total": 1149.85, "status": "paid", "paidOn": "2026-08-18", "due": "2026-08-16", "note": "ACH - due 08/16/2026 (AUGUST)  |  PAID 08/18/2026 per Fortune portal (status Paid, amount $1,149.85)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28229", "date": "2026-08-15", "week": "A3", "product": 165.0, "fees": 0.0, "total": 165.0, "status": "paid", "paidOn": "2026-08-30", "due": "2026-08-30", "note": "NET 15 - PAID IN FULL (was due 08/30/2026) (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06234565", "date": "2026-08-15", "week": "A3", "product": 317.85, "fees": 2.95, "total": 320.8, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-05", "note": "due 09/05/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "Allen Brothers", "number": "301416 (Wabash)", "date": "2026-08-17", "week": "A4", "product": 484.02, "fees": 7.95, "total": 491.97, "status": "paid", "paidOn": "2026-08-28", "due": "2026-08-24", "note": "NET CASH 7 ACH - due 08/24/2026 (AUGUST)  |  PAID 08/28/2026 per Allen Brothers portal"}, {"vendor": "El Condor", "number": "INV.29582", "date": "2026-08-17", "week": "A4", "product": 456.0, "fees": 0.0, "total": 456.0, "status": "paid", "paidOn": "2026-08-31", "due": "2026-08-31", "note": "NET 14 - due 08/31/2026 (AUGUST)  |  PAID 08/31/2026 on its due date (owner confirms)"}, {"vendor": "Fortune Fish & Gourmet", "number": "616843-26-01", "date": "2026-08-17", "week": "A4", "product": 1420.77, "fees": 5.0, "total": 1425.77, "status": "paid", "paidOn": "2026-08-19", "due": "2026-08-18", "note": "ACH - due 08/18/2026 (AUGUST)  |  PAID 08/19/2026 per Fortune portal (status Paid, amount $1,425.77)"}, {"vendor": "Testa Produce", "number": "06235412", "date": "2026-08-17", "week": "A4", "product": 973.25, "fees": 2.95, "total": 976.2, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-07", "note": "due 09/07/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "517283", "date": "2026-08-17", "week": "A4", "product": 1086.54, "fees": 39.82, "total": 1126.36, "status": "paid", "paidOn": "2026-08-25", "due": "2026-09-16", "note": "NET 30 - due 09/16/2026 (AUGUST)  |  PAID 08/25/2026 ACH ref 22059353-ACH0825"}, {"vendor": "Acorvina & Company", "number": "2060", "date": "2026-08-18", "week": "A4", "product": 441.98, "fees": 41.02, "total": 483.0, "status": "paid", "paidOn": "2026-08-26", "due": "2026-09-17", "note": "NET 30 - due 09/17/2026 (AUGUST)  |  PAID 08/26/2026 per owner confirmation (10/03). Acorvina's 10/02 open-balance report still shows it open - payment not yet applied by the vendor"}, {"vendor": "Allen Brothers", "number": "302146 (Wabash)", "date": "2026-08-18", "week": "A4", "product": 478.07, "fees": 7.95, "total": 486.02, "status": "paid", "paidOn": "2026-08-28", "due": "2026-08-25", "note": "NET CASH 7 ACH - due 08/25/2026 (AUGUST)  |  PAID 08/28/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79010", "date": "2026-08-18", "week": "A4", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-02", "due": "2026-09-02", "note": "Wholesail autopay (credit card), net 15 - due 09/02/2026 (printed)  |  PAID 09/02/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Maverick Beverage", "number": "INV1763908", "date": "2026-08-18", "week": "A4", "product": 831.99, "fees": 5.35, "total": 837.34, "status": "paid", "paidOn": "2026-09-16", "due": "2026-09-17", "note": "NET 30 - due 09/17/2026 (AUGUST)  |  PAID 09/16/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Southern Glazer's", "number": "02434068", "date": "2026-08-18", "week": "A4", "product": 587.13, "fees": 29.03, "total": 616.16, "status": "paid", "paidOn": "2026-08-24", "due": "2026-08-25", "note": "due 08/25/2026 (AUGUST)  |  PAID 08/24/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Sysco", "number": "924448952", "date": "2026-08-18", "week": "A4", "product": 1454.74, "fees": 21.52, "total": 1476.26, "status": "paid", "paidOn": "2026-08-24", "due": "2026-08-25", "note": "NET 7 - due 08/25/2026 (AUGUST)  |  PAID 08/24/2026 SyscoPay ACH (BofA 1164) ref 260824-bwdc5dVD"}, {"vendor": "US Foods", "number": "566723", "date": "2026-08-18", "week": "A4", "product": 487.52, "fees": 30.21, "total": 517.73, "status": "paid", "paidOn": "2026-08-25", "due": "2026-09-17", "note": "NET 30 - due 09/17/2026 (AUGUST)  |  PAID 08/25/2026 ACH ref 22059353-ACH0825"}, {"vendor": "Fortune Fish & Gourmet", "number": "621638-26-01", "date": "2026-08-19", "week": "A4", "product": 387.47, "fees": 5.0, "total": 392.47, "status": "paid", "paidOn": "2026-08-21", "due": "2026-08-20", "note": "ACH - due 08/20/2026 (AUGUST)  |  PAID 08/21/2026 per Fortune portal (status Paid, amount $392.47)"}, {"vendor": "Sysco", "number": "124B7935Z", "date": "2026-08-19", "week": "A4", "product": 24.25, "fees": 8.6, "total": 32.85, "status": "paid", "paidOn": "2026-08-24", "due": "2026-08-27", "note": "NET 7 - due 08/27/2026 (AUGUST)  |  PAID 08/24/2026 SyscoPay ACH (BofA 1164) ref 260824-bwdc5dVD"}, {"vendor": "Testa Produce", "number": "06237072", "date": "2026-08-19", "week": "A4", "product": 402.55, "fees": 2.95, "total": 405.5, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-09", "note": "due 09/09/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "Fortune Fish & Gourmet", "number": "623082-26-01", "date": "2026-08-20", "week": "A4", "product": 795.61, "fees": 5.0, "total": 800.61, "status": "paid", "paidOn": "2026-08-24", "due": "2026-08-21", "note": "ACH - due 08/21/2026 (AUGUST)  |  PAID 08/24/2026 per Fortune portal (status Paid, amount $800.61)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28371", "date": "2026-08-20", "week": "A4", "product": 246.0, "fees": 0.0, "total": 246.0, "status": "paid", "paidOn": "2026-09-04", "due": "2026-09-04", "note": "NET 15 - PAID IN FULL (was due 09/04/2026) (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Lakeshore Beverage", "number": "398246", "date": "2026-08-20", "week": "A4", "product": 140.0, "fees": 13.42, "total": 153.42, "status": "paid", "paidOn": "2026-08-21", "due": "2026-08-20", "note": "Due on receipt - 08/20/2026 (AUGUST)  |  PAID 08/21/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Sysco", "number": "124B7943Z", "date": "2026-08-20", "week": "A4", "product": 21.16, "fees": 7.51, "total": 28.67, "status": "paid", "paidOn": "2026-08-24", "due": "2026-08-28", "note": "NET 7 - due 08/28/2026 (AUGUST)  |  PAID 08/24/2026 SyscoPay ACH (BofA 1164) ref 260824-bwdc5dVD"}, {"vendor": "Allen Brothers", "number": "304180 (Wabash)", "date": "2026-08-21", "week": "A4", "product": 593.04, "fees": 7.95, "total": 600.99, "status": "paid", "paidOn": "2026-08-28", "due": "2026-08-28", "note": "NET CASH 7 ACH - due 08/28/2026 (AUGUST)  |  PAID 08/28/2026 per Allen Brothers portal"}, {"vendor": "Allen Brothers", "number": "304615", "date": "2026-08-21", "week": "A4", "product": 963.1, "fees": 7.95, "total": 971.05, "status": "paid", "paidOn": "2026-08-29", "due": "2026-08-31", "note": "NET CASH 7 ACH - due 08/31/2026 (AUGUST)  |  PAID 08/29/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79123", "date": "2026-08-21", "week": "A4", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-05", "due": "2026-09-05", "note": "Wholesail autopay (credit card), net 15 - due 09/05/2026 (printed)  |  PAID 09/05/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "624885-26-01", "date": "2026-08-21", "week": "A4", "product": 513.15, "fees": 5.0, "total": 518.15, "status": "paid", "paidOn": "2026-08-25", "due": "2026-08-22", "note": "ACH - due 08/22/2026 (AUGUST)  |  PAID 08/25/2026 per Fortune portal (status Paid, amount $518.15)"}, {"vendor": "Sysco", "number": "124B7979Z", "date": "2026-08-21", "week": "A4", "product": 186.65, "fees": 37.45, "total": 224.1, "status": "paid", "paidOn": "2026-08-24", "due": "2026-08-29", "note": "NET 7 - due 08/29/2026 (AUGUST)  |  PAID 08/24/2026 SyscoPay ACH (BofA 1164) ref 260824-bwdc5dVD"}, {"vendor": "US Foods", "number": "720757", "date": "2026-08-21", "week": "A4", "product": 406.97, "fees": 27.97, "total": 434.94, "status": "paid", "paidOn": "2026-08-25", "due": "2026-09-20", "note": "NET 30 - due 09/20/2026 (AUGUST)  |  PAID 08/25/2026 ACH ref 22059353-ACH0825"}, {"vendor": "Fortune Fish & Gourmet", "number": "626905-26-01", "date": "2026-08-22", "week": "A4", "product": 1324.58, "fees": 5.0, "total": 1329.58, "status": "paid", "paidOn": "2026-08-25", "due": "2026-08-23", "note": "ACH - due 08/23/2026 (AUGUST)  |  PAID 08/25/2026 per Fortune portal (status Paid, amount $1,329.58)"}, {"vendor": "Acorvina & Company", "number": "2072", "date": "2026-08-24", "week": "A5", "product": 616.98, "fees": 52.86, "total": 669.84, "status": "paid", "paidOn": "2026-08-26", "due": "2026-09-23", "note": "NET 30 - due 09/23/2026 (AUGUST)  |  PAID 08/26/2026 per owner confirmation (10/03). Acorvina's 10/02 open-balance report still shows it open - payment not yet applied by the vendor"}, {"vendor": "Allen Brothers", "number": "305088 (Wabash)", "date": "2026-08-24", "week": "A5", "product": 436.42, "fees": 7.95, "total": 444.37, "status": "paid", "paidOn": "2026-09-04", "due": "2026-08-31", "note": "NET CASH 7 ACH - due 08/31/2026 (AUGUST)  |  PAID 09/04/2026 per Allen Brothers portal"}, {"vendor": "El Condor", "number": "INV.29638", "date": "2026-08-24", "week": "A5", "product": 402.86, "fees": 30.0, "total": 432.86, "status": "paid", "paidOn": "2026-09-07", "due": "2026-09-07", "note": "NET 14 - due 09/07/2026 (AUGUST)  |  PAID 09/07/2026 on its due date (owner confirms)"}, {"vendor": "Fortune Fish & Gourmet", "number": "628822-26-01", "date": "2026-08-24", "week": "A5", "product": 1012.06, "fees": 5.0, "total": 1017.06, "status": "paid", "paidOn": "2026-08-27", "due": "2026-08-25", "note": "ACH - due 08/25/2026 (AUGUST)  |  PAID 08/27/2026 per Fortune portal (status Paid, amount $1,017.06)"}, {"vendor": "Testa Produce", "number": "06237286", "date": "2026-08-24", "week": "A5", "product": 20.2, "fees": 0.0, "total": 20.2, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-14", "note": "due 09/14/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "Testa Produce", "number": "06240049", "date": "2026-08-24", "week": "A5", "product": 878.4, "fees": 2.95, "total": 881.35, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-14", "note": "due 09/14/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "Testa Produce", "number": "06240307", "date": "2026-08-24", "week": "A5", "product": 93.5, "fees": 0.0, "total": 93.5, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-14", "note": "due 09/14/2026 (AUGUST)  |  PAID 09/03/2026 - Testa Produce statement 09/26 payment $5,771.95 cleared every invoice before 08/29 (owner confirms)"}, {"vendor": "US Foods", "number": "783189", "date": "2026-08-24", "week": "A5", "product": 1267.67, "fees": 44.32, "total": 1311.99, "status": "paid", "paidOn": "2026-09-01", "due": "2026-09-23", "note": "NET 30 - due 09/23/2026 (AUGUST)  |  PAID 09/01/2026 ACH ref 22254061-ACH0901"}, {"vendor": "Closed Loop Farms", "number": "79230", "date": "2026-08-25", "week": "A5", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-09", "due": "2026-09-09", "note": "Wholesail autopay (credit card), net 15 - due 09/09/2026 (printed)  |  PAID 09/09/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Maverick Beverage", "number": "INV1766006", "date": "2026-08-25", "week": "A5", "product": 425.41, "fees": 4.52, "total": 429.93, "status": "paid", "paidOn": "2026-09-23", "due": "2026-09-24", "note": "NET 30 - due 09/24/2026 (AUGUST)  |  PAID 09/23/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Southern Glazer's", "number": "02443514", "date": "2026-08-25", "week": "A5", "product": 555.0, "fees": 45.74, "total": 600.74, "status": "paid", "paidOn": "2026-08-31", "due": "2026-09-01", "note": "due 09/01/2026 (AUGUST)  |  PAID 08/31/2026 per alcohol payment portal (Fintech)"}, {"vendor": "US Foods", "number": "835544", "date": "2026-08-25", "week": "A5", "product": 479.94, "fees": 34.52, "total": 514.46, "status": "paid", "paidOn": "2026-09-01", "due": "2026-09-24", "note": "NET 30 - due 09/24/2026 (AUGUST)  |  PAID 09/01/2026 ACH ref 22254061-ACH0901"}, {"vendor": "Allen Brothers", "number": "306414 (Wabash)", "date": "2026-08-26", "week": "A5", "product": 617.17, "fees": 7.95, "total": 625.12, "status": "paid", "paidOn": "2026-09-04", "due": "2026-09-02", "note": "NET CASH 7 ACH - due 09/02/2026 (AUGUST)  |  PAID 09/04/2026 per Allen Brothers portal"}, {"vendor": "Fortune Fish & Gourmet", "number": "635504-26-01", "date": "2026-08-27", "week": "A5", "product": 137.08, "fees": 55.0, "total": 192.08, "status": "paid", "paidOn": "2026-09-01", "due": "2026-08-28", "note": "ACH - due 08/28/2026 (AUGUST)  |  PAID 09/01/2026 per Fortune portal (status Paid, amount $192.08)"}, {"vendor": "US Foods", "number": "940087", "date": "2026-08-27", "week": "A5", "product": 468.15, "fees": 25.31, "total": 493.46, "status": "paid", "paidOn": "2026-09-01", "due": "2026-09-26", "note": "NET 30 - due 09/26/2026 (AUGUST)  |  PAID 09/01/2026 ACH ref 22254061-ACH0901"}, {"vendor": "Allen Brothers", "number": "307746 (Wabash)", "date": "2026-08-28", "week": "A5", "product": 769.01, "fees": 7.95, "total": 776.96, "status": "paid", "paidOn": "2026-09-04", "due": "2026-09-04", "note": "NET CASH 7 ACH - due 09/04/2026 (AUGUST)  |  PAID 09/04/2026 per Allen Brothers portal"}, {"vendor": "Allen Brothers", "number": "308243", "date": "2026-08-28", "week": "A5", "product": 1083.76, "fees": 7.95, "total": 1091.71, "status": "paid", "paidOn": "2026-09-05", "due": "2026-09-07", "note": "NET CASH 7 ACH - due 09/07/2026 (AUGUST)  |  PAID 09/05/2026 per Allen Brothers portal"}, {"vendor": "Allen Brothers", "number": "308263", "date": "2026-08-28", "week": "A5", "product": 511.03, "fees": 7.95, "total": 518.98, "status": "paid", "paidOn": "2026-09-05", "due": "2026-09-05", "note": "NET CASH 7 ACH - due 09/05/2026 (AUGUST)  |  PAID 09/05/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79338", "date": "2026-08-28", "week": "A5", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-12", "due": "2026-09-12", "note": "Wholesail autopay (credit card), net 15 - due 09/12/2026 (printed)  |  PAID 09/12/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Closed Loop Farms", "number": "CM 79697", "date": "2026-08-28", "week": "A5", "product": 0.0, "fees": -45.0, "total": -45.0, "status": "paid", "paidOn": "2026-09-12", "due": null, "note": "CREDIT MEMO - box deposit refund, 15 boxes returned at $3.00  |  USED 09/12/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "637228-26-01", "date": "2026-08-28", "week": "A5", "product": 407.97, "fees": 5.0, "total": 412.97, "status": "paid", "paidOn": "2026-09-01", "due": "2026-08-29", "note": "ACH - due 08/29/2026 (AUGUST)  |  PAID 09/01/2026 per Fortune portal (status Paid, amount $412.97)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28623", "date": "2026-08-28", "week": "A5", "product": 246.0, "fees": 0.0, "total": 246.0, "status": "paid", "paidOn": "2026-09-12", "due": "2026-09-12", "note": "NET 15 - due 09/12/2026 (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Allen Brothers", "number": "308337 (Wabash)", "date": "2026-08-29", "week": "A5", "product": 1502.5, "fees": 7.95, "total": 1510.45, "status": "paid", "paidOn": "2026-09-11", "due": "2026-09-05", "note": "NET CASH 7 ACH - due 09/05/2026 (AUGUST)  |  PAID 09/11/2026 per Allen Brothers portal"}, {"vendor": "Fortune Fish & Gourmet", "number": "639041-26-01", "date": "2026-08-29", "week": "A5", "product": 1074.11, "fees": 5.0, "total": 1079.11, "status": "paid", "paidOn": "2026-09-01", "due": "2026-08-30", "note": "ACH - due 08/30/2026 (AUGUST)  |  PAID 09/01/2026 per Fortune portal (status Paid, amount $1,079.11)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28651", "date": "2026-08-29", "week": "A5", "product": 84.0, "fees": 0.0, "total": 84.0, "status": "paid", "paidOn": "2026-09-13", "due": "2026-09-13", "note": "NET 15 - PAID IN FULL (was due 09/13/2026) (AUGUST)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06244077", "date": "2026-08-29", "week": "A5", "product": 822.55, "fees": 2.95, "total": 825.5, "status": "open", "paidOn": null, "due": "2026-09-19", "note": "due 09/19/2026 (AUGUST)"}, {"vendor": "US Foods", "number": "1010330", "date": "2026-08-29", "week": "A5", "product": 1037.05, "fees": 42.82, "total": 1079.87, "status": "paid", "paidOn": "2026-09-01", "due": "2026-09-28", "note": "NET 30 - due 09/28/2026 (AUGUST)  |  PAID 09/01/2026 ACH ref 22254061-ACH0901"}, {"vendor": "Acorvina & Company", "number": "2084", "date": "2026-08-31", "week": "S1", "product": 567.0, "fees": 53.1, "total": 620.1, "status": "paid", "paidOn": "2026-08-26", "due": "2026-09-30", "note": "NET 30 - due 09/30/2026 (AUGUST)  |  PAID 08/26/2026 per owner confirmation (10/03) - paid five days BEFORE the invoice date, see Watch Items. Acorvina's 10/02 open-balance report still shows it open - payment not yet applied by the vendor"}, {"vendor": "Allen Brothers", "number": "308642 (Wabash)", "date": "2026-08-31", "week": "S1", "product": 438.02, "fees": 7.95, "total": 445.97, "status": "paid", "paidOn": "2026-09-11", "due": "2026-09-07", "note": "NET CASH 7 ACH - due 09/07/2026 (AUGUST)  |  PAID 09/11/2026 per Allen Brothers portal"}, {"vendor": "Allen Brothers", "number": "308669 (Wabash)", "date": "2026-08-31", "week": "S1", "product": 292.03, "fees": 7.95, "total": 299.98, "status": "paid", "paidOn": "2026-09-11", "due": "2026-09-07", "note": "NET CASH 7 ACH - due 09/07/2026 (AUGUST)  |  PAID 09/11/2026 per Allen Brothers portal"}, {"vendor": "Fortune Fish & Gourmet", "number": "640825-26-01", "date": "2026-08-31", "week": "S1", "product": 497.3, "fees": 5.0, "total": 502.3, "status": "paid", "paidOn": "2026-09-02", "due": "2026-09-02", "note": "ACH - due 09/02/2026 (inferred, AUGUST)  |  PAID 09/02/2026 per Fortune portal (status Paid, amount $502.30)"}, {"vendor": "US Foods", "number": "1060670", "date": "2026-08-31", "week": "S1", "product": 115.09, "fees": 1.73, "total": 116.82, "status": "paid", "paidOn": "2026-09-14", "due": "2026-09-30", "note": "NET 30 - due 09/30/2026 (AUGUST invoice)  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Closed Loop Farms", "number": "79446", "date": "2026-09-01", "week": "S1", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-16", "due": "2026-09-16", "note": "Wholesail autopay (credit card), net 15 - due 09/16/2026 (printed)  |  PAID 09/16/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "El Condor", "number": "INV.29714", "date": "2026-09-01", "week": "S1", "product": 279.96, "fees": 30.0, "total": 309.96, "status": "paid", "paidOn": "2026-09-15", "due": "2026-09-15", "note": "NET 14 - due 09/15/2026  |  PAID 09/15/2026 on its due date (owner confirms)"}, {"vendor": "Fortune Fish & Gourmet", "number": "642620-26-01", "date": "2026-09-01", "week": "S1", "product": 373.15, "fees": 5.0, "total": 378.15, "status": "paid", "paidOn": "2026-09-03", "due": "2026-09-03", "note": "ACH - due 09/03/2026 (inferred)  |  PAID 09/03/2026 per Fortune portal (status Paid, amount $378.15)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28747", "date": "2026-09-01", "week": "S1", "product": 81.0, "fees": 0.0, "total": 81.0, "status": "paid", "paidOn": "2026-09-16", "due": "2026-09-16", "note": "NET 15 - due 09/16/2026  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "JDI Imports", "number": "014330", "date": "2026-09-01", "week": "S1", "product": 84.0, "fees": 1.6, "total": 85.6, "status": "paid", "paidOn": "2026-09-15", "due": "2026-09-16", "note": "due 09/16/2026  |  PAID 09/15/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Maverick Beverage", "number": "INV1768031", "date": "2026-09-01", "week": "S1", "product": 575.0, "fees": 3.33, "total": 578.33, "status": "paid", "paidOn": "2026-09-30", "due": "2026-10-01", "note": "NET 30 - due 10/01/2026  |  PAID 09/30/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Maverick Beverage", "number": "INV1768037", "date": "2026-09-01", "week": "S1", "product": 516.18, "fees": 4.05, "total": 520.23, "status": "paid", "paidOn": "2026-09-30", "due": "2026-10-01", "note": "NET 30 - due 10/01/2026  |  PAID 09/30/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Southern Glazer's", "number": "02453071", "date": "2026-09-01", "week": "S1", "product": 495.48, "fees": 33.99, "total": 529.47, "status": "paid", "paidOn": "2026-09-04", "due": "2026-09-08", "note": "due 09/08/2026  |  PAID 09/04/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Testa Produce", "number": "06245285", "date": "2026-09-01", "week": "S1", "product": 524.15, "fees": 2.95, "total": 527.1, "status": "open", "paidOn": null, "due": "2026-09-22", "note": "due 09/22/2026"}, {"vendor": "US Foods", "number": "1102642", "date": "2026-09-01", "week": "S1", "product": 642.45, "fees": 37.49, "total": 679.94, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-01", "note": "NET 30 - due 10/01/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "US Foods", "number": "1102643", "date": "2026-09-01", "week": "S1", "product": 656.68, "fees": 16.54, "total": 673.22, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-01", "note": "NET 30 - due 10/01/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Sysco", "number": "124B8219Z", "date": "2026-09-02", "week": "S1", "product": 42.32, "fees": 15.79, "total": 58.11, "status": "paid", "paidOn": "2026-09-13", "due": "2026-09-10", "note": "NET 7 - due 09/10/2026  |  PAID 09/13/2026 SyscoPay ACH (BofA 1164) ref 260913-OlVZLxYL"}, {"vendor": "Allen Brothers", "number": "310758 (Wabash)", "date": "2026-09-03", "week": "S1", "product": 374.52, "fees": 7.95, "total": 382.47, "status": "paid", "paidOn": "2026-09-11", "due": "2026-09-10", "note": "NET CASH 7 ACH - due 09/10/2026  |  PAID 09/11/2026 per Allen Brothers portal"}, {"vendor": "Fortune Fish & Gourmet", "number": "646718-26-01", "date": "2026-09-03", "week": "S1", "product": 467.56, "fees": 5.0, "total": 472.56, "status": "paid", "paidOn": "2026-09-08", "due": "2026-09-05", "note": "ACH - due 09/05/2026 (inferred)  |  PAID 09/08/2026 per Fortune portal (status Paid, amount $472.56)"}, {"vendor": "Testa Produce", "number": "06246996", "date": "2026-09-03", "week": "S1", "product": 235.7, "fees": 0.0, "total": 235.7, "status": "open", "paidOn": null, "due": "2026-09-24", "note": "due 09/24/2026"}, {"vendor": "US Foods", "number": "1205964", "date": "2026-09-03", "week": "S1", "product": 628.71, "fees": 98.42, "total": 727.13, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-03", "note": "NET 30 - due 10/03/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "US Foods", "number": "CM 2950356", "date": "2026-09-03", "week": "S1", "product": -59.97, "fees": -1.2, "total": -61.17, "status": "paid", "paidOn": "2026-09-14", "due": null, "note": "CREDIT MEMO against inv 1102643  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Allen Brothers", "number": "311789", "date": "2026-09-04", "week": "S1", "product": 782.31, "fees": 7.95, "total": 790.26, "status": "paid", "paidOn": "2026-09-11", "due": "2026-09-15", "note": "NET CASH 7 ACH - due 09/15/2026  |  PAID 09/11/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79554", "date": "2026-09-04", "week": "S1", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-19", "due": "2026-09-19", "note": "Wholesail autopay (credit card), net 15 - due 09/19/2026 (printed)  |  PAID 09/19/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "648742-26-01", "date": "2026-09-04", "week": "S1", "product": 456.38, "fees": 5.0, "total": 461.38, "status": "paid", "paidOn": "2026-09-09", "due": "2026-09-06", "note": "due 09/06/2026 (printed)  |  PAID 09/09/2026 per Fortune portal (status Paid, amount $461.38)"}, {"vendor": "Sysco", "number": "924492659", "date": "2026-09-04", "week": "S1", "product": 1425.95, "fees": 10.0, "total": 1435.95, "status": "paid", "paidOn": "2026-09-13", "due": "2026-09-11", "note": "NET 7 - due 09/11/2026  |  PAID 09/13/2026 SyscoPay ACH (BofA 1164) ref 260913-OlVZLxYL"}, {"vendor": "Fortune Fish & Gourmet", "number": "650598-26-01", "date": "2026-09-05", "week": "S1", "product": 1330.17, "fees": 5.0, "total": 1335.17, "status": "paid", "paidOn": "2026-09-09", "due": "2026-09-07", "note": "due 09/07/2026 (printed)  |  PAID 09/09/2026 per Fortune portal (status Paid, amount $1,335.17)"}, {"vendor": "Fortune Fish & Gourmet", "number": "651445-26-01", "date": "2026-09-05", "week": "S1", "product": 315.97, "fees": 0.0, "total": 315.97, "status": "paid", "paidOn": "2026-09-09", "due": "2026-09-07", "note": "due 09/07/2026 (printed)  |  PAID 09/09/2026 per Fortune portal (status Paid, amount $315.97)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28868", "date": "2026-09-05", "week": "S1", "product": 246.0, "fees": 0.0, "total": 246.0, "status": "paid", "paidOn": "2026-09-20", "due": "2026-09-20", "note": "NET 15 - PAID IN FULL (was due 09/20/2026)  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06248543", "date": "2026-09-05", "week": "S1", "product": 502.7, "fees": 2.95, "total": 505.65, "status": "open", "paidOn": null, "due": "2026-09-26", "note": "due 09/26/2026"}, {"vendor": "US Foods", "number": "1280203", "date": "2026-09-05", "week": "S1", "product": 685.24, "fees": 26.93, "total": 712.17, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-05", "note": "NET 30 - due 10/05/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Acorvina & Company", "number": "2093", "date": "2026-09-08", "week": "S2", "product": 747.96, "fees": 59.97, "total": 807.93, "status": "open", "paidOn": null, "due": "2026-10-08", "note": "NET 30 - due 10/08/2026  |  OPEN per Acorvina open-balance report dated 10/02/2026 (balance $807.93, no payment applied)"}, {"vendor": "Allen Brothers", "number": "312580 (Wabash)", "date": "2026-09-08", "week": "S2", "product": 366.24, "fees": 7.95, "total": 374.19, "status": "paid", "paidOn": "2026-09-18", "due": "2026-09-15", "note": "NET CASH 7 ACH - due 09/15/2026  |  PAID 09/18/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79632", "date": "2026-09-08", "week": "S2", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-23", "due": "2026-09-23", "note": "Wholesail autopay (credit card), net 15 - due 09/23/2026 (printed)  |  PAID 09/23/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "El Condor", "number": "INV.29781", "date": "2026-09-08", "week": "S2", "product": 429.38, "fees": 0.0, "total": 429.38, "status": "paid", "paidOn": "2026-09-22", "due": "2026-09-22", "note": "NET 14 - due 09/22/2026  |  PAID 09/22/2026 on its due date (owner confirms)"}, {"vendor": "Fortune Fish & Gourmet", "number": "652983-26-01", "date": "2026-09-08", "week": "S2", "product": 910.31, "fees": 5.0, "total": 915.31, "status": "paid", "paidOn": "2026-09-10", "due": "2026-09-10", "note": "ACH - due 09/10/2026 (inferred)  |  PAID 09/10/2026 per Fortune portal (status Paid, amount $915.31)"}, {"vendor": "Fortune Fish & Gourmet", "number": "652984-26-01", "date": "2026-09-08", "week": "S2", "product": 66.25, "fees": 0.0, "total": 66.25, "status": "paid", "paidOn": "2026-09-10", "due": "2026-09-10", "note": "ACH - due 09/10/2026 (inferred)  |  PAID 09/10/2026 per Fortune portal (status Paid, amount $66.25)"}, {"vendor": "Four Star Mushrooms", "number": "FSM28940", "date": "2026-09-08", "week": "S2", "product": 84.0, "fees": 0.0, "total": 84.0, "status": "paid", "paidOn": "2026-09-23", "due": "2026-09-23", "note": "NET 15 - due 09/23/2026  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Southern Glazer's", "number": "2462019", "date": "2026-09-08", "week": "S2", "product": 545.24, "fees": 27.39, "total": 572.63, "status": "paid", "paidOn": "2026-09-14", "due": "2026-09-15", "note": "COD Fintech - due 09/15/2026  |  PAID 09/14/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Sysco", "number": "124B8319Z", "date": "2026-09-08", "week": "S2", "product": 42.32, "fees": 15.79, "total": 58.11, "status": "paid", "paidOn": "2026-09-13", "due": "2026-09-16", "note": "NET 7 - due 09/16/2026  |  PAID 09/13/2026 SyscoPay ACH (BofA 1164) ref 260913-OlVZLxYL"}, {"vendor": "Testa Produce", "number": "06249625", "date": "2026-09-08", "week": "S2", "product": 1015.5, "fees": 2.95, "total": 1018.45, "status": "open", "paidOn": null, "due": "2026-09-29", "note": "due 09/29/2026"}, {"vendor": "US Foods", "number": "1363163", "date": "2026-09-08", "week": "S2", "product": 1105.11, "fees": 46.46, "total": 1151.57, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-08", "note": "NET 30 - due 10/08/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Maverick Beverage", "number": "INV1770147", "date": "2026-09-09", "week": "S2", "product": 485.14, "fees": 4.4, "total": 489.54, "status": "open", "paidOn": null, "due": "2026-10-09", "note": "NET 30 Fintech - due 10/09/2026"}, {"vendor": "US Foods", "number": "1405223", "date": "2026-09-09", "week": "S2", "product": 524.93, "fees": 35.82, "total": 560.75, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-09", "note": "NET 30 - due 10/09/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Allen Brothers", "number": "313951", "date": "2026-09-10", "week": "S2", "product": 544.19, "fees": 7.95, "total": 552.14, "status": "paid", "paidOn": "2026-09-19", "due": "2026-09-18", "note": "NET CASH 7 ACH - due 09/18/2026 (ship date cut off on scan)  |  PAID 09/19/2026 per Allen Brothers portal"}, {"vendor": "Allen Brothers", "number": "314014 (Wabash)", "date": "2026-09-10", "week": "S2", "product": 593.04, "fees": 7.95, "total": 600.99, "status": "paid", "paidOn": "2026-09-18", "due": "2026-09-17", "note": "NET CASH 7 ACH - due 09/17/2026  |  PAID 09/18/2026 per Allen Brothers portal"}, {"vendor": "Fortune Fish & Gourmet", "number": "657464-26-01", "date": "2026-09-10", "week": "S2", "product": 631.13, "fees": 5.0, "total": 636.13, "status": "paid", "paidOn": "2026-09-14", "due": "2026-09-12", "note": "ACH - due 09/12/2026 (inferred)  |  PAID 09/14/2026 per Fortune portal (status Paid, amount $636.13)"}, {"vendor": "Testa Produce", "number": "06249823", "date": "2026-09-10", "week": "S2", "product": 24.3, "fees": 0.0, "total": 24.3, "status": "open", "paidOn": null, "due": "2026-10-01", "note": "due 10/01/2026"}, {"vendor": "Testa Produce", "number": "06251269", "date": "2026-09-10", "week": "S2", "product": 232.5, "fees": 2.95, "total": 235.45, "status": "open", "paidOn": null, "due": "2026-10-01", "note": "due 10/01/2026"}, {"vendor": "Allen Brothers", "number": "315260", "date": "2026-09-11", "week": "S2", "product": 1075.19, "fees": 7.95, "total": 1083.14, "status": "paid", "paidOn": "2026-09-19", "due": "2026-09-21", "note": "NET CASH 7 ACH - due 09/21/2026 (7 days from 09/14 ship date)  |  PAID 09/19/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79771", "date": "2026-09-11", "week": "S2", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-26", "due": "2026-09-26", "note": "Wholesail autopay (credit card), net 15 - due 09/26/2026 (printed)  |  PAID 09/26/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "660302-26-01", "date": "2026-09-11", "week": "S2", "product": 850.86, "fees": 5.0, "total": 855.86, "status": "paid", "paidOn": "2026-09-15", "due": "2026-09-13", "note": "due 09/13/2026 (printed)  |  PAID 09/15/2026 per Fortune portal (status Paid, amount $855.86)"}, {"vendor": "Testa Produce", "number": "06251587", "date": "2026-09-11", "week": "S2", "product": 52.0, "fees": 0.0, "total": 52.0, "status": "open", "paidOn": null, "due": "2026-10-02", "note": "due 10/02/2026"}, {"vendor": "Testa Produce", "number": "06252263", "date": "2026-09-11", "week": "S2", "product": 380.65, "fees": 2.95, "total": 383.6, "status": "open", "paidOn": null, "due": "2026-10-02", "note": "due 10/02/2026"}, {"vendor": "US Foods", "number": "1519954", "date": "2026-09-11", "week": "S2", "product": 18.48, "fees": 45.36, "total": 63.84, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-11", "note": "NET 30 - due 10/11/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Allen Brothers", "number": "315303 (Wabash)", "date": "2026-09-12", "week": "S2", "product": 438.02, "fees": 7.95, "total": 445.97, "status": "paid", "paidOn": "2026-09-25", "due": "2026-09-19", "note": "NET CASH 7 ACH - due 09/19/2026  |  PAID 09/25/2026 per Allen Brothers portal"}, {"vendor": "Fortune Fish & Gourmet", "number": "661646-26-01", "date": "2026-09-12", "week": "S2", "product": 716.14, "fees": 5.0, "total": 721.14, "status": "paid", "paidOn": "2026-09-15", "due": "2026-09-14", "note": "ACH - due 09/14/2026 (inferred)  |  PAID 09/15/2026 per Fortune portal (status Paid, amount $721.14)"}, {"vendor": "Four Star Mushrooms", "number": "FSM29067", "date": "2026-09-12", "week": "S2", "product": 165.0, "fees": 0.0, "total": 165.0, "status": "paid", "paidOn": "2026-09-27", "due": "2026-09-27", "note": "NET 15 - due 09/27/2026  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06253082", "date": "2026-09-12", "week": "S2", "product": 252.0, "fees": 2.95, "total": 254.95, "status": "open", "paidOn": null, "due": "2026-10-03", "note": "due 10/03/2026"}, {"vendor": "US Foods", "number": "1538858", "date": "2026-09-12", "week": "S2", "product": 606.85, "fees": 31.15, "total": 638.0, "status": "paid", "paidOn": "2026-09-14", "due": "2026-10-12", "note": "NET 30 - due 10/12/2026  |  PAID 09/14/2026 ACH ref 22606592-ACH0914"}, {"vendor": "Fortune Fish & Gourmet", "number": "663450-26-01", "date": "2026-09-14", "week": "S3", "product": 548.12, "fees": 5.0, "total": 553.12, "status": "paid", "paidOn": "2026-09-16", "due": "2026-09-16", "note": "ACH - due 09/16/2026 (inferred)  |  PAID 09/16/2026 per Fortune portal (status Paid, amount $553.12)"}, {"vendor": "Acorvina & Company", "number": "2107", "date": "2026-09-15", "week": "S3", "product": 525.0, "fees": 47.3, "total": 572.3, "status": "open", "paidOn": null, "due": "2026-10-15", "note": "NET 30 - due 10/15/2026  |  OPEN per Acorvina open-balance report dated 10/02/2026 (balance $572.30, no payment applied)"}, {"vendor": "Allen Brothers", "number": "316315 (Wabash)", "date": "2026-09-15", "week": "S3", "product": 569.62, "fees": 7.95, "total": 577.57, "status": "paid", "paidOn": "2026-09-25", "due": "2026-09-22", "note": "NET CASH 7 ACH - due 09/22/2026  |  PAID 09/25/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79841", "date": "2026-09-15", "week": "S3", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-09-30", "due": "2026-09-30", "note": "Wholesail autopay (credit card), net 15 - due 09/30/2026 (printed)  |  PAID 09/30/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "El Condor", "number": "INV.29845", "date": "2026-09-15", "week": "S3", "product": 268.67, "fees": 30.0, "total": 298.67, "status": "paid", "paidOn": "2026-09-29", "due": "2026-09-29", "note": "NET 14 - due 09/29/2026  |  PAID 09/29/2026 on its due date (owner confirms)"}, {"vendor": "Four Star Mushrooms", "number": "FSM29155", "date": "2026-09-15", "week": "S3", "product": 81.0, "fees": 0.0, "total": 81.0, "status": "paid", "paidOn": "2026-09-30", "due": "2026-09-30", "note": "NET 15 - due 09/30/2026  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Maverick Beverage", "number": "INV1772091", "date": "2026-09-15", "week": "S3", "product": 577.04, "fees": 4.75, "total": 581.79, "status": "open", "paidOn": null, "due": "2026-10-15", "note": "NET 30 Fintech - due 10/15/2026"}, {"vendor": "Southern Glazer's", "number": "2471240", "date": "2026-09-15", "week": "S3", "product": 808.71, "fees": 44.21, "total": 852.92, "status": "paid", "paidOn": "2026-09-21", "due": "2026-09-22", "note": "COD Fintech - due 09/22/2026 (final invoice matches the draft)  |  PAID 09/21/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Testa Produce", "number": "06254716", "date": "2026-09-15", "week": "S3", "product": 303.2, "fees": 2.95, "total": 306.15, "status": "open", "paidOn": null, "due": "2026-10-06", "note": "due 10/06/2026"}, {"vendor": "The Fresh Market", "number": "272-5-153", "date": "2026-09-15", "week": "S3", "product": 9.98, "fees": 0.15, "total": 10.13, "status": "paid", "paidOn": "2026-09-15", "due": "2026-09-15", "note": "Paid at purchase - Mastercard ...6563"}, {"vendor": "US Foods", "number": "1634920", "date": "2026-09-15", "week": "S3", "product": 533.56, "fees": 36.72, "total": 570.28, "status": "paid", "paidOn": "2026-09-22", "due": "2026-10-15", "note": "NET 30 - due 10/15/2026  |  PAID 09/22/2026 ACH ref 22827069-ACH0922"}, {"vendor": "D'Fruta La Vida", "number": "531293", "date": "2026-09-16", "week": "S3", "product": 130.0, "fees": 28.0, "total": 158.0, "status": "paid", "paidOn": "2026-09-16", "due": "2026-09-16", "note": "Due on receipt - 09/16/2026  |  PAID 09/16/2026 (same day as delivery) per owner confirmation (10/03)"}, {"vendor": "JDI Imports", "number": "014341", "date": "2026-09-16", "week": "S3", "product": 168.0, "fees": 3.2, "total": 171.2, "status": "paid", "paidOn": "2026-09-22", "due": "2026-09-23", "note": "due 09/23/2026 (portal PDF; paper copy said COD)  |  PAID 09/22/2026 per alcohol payment portal (Fintech)"}, {"vendor": "US Foods", "number": "1686555", "date": "2026-09-16", "week": "S3", "product": 563.18, "fees": 28.49, "total": 591.67, "status": "paid", "paidOn": "2026-09-22", "due": "2026-10-16", "note": "NET 30 - due 10/16/2026  |  PAID 09/22/2026 ACH ref 22827069-ACH0922"}, {"vendor": "Fortune Fish & Gourmet", "number": "669259-26-01", "date": "2026-09-17", "week": "S3", "product": 286.11, "fees": 5.0, "total": 291.11, "status": "paid", "paidOn": "2026-09-22", "due": "2026-09-19", "note": "ACH - due 09/19/2026 (inferred)  |  PAID 09/22/2026 per Fortune portal (status Paid, amount $291.11)"}, {"vendor": "Allen Brothers", "number": "318460 (Wabash)", "date": "2026-09-18", "week": "S3", "product": 593.04, "fees": 7.95, "total": 600.99, "status": "paid", "paidOn": "2026-09-25", "due": "2026-09-25", "note": "NET CASH 7 ACH - due 09/25/2026  |  PAID 09/25/2026 per Allen Brothers portal"}, {"vendor": "Allen Brothers", "number": "318968", "date": "2026-09-18", "week": "S3", "product": 1004.81, "fees": 7.95, "total": 1012.76, "status": "paid", "paidOn": "2026-09-26", "due": "2026-09-28", "note": "NET CASH 7 ACH - due 09/28/2026 (7 days from 09/21 ship date)  |  PAID 09/26/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "79967", "date": "2026-09-18", "week": "S3", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "paid", "paidOn": "2026-10-03", "due": "2026-10-03", "note": "Wholesail autopay (credit card), net 15 - due 10/03/2026 (printed)  |  PAID 10/03/2026 Wholesail CC autopay (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "671361-26-01", "date": "2026-09-18", "week": "S3", "product": 686.35, "fees": 5.0, "total": 691.35, "status": "paid", "paidOn": "2026-09-22", "due": "2026-09-20", "note": "ACH - due 09/20/2026 (inferred)  |  PAID 09/22/2026 per Fortune portal (status Paid, amount $691.35)"}, {"vendor": "Fortune Fish & Gourmet", "number": "672170-26-01", "date": "2026-09-18", "week": "S3", "product": 241.8, "fees": 0.0, "total": 241.8, "status": "paid", "paidOn": "2026-09-22", "due": "2026-09-20", "note": "ACH - due 09/20/2026 (inferred)  |  PAID 09/22/2026 per Fortune portal (status Paid, amount $241.80)"}, {"vendor": "Four Star Mushrooms", "number": "FSM29257", "date": "2026-09-18", "week": "S3", "product": 165.0, "fees": 0.0, "total": 165.0, "status": "paid", "paidOn": "2026-10-03", "due": "2026-10-03", "note": "NET 15 - due 10/03/2026  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid); paid date set to the NET 15 due date per owner"}, {"vendor": "Testa Produce", "number": "06257010", "date": "2026-09-18", "week": "S3", "product": 630.8, "fees": 2.95, "total": 633.75, "status": "open", "paidOn": null, "due": "2026-10-09", "note": "due 10/09/2026"}, {"vendor": "The Fresh Market", "number": "272-2-89", "date": "2026-09-18", "week": "S3", "product": 7.69, "fees": 0.81, "total": 8.5, "status": "paid", "paidOn": "2026-09-18", "due": "2026-09-18", "note": "Paid at purchase - Visa ...5360"}, {"vendor": "US Foods", "number": "1796626", "date": "2026-09-18", "week": "S3", "product": 1056.4, "fees": 47.43, "total": 1103.83, "status": "paid", "paidOn": "2026-09-22", "due": "2026-10-18", "note": "NET 30 - due 10/18/2026  |  PAID 09/22/2026 ACH ref 22827069-ACH0922"}, {"vendor": "Fortune Fish & Gourmet", "number": "673702-26-01", "date": "2026-09-19", "week": "S3", "product": 787.53, "fees": 5.0, "total": 792.53, "status": "paid", "paidOn": "2026-09-22", "due": "2026-09-21", "note": "ACH - due 09/21/2026 (printed)  |  PAID 09/22/2026 per Fortune portal (status Paid, amount $792.53)"}, {"vendor": "Fortune Fish & Gourmet", "number": "675526-26-01", "date": "2026-09-21", "week": "S4", "product": 579.03, "fees": 5.0, "total": 584.03, "status": "paid", "paidOn": "2026-09-23", "due": "2026-09-23", "note": "ACH - due 09/23/2026 (inferred)  |  PAID 09/23/2026 per Fortune portal (status Paid, amount $584.03)"}, {"vendor": "Acorvina & Company", "number": "2116", "date": "2026-09-22", "week": "S4", "product": 405.0, "fees": 40.78, "total": 445.78, "status": "open", "paidOn": null, "due": "2026-10-22", "note": "NET 30 - due 10/22/2026  |  OPEN per Acorvina open-balance report dated 10/02/2026 (balance $445.78, no payment applied)"}, {"vendor": "Allen Brothers", "number": "320137 (Wabash)", "date": "2026-09-22", "week": "S4", "product": 449.02, "fees": 7.95, "total": 456.97, "status": "paid", "paidOn": "2026-10-02", "due": "2026-09-29", "note": "NET CASH 7 ACH - due 09/29/2026  |  PAID 10/02/2026 per Allen Brothers portal"}, {"vendor": "Big Apple Finer Foods", "number": "733641", "date": "2026-09-22", "week": "S4", "product": 21.5, "fees": 0.0, "total": 21.5, "status": "open", "paidOn": null, "due": "2026-10-22", "note": "NET 30 - due 10/22/2026"}, {"vendor": "Closed Loop Farms", "number": "80043", "date": "2026-09-22", "week": "S4", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "open", "paidOn": null, "due": "2026-10-07", "note": "Wholesail autopay (credit card), net 15 - due 10/07/2026 (printed)"}, {"vendor": "Fortune Fish & Gourmet", "number": "677546-26-01", "date": "2026-09-22", "week": "S4", "product": 344.27, "fees": 5.0, "total": 349.27, "status": "paid", "paidOn": "2026-09-24", "due": "2026-09-24", "note": "ACH - due 09/24/2026 (inferred)  |  PAID 09/24/2026 per Fortune portal (status Paid, amount $349.27)"}, {"vendor": "Four Star Mushrooms", "number": "FSM29386", "date": "2026-09-22", "week": "S4", "product": 84.0, "fees": 0.0, "total": 84.0, "status": "paid", "paidOn": "2026-10-03", "due": "2026-10-07", "note": "NET 15 - due 10/07/2026  |  PAID per Four Star portal 10/03 (only FSM29549 and FSM29649 unpaid). NET 15 due date is 10/07, still ahead, so Paid On = 10/03, the date the portal showed it paid"}, {"vendor": "Maverick Beverage", "number": "INV1774868", "date": "2026-09-22", "week": "S4", "product": 543.82, "fees": 4.4, "total": 548.22, "status": "open", "paidOn": null, "due": "2026-10-22", "note": "NET 30 Fintech - due 10/22/2026"}, {"vendor": "Sysco", "number": "924537499", "date": "2026-09-22", "week": "S4", "product": 169.9, "fees": 34.09, "total": 203.99, "status": "paid", "paidOn": "2026-09-28", "due": "2026-09-29", "note": "NET 7 - due 09/29/2026  |  PAID 09/28/2026 SyscoPay ACH (BofA 1164) ref 260928-ozczdxCa"}, {"vendor": "Testa Produce", "number": "06259731", "date": "2026-09-22", "week": "S4", "product": 725.5, "fees": 2.95, "total": 728.45, "status": "open", "paidOn": null, "due": "2026-10-13", "note": "due 10/13/2026"}, {"vendor": "US Foods", "number": "1911150", "date": "2026-09-22", "week": "S4", "product": 736.12, "fees": 21.04, "total": 757.16, "status": "paid", "paidOn": "2026-09-29", "due": "2026-10-22", "note": "NET 30 - due 10/22/2026  |  PAID 09/29/2026 ACH ref 23012954-ACH0929 (same ACH also paid 1911148, 09/22, $252.89 - an invoice not in the file; ACH total $1,630.71)"}, {"vendor": "El Condor", "number": "INV.29907", "date": "2026-09-23", "week": "S4", "product": 296.59, "fees": 30.0, "total": 326.59, "status": "open", "paidOn": null, "due": "2026-10-07", "note": "NET 14 - due 10/07/2026"}, {"vendor": "Fortune Fish & Gourmet", "number": "678922-26-01", "date": "2026-09-23", "week": "S4", "product": 344.39, "fees": 5.0, "total": 349.39, "status": "paid", "paidOn": "2026-09-25", "due": "2026-09-25", "note": "ACH - due 09/25/2026 (inferred)  |  PAID 09/25/2026 per Fortune portal (status Paid, amount $349.39)"}, {"vendor": "Southern Glazer's", "number": "5799507", "date": "2026-09-23", "week": "S4", "product": 387.66, "fees": 23.41, "total": 411.07, "status": "paid", "paidOn": "2026-09-29", "due": "2026-09-30", "note": "COD Fintech - due 09/30/2026  |  PAID 09/29/2026 per alcohol payment portal (Fintech)"}, {"vendor": "Fortune Fish & Gourmet", "number": "680985-26-01", "date": "2026-09-24", "week": "S4", "product": 479.0, "fees": 5.0, "total": 484.0, "status": "paid", "paidOn": "2026-09-28", "due": "2026-09-26", "note": "ACH - due 09/26/2026 (inferred)  |  PAID 09/28/2026 per Fortune portal (status Paid, amount $484.00)"}, {"vendor": "Allen Brothers", "number": "321819", "date": "2026-09-25", "week": "S4", "product": 504.85, "fees": 7.95, "total": 512.8, "status": "paid", "paidOn": "2026-10-02", "due": "2026-10-03", "note": "NET CASH 7 ACH - due 10/03/2026 (7 days from 09/26 ship date)  |  PAID 10/02/2026 per Allen Brothers portal"}, {"vendor": "Allen Brothers", "number": "322370 (Wabash)", "date": "2026-09-25", "week": "S4", "product": 449.02, "fees": 7.95, "total": 456.97, "status": "paid", "paidOn": "2026-10-02", "due": "2026-10-02", "note": "NET CASH 7 ACH - due 10/02/2026  |  PAID 10/02/2026 per Allen Brothers portal"}, {"vendor": "Closed Loop Farms", "number": "80194", "date": "2026-09-25", "week": "S4", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "open", "paidOn": null, "due": "2026-10-10", "note": "Wholesail autopay (credit card), net 15 - due 10/10/2026 (printed)"}, {"vendor": "Closed Loop Farms", "number": "CM 80501", "date": "2026-09-25", "week": "S4", "product": 0.0, "fees": -39.0, "total": -39.0, "status": "open", "paidOn": null, "due": null, "note": "CREDIT MEMO - box deposit refund, 13 boxes returned at $3.00  |  AVAILABLE - not yet applied (per Wholesail document)"}, {"vendor": "Fortune Fish & Gourmet", "number": "683390-26-01", "date": "2026-09-25", "week": "S4", "product": 545.77, "fees": 5.0, "total": 550.77, "status": "paid", "paidOn": "2026-09-29", "due": "2026-09-27", "note": "ACH - due 09/27/2026 (inferred)  |  PAID 09/29/2026 per Fortune portal (status Paid, amount $550.77)"}, {"vendor": "Testa Produce", "number": "06262695", "date": "2026-09-25", "week": "S4", "product": 532.65, "fees": 2.95, "total": 535.6, "status": "open", "paidOn": null, "due": "2026-10-16", "note": "due 10/16/2026"}, {"vendor": "US Foods", "number": "2066119", "date": "2026-09-25", "week": "S4", "product": 593.04, "fees": 27.62, "total": 620.66, "status": "paid", "paidOn": "2026-09-29", "due": "2026-10-25", "note": "NET 30 - due 10/25/2026  |  PAID 09/29/2026 ACH ref 23012954-ACH0929 (same ACH also paid 1911148, 09/22, $252.89 - an invoice not in the file; ACH total $1,630.71)"}, {"vendor": "Allen Brothers", "number": "322780 (Wabash)", "date": "2026-09-26", "week": "S4", "product": 342.52, "fees": 7.95, "total": 350.47, "status": "open", "paidOn": null, "due": "2026-10-03", "note": "NET CASH 7 ACH - due 10/03/2026"}, {"vendor": "Fortune Fish & Gourmet", "number": "685266-26-01", "date": "2026-09-26", "week": "S4", "product": 688.66, "fees": 5.0, "total": 693.66, "status": "paid", "paidOn": "2026-09-29", "due": "2026-09-28", "note": "ACH - due 09/28/2026 (inferred)  |  PAID 09/29/2026 per Fortune portal (status Paid, amount $693.66)"}, {"vendor": "Four Star Mushrooms", "number": "FSM29549", "date": "2026-09-26", "week": "S4", "product": 84.0, "fees": 0.0, "total": 84.0, "status": "open", "paidOn": null, "due": "2026-10-11", "note": "NET 15 - due 10/11/2026"}, {"vendor": "Testa Produce", "number": "06262903", "date": "2026-09-26", "week": "S4", "product": 22.15, "fees": 0.0, "total": 22.15, "status": "open", "paidOn": null, "due": "2026-10-17", "note": "due 10/17/2026"}, {"vendor": "Testa Produce", "number": "06263580", "date": "2026-09-26", "week": "S4", "product": 564.05, "fees": 2.95, "total": 567.0, "status": "open", "paidOn": null, "due": "2026-10-17", "note": "due 10/17/2026"}, {"vendor": "Allen Brothers", "number": "322891", "date": "2026-09-28", "week": "O1", "product": 1085.38, "fees": 7.95, "total": 1093.33, "status": "open", "paidOn": null, "due": "2026-10-06", "note": "NET CASH 7 ACH - due 10/06/2026 (7 days from 09/29 ship date). Cash-discount price; full price $1,126.13 if not paid by ACH/check."}, {"vendor": "Allen Brothers", "number": "323062 (Wabash)", "date": "2026-09-28", "week": "O1", "product": 593.04, "fees": 7.95, "total": 600.99, "status": "open", "paidOn": null, "due": "2026-10-05", "note": "NET CASH 7 ACH - due 10/05/2026 (7 days from 09/28 ship date). Cash-discount price; full price $619.02. Handwritten \"4/12.34\"(?) on the copy."}, {"vendor": "Fortune Fish & Gourmet", "number": "687659-26-01", "date": "2026-09-28", "week": "O1", "product": 342.89, "fees": 5.0, "total": 347.89, "status": "paid", "paidOn": "2026-09-30", "due": "2026-09-30", "note": "due 09/30/2026 (printed)  |  PAID 09/30/2026 per Fortune portal (status Paid, amount $347.89)"}, {"vendor": "US Foods", "number": "2141157", "date": "2026-09-28", "week": "O1", "product": 101.75, "fees": 1.53, "total": 103.28, "status": "open", "paidOn": null, "due": "2026-10-28", "note": "NET 30 - due 10/28/2026. Vendor-ship (FedEx), no fuel charge. Bill-to KAYAO PNTO, US Foods account 51644649 (same as every US Foods invoice)."}, {"vendor": "Acorvina & Company", "number": "2128", "date": "2026-09-29", "week": "O1", "product": 363.0, "fees": 34.99, "total": 397.99, "status": "open", "paidOn": null, "due": "2026-10-29", "note": "NET 30 - due 10/29/2026  |  OPEN per Acorvina open-balance report dated 10/02/2026 (balance $397.99, no payment applied)"}, {"vendor": "Closed Loop Farms", "number": "80233", "date": "2026-09-29", "week": "O1", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "open", "paidOn": null, "due": "2026-10-14", "note": "Wholesail autopay (credit card), net 15 - due 10/14/2026 (printed)"}, {"vendor": "El Condor", "number": "INV.29959", "date": "2026-09-29", "week": "O1", "product": 149.75, "fees": 30.0, "total": 179.75, "status": "open", "paidOn": null, "due": "2026-10-13", "note": "NET 14 - due 10/13/2026"}, {"vendor": "Fortune Fish & Gourmet", "number": "689748-26-01", "date": "2026-09-29", "week": "O1", "product": 775.79, "fees": 5.0, "total": 780.79, "status": "paid", "paidOn": "2026-10-01", "due": "2026-10-01", "note": "due 10/01/2026 (printed)  |  PAID 10/01/2026 per Fortune portal (status Paid, amount $780.79)"}, {"vendor": "Four Star Mushrooms", "number": "FSM29649", "date": "2026-09-29", "week": "O1", "product": 81.0, "fees": 0.0, "total": 81.0, "status": "open", "paidOn": null, "due": "2026-10-14", "note": "NET 15 - due 10/14/2026. Shown unpaid on the Four Star portal 10/03."}, {"vendor": "Maverick Beverage", "number": "INV1776739", "date": "2026-09-29", "week": "O1", "product": 634.39, "fees": 4.87, "total": 639.26, "status": "open", "paidOn": null, "due": "2026-10-29", "note": "NET 30 - due 10/29/2026"}, {"vendor": "Southern Glazer's", "number": "02490178", "date": "2026-09-29", "week": "O1", "product": 919.22, "fees": 59.44, "total": 978.66, "status": "open", "paidOn": null, "due": "2026-10-06", "note": "due 10/06/2026"}, {"vendor": "Testa Produce", "number": "06264711", "date": "2026-09-29", "week": "O1", "product": 296.25, "fees": 2.95, "total": 299.2, "status": "open", "paidOn": null, "due": "2026-10-20", "note": "due 10/20/2026 (Net 21)"}, {"vendor": "US Foods", "number": "2181567", "date": "2026-09-29", "week": "O1", "product": 515.76, "fees": 39.78, "total": 555.54, "status": "open", "paidOn": null, "due": "2026-10-29", "note": "NET 30 - due 10/29/2026. Signed for 09/29."}, {"vendor": "US Foods", "number": "2181568", "date": "2026-09-29", "week": "O1", "product": 802.13, "fees": 40.5, "total": 842.63, "status": "open", "paidOn": null, "due": "2026-10-29", "note": "NET 30 - due 10/29/2026. No fuel charge (second invoice, same 09/29 route as 2181567). Handwritten 466.7? next to the total."}, {"vendor": "Windy City (Chicago Beverage System)", "number": "101143368", "date": "2026-09-29", "week": "O1", "product": 534.75, "fees": 21.98, "total": 556.73, "status": "paid", "paidOn": "2026-09-30", "due": "2026-09-29", "note": "Due on receipt - 09/29/2026  |  PAID 09/30/2026 per alcohol payment portal (Fintech)"}, {"vendor": "JDI Imports", "number": "014355", "date": "2026-09-30", "week": "O1", "product": 126.0, "fees": 2.4, "total": 128.4, "status": "open", "paidOn": null, "due": "2026-10-06", "note": "due 10/06/2026"}, {"vendor": "Big Apple Finer Foods", "number": "734016", "date": "2026-10-01", "week": "O1", "product": 47.35, "fees": 0.0, "total": 47.35, "status": "open", "paidOn": null, "due": "2026-10-31", "note": "NET 30 - due 10/31/2026"}, {"vendor": "Fortune Fish & Gourmet", "number": "693468-26-01", "date": "2026-10-01", "week": "O1", "product": 274.9, "fees": 5.0, "total": 279.9, "status": "open", "paidOn": null, "due": "2026-10-03", "note": "due 10/03/2026 (printed; ACH +2 days). No payment evidence yet."}, {"vendor": "Fortune Fish & Gourmet", "number": "693955-26-01", "date": "2026-10-01", "week": "O1", "product": 258.98, "fees": 0.0, "total": 258.98, "status": "open", "paidOn": null, "due": "2026-10-03", "note": "ACH - due 10/03/2026 (inferred). No fuel charge on this invoice."}, {"vendor": "Seafood Merchants", "number": "597820", "date": "2026-10-01", "week": "O1", "product": 206.5, "fees": 8.0, "total": 214.5, "status": "open", "paidOn": null, "due": "2026-10-15", "note": "NET 14 - due 10/15/2026 (printed \"Due Before\"). Handwritten 166.5 on the copy - possible $48 caviar credit, see Watch Items."}, {"vendor": "Allen Brothers", "number": "326339", "date": "2026-10-02", "week": "O1", "product": 565.72, "fees": 7.95, "total": 573.67, "status": "open", "paidOn": null, "due": "2026-10-10", "note": "NET CASH 7 ACH - due 10/10/2026 (7 days from 10/03 ship date). Cash-discount price; full price $590.88."}, {"vendor": "Closed Loop Farms", "number": "80372", "date": "2026-10-02", "week": "O1", "product": 40.0, "fees": 16.5, "total": 56.5, "status": "open", "paidOn": null, "due": "2026-10-17", "note": "Wholesail autopay (credit card), net 15 - due 10/17/2026 (printed)"}, {"vendor": "El Condor", "number": "SO-04496", "date": "2026-10-02", "week": "O1", "product": 162.08, "fees": 0.0, "total": 162.08, "status": "open", "paidOn": null, "due": "2026-10-16", "note": "NET 14 - due 10/16/2026. Invoice number torn off the copy; filed under P.O. SO-04496 - replace with the INV. number."}, {"vendor": "Fortune Fish & Gourmet", "number": "696112-26-01", "date": "2026-10-02", "week": "O1", "product": 291.51, "fees": 5.0, "total": 296.51, "status": "open", "paidOn": null, "due": "2026-10-04", "note": "ACH - due 10/04/2026 (inferred). Number torn on the copy; scan label says 696112-26-07."}, {"vendor": "Sysco", "number": "924566637", "date": "2026-10-02", "week": "O1", "product": 1193.01, "fees": 40.14, "total": 1233.15, "status": "open", "paidOn": null, "due": "2026-10-09", "note": "Net 7 - payable on or before 10/09/2026. Tax: $11.45 detergent + $18.45 rinse aid + $0.24 on fuel."}, {"vendor": "Testa Produce", "number": "06267717", "date": "2026-10-02", "week": "O1", "product": 416.15, "fees": 2.95, "total": 419.1, "status": "open", "paidOn": null, "due": "2026-10-23", "note": "due 10/23/2026 (Net 21)"}, {"vendor": "The Fresh Market", "number": "272-4-60", "date": "2026-10-02", "week": "O1", "product": 11.97, "fees": 0.33, "total": 12.3, "status": "paid", "paidOn": "2026-10-02", "due": "2026-10-02", "note": "Paid at purchase - debit card ...3678"}, {"vendor": "US Foods", "number": "2338059", "date": "2026-10-02", "week": "O1", "product": 690.04, "fees": 29.99, "total": 720.03, "status": "open", "paidOn": null, "due": "2026-11-01", "note": "NET 30 - due 11/01/2026. Fuel now $13.00 (was $12.00). Signed for 10/02."}, {"vendor": "Allen Brothers", "number": "326509 (Wabash)", "date": "2026-10-03", "week": "O1", "product": 593.04, "fees": 7.95, "total": 600.99, "status": "open", "paidOn": null, "due": "2026-10-10", "note": "NET CASH 7 ACH - due 10/10/2026 (7 days from 10/03 ship date). Cash-discount price; full price $619.02."}, {"vendor": "Fortune Fish & Gourmet", "number": "697383-26-01", "date": "2026-10-03", "week": "O1", "product": 661.35, "fees": 5.0, "total": 666.35, "status": "open", "paidOn": null, "due": "2026-10-05", "note": "ACH - due 10/05/2026 (inferred)"}, {"vendor": "Fortune Fish & Gourmet", "number": "698088-26-01", "date": "2026-10-03", "week": "O1", "product": 172.75, "fees": 0.0, "total": 172.75, "status": "open", "paidOn": null, "due": "2026-10-05", "note": "ACH - due 10/05/2026 (inferred). No fuel charge."}, {"vendor": "Testa Produce", "number": "06268590", "date": "2026-10-03", "week": "O1", "product": 390.25, "fees": 2.95, "total": 393.2, "status": "open", "paidOn": null, "due": "2026-10-24", "note": "due 10/24/2026 (Net 21)  |  Copy marked RTN on the centerpull towels ($37.60), Testa credit # 439171 - credit memo not received yet."}, {"vendor": "The Fresh Market", "number": "272-3-186", "date": "2026-10-03", "week": "O1", "product": 11.97, "fees": 0.18, "total": 12.15, "status": "paid", "paidOn": "2026-10-03", "due": "2026-10-03", "note": "Paid at purchase - debit card ...3678"}, {"vendor": "Big Apple Finer Foods", "number": "734169", "date": "2026-10-04", "week": "O1", "product": 390.93, "fees": 0.0, "total": 390.93, "status": "open", "paidOn": null, "due": "2026-11-03", "note": "NET 30 - due 11/03/2026"}, {"vendor": "The Fresh Market", "number": "272-4-54", "date": "2026-10-04", "week": "O1", "product": 9.16, "fees": 0.44, "total": 9.6, "status": "paid", "paidOn": "2026-10-04", "due": "2026-10-04", "note": "Paid at purchase - debit card ...3678"}], "watch": [{"tag": "Billing", "title": "Seafood Merchants: caviar may be 2 jars, not 4", "body": "New vendor. 597820 (10/01, $214.50, due 10/15) bills 4 jars of paddlefish caviar at $24.00, but the copy is marked \".48\" and \"166.5\" ($214.50 − $48.00). Ask for a $48.00 credit or confirm 4 jars arrived. Lobster tails also came from Fortune the same day at $27.49/LB vs $26.95 here."}, {"tag": "Open", "title": "El Condor invoice number torn off", "body": "The 10/02 invoice ($162.08, due 10/16) is filed under its P.O., SO-04496, because the INV. number is torn off the copy. Send the number so it can be replaced."}, {"tag": "Billing", "title": "Acorvina has not applied the 08/26 payment", "body": "Owner confirmed 10/03 that 2031, 2036, 2046, 2060, 2072 and 2084 ($3,434.94) were paid 08/26. Acorvina's 10/02 report still shows all ten invoices open ($5,658.94) and lists the 08/26 ACH as $2,477.01, $957.93 less. Ask what that ACH covered, and confirm 2084 (dated 08/31) was a prepayment. Don't pay from their statement."}, {"tag": "Billing", "title": "Testa statement: one invoice and four credits missing", "body": "Statement of 09/26 shows $6,489.10 owed. Not in the file: invoice 06258348 (09/19, $307.75), credits 00437444 −$18.85, 00437779 −$14.45, 00438003 −$52.00, and about $35.45 of August credits. 06244077 ($825.50) past due since 09/19. Also: towels on 06268590 (10/03, $37.60) marked RTN, credit # 439171."}, {"tag": "Billing", "title": "Fortune owes a tuna credit on 685266", "body": "4.25 LB of tuna was marked RETURN (invoice should be $605.30), but 685266 was paid in full, $693.66, on 09/29. Ask for $88.36, or $93.99 if the handwritten $599.67 was the agreed balance."}, {"tag": "Billing", "title": "Fortune veal bones: is credit 677949C owed?", "body": "675526 (09/21) delivered 50 LB of veal bones, $174.50, and 678922 (09/23) notes a pickup against 677949C, which was never uploaded. 675526 was paid in full on 09/23. If it was a return, $174.50 is owed back."}, {"tag": "Billing", "title": "Maverick overcharge on INV1768037", "body": "Only invoice billed at the higher 09/01 wine prices; re-priced it is $44.86 less. It was paid in full ($520.23) on 09/30, so ask for the $44.86 as a credit."}, {"tag": "Billing", "title": "US Foods may have billed 08/01 twice", "body": "Delivery 2889233 ($479.41) and will-call 2890292 ($428.06) carry the same ten lines. ACH of 08/11 paid both. If only one set of goods arrived, $428.06 was overpaid."}, {"tag": "Billing", "title": "Closed Loop: 20 boxes out, $39 credit unused", "body": "51 boxes deposited, 31 returned: $60.00 of deposits still out. Credit CM 80501 (−$39.00) should be applied to 80043, 80194 or 80233 (due 10/07–10/14)."}, {"tag": "Billing", "title": "Windy City: two identical orders, both paid", "body": "101094693 (08/04) and 101143368 (09/29): 15 cases of Cusqueña, $556.73 each. Both paid. If either delivery did not arrive, ask for a credit."}, {"tag": "Billing", "title": "Southern Glazer's \"Summary Level Adjustments\"", "body": "Confirmed 10/02 as the $13.00 delivery plus Cook and Chicago alcohol tax. Invoices without a breakdown (02453071, 02415790, 02424848, 02434068, 02443514, 02490178) stay whole in Freight & Fees."}, {"tag": "Billing", "title": "Wabash 297883: shrimp billed at $0.00", "body": "10 LB of head-on shrimp on 08/10 at .00. If it arrived, expect a rebill of $141.50; if not, nothing is owed. Ask the kitchen."}, {"tag": "Billing", "title": "Four Star: two small invoices open", "body": "Per the portal (10/03) everything is paid except FSM29549 ($84.00, due 10/11) and FSM29649 ($81.00, due 10/14). FSM29649 is now in the file (09/29, O1)."}, {"tag": "Billing", "title": "Testa cherry tomatoes marked RETURN", "body": "06245285 (09/01): 2 bags, $37.70, hand-marked RETURN with claim #434644. Testa's statement shows credit 00437444 (−$18.85, one bag) on this invoice; it is not in the file yet."}, {"tag": "Billing", "title": "Malanga billed twice on 09/11", "body": "Testa 06251587 (short sheet) and 06252263 each billed a $52.00 case. Statement credit 00438003 (−$52.00) cancels 06251587; it needs to be loaded."}, {"tag": "Billing", "title": "Testa re-billed blood sorrel higher", "body": "Shorted 08/19 at $18.05, delivered on the 08/24 short sheet at $20.20. A make-good should carry the original price: ask for $2.15."}, {"tag": "Billing", "title": "Missing US Foods invoices", "body": "1911148 (09/22, $252.89) was paid 09/29 but is not in the file; S4 is understated. July 2721640 ($714.69) and 2672247 ($1,122.66) also missing."}, {"tag": "Billing", "title": "Missing Wabash 312152", "body": "09/05, $600.99, paid 09/18 per the portal, never uploaded. S1 is understated until it is loaded."}, {"tag": "Billing", "title": "Allen Brothers / Wabash cash discount", "body": "All September invoices were paid at the ACH price except Wabash 322780 ($350.47), not on the portal yet. Pre-08/15 invoices were paid in August (entered 08/31); not confirmed whether by ACH, so the discount may not have held."}, {"tag": "Billing", "title": "El Condor $30 delivery fee", "body": "Charged on six of eight invoices, $180.00, and not a simple minimum: $442.46 was charged on 08/03 while $429.38 went free on 09/08. Ask what triggers it."}, {"tag": "Billing", "title": "US Foods under-minimum fees: $175", "body": "$35.00 PRONTO fee on 2889233, 33135, 348524, 1205964 and 1519954. On 09/11 one case of mint ($18.48) carried $45.36 of fees. Fold top-ups into the regular order."}, {"tag": "Billing", "title": "Fortune $50 under-minimum fee", "body": "635504 (08/27): $137.08 top-up order plus $50.00 fee and $5.00 fuel, 40% of the goods."}, {"tag": "Billing", "title": "Small orders carry big freight", "body": "Sysco drop-shipped supplies three days running in August ($29.77 freight on $232.06) and two identical label-roll orders six days apart in September ($58.11 each). Batch supply orders."}, {"tag": "Billing", "title": "US Foods: two invoices, one truck", "body": "1102642 and 1102643 (09/01), same route, stop and driver; one carried a $9.00 fuel charge. US Foods fuel rose from $10.00 to $12.00 on 09/18."}, {"tag": "Billing", "title": "US Foods short shipments", "body": "1102643: 1 gallon of a 4-gallon oil case arrived (credit 2950356, $61.17). 1911150 (09/22) shorted 4 of 11 items; coconut milk and storage bags never came."}, {"tag": "Billing", "title": "Disposables on food orders", "body": "US Foods keeps adding deli containers, bags, towels, liners and gloves to food orders; receiving struck some off (1538858, 1363163) and missed others (napkins on 1405223). Split disposables onto their own order."}, {"tag": "Billing", "title": "Fortune: pay by ACH", "body": "Terms are ACH, due two days after the invoice. From 09/21 Fortune adds 3% to card payments."}, {"tag": "Price", "title": "Pisco: 316 bottles at a flat $13.50", "body": "Acorvina delivers every week, about 35 bottles of Mulita Quebranta. With Zhumir and Taca Blanco: $5,194.88 of product in nine weeks. Ask for a case price."}, {"tag": "Price", "title": "Octopus: 30 cases, $8,895.60", "body": "Every Wabash case at $10.59/LB, $7.95 fuel per invoice: 18 cases in August, 12 in September. A contracted price and fixed delivery day would pay."}, {"tag": "Price", "title": "Mahi swings $16.29 to $28.50", "body": "Fortune $22.49 → $25.49 in August, $16.29 in September. Wabash $26.50–$28.50 in August, $23.50 and $21.99 late August, $17.25 on 09/15. August mahi cost about $1,148 more than at $16.29."}, {"tag": "Price", "title": "Beef tenderloin up 5.3%", "body": "$18.99/LB all August, $19.50 from 09/10, $19.99 on 09/25. Shortrib held at $20.99. Ask Allen Brothers for a held price."}, {"tag": "Price", "title": "Corvina: Wabash $16.99, Fortune $22.59–$24.99", "body": "Fortune's 29.42 LB in August would have cost $208.38 less at the Wabash price. Bought once in September (Fortune, $18.99)."}, {"tag": "Price", "title": "Oysters: six varieties, $0.71 to $1.46 each", "body": "Rappahannock, Maryland, Peach Tree, Patriot, Pink Moon and Beausoleil. Agree which oyster is on the menu and cost the dish at that price."}, {"tag": "Price", "title": "Littlenecks: order the 100 CT bag", "body": "Fortune 100 CT $0.33 a clam; loose $0.39; 50 CT bag $0.46 (bought three days running 09/23–09/25). Wabash 100 CT bags at $0.46: six bags, about $78 over Fortune."}, {"tag": "Price", "title": "Testa limes $34 → $53", "body": "150 CT case: $34.00 early August, $39.00 from 08/17, $53.00 on 09/22 and 09/25 (+56%). US Foods sold one at $48.95 on 09/16."}, {"tag": "Price", "title": "Green onions have doubled", "body": "Testa 48 CT case $24.00 on 08/08 to $48.50 on 09/25. The 12 CT case costs 52% more per bunch than the 48 CT. Price them at US Foods."}, {"tag": "Price", "title": "Avocados: $38.75 to $62.25 a case", "body": "Testa Alejandrina 48 CT $57.75–$62.25, US Foods ripe Hass $41.24–$45.81, Testa Hass $38.75 on 09/26. Compare before ordering."}, {"tag": "Price", "title": "Heavy cream: buy the Testa case", "body": "Testa 12 QT $4.13/QT; US Foods case $4.51–$4.94/QT; singles $5.50–$6.43/QT. Same story for eggs, butter, bok choy and potatoes: split cases cost 29–52% more."}, {"tag": "Price", "title": "Testa prices crept up in September", "body": "Cilantro, peeled garlic, chives and green onions all rose inside two weeks; snow peas $47.75 → $52.50. Malanga by the pound ($1.70) beats the $52.00 case; the kitchen has switched."}, {"tag": "Price", "title": "Sysco yucca bites: 30 cases", "body": "$2,328.50 in five weeks; price went $76.95 → $78.95 under a new item code on 09/04. Confirm the par and ask for the old price. Five more cases on 10/02 ($394.75)."}, {"tag": "Price", "title": "Wabash head-on shrimp up 7.8%", "body": "Kauai 8-12 $14.15/LB in August and early September, $15.25 on 09/22 and 09/25."}, {"tag": "Price", "title": "Maverick: loose Wapisa and changing prices", "body": "Loose Wapisa at $14.00 against the $10.50 case rate: $80.50 extra across 08/05, 08/18 and 08/25. Drouhin Chablis $21 → $30 → $25. Boya Sauvignon Blanc $12.50 → $14.00."}, {"tag": "Price", "title": "Two Sancerres $7 apart", "body": "Delaporte $35.00 (17 bottles) vs Brochard $28.00. One Sancerre on the list would have saved $119.00. A third, Mellot, appeared at $35.00."}, {"tag": "Price", "title": "Fish bones: $0.15, $1.50 or $4.99/LB?", "body": "Fortune billed $1.50 on 08/08 and $0.15 on 09/21 (one is a decimal slip). Wabash billed $4.99 on 08/29."}, {"tag": "Price", "title": "Tuna: one price, three origins", "body": "Fortune 63003100 at $20.79/LB came from the USA, Marshall Islands and Mexico in five days. Wabash big eye was $19.85–$19.99 in August."}, {"tag": "Price", "title": "Lo mein from three sources", "body": "Big Apple $4.30/LB and US Foods $2.59/LB on the same day (09/22); Sysco sold it at $1.46/LB in August."}, {"tag": "Price", "title": "US Foods taxes non-food at 8.5%", "body": "Grocery invoices are taxed 2.00%, beverage and chemical lines 8.50%. Every non-food dollar from US Foods costs 8.5% more."}, {"tag": "Open", "title": "Waiting on your approval", "body": "(1) The 'Seven August invoices' watch item total is stale. (2) Note 13 on Fortune terms (ACH +2 days confirmed). (3) Beer and bar-spend items carry stale totals. (4) Whether to drop A1 from the August and total ratios until July invoices are loaded."}, {"tag": "Open", "title": "A1 ratios read low", "body": "No invoices dated before 08/01, so A1 purchases cover only 08/01–08/02 while A1 sales cover the full week. Load the 07/27–07/31 invoices, or exclude A1."}, {"tag": "Open", "title": "Beer: read by month, not by week", "body": "Cusqueña comes about monthly from Windy City (15 cases on 08/04 and 09/29), plus Lakeshore and JDI. $1,713.50 bought over both months; weekly beer ratios swing from 0% to 51%."}, {"tag": "Open", "title": "Sangria: Wine or Cocktails?", "body": "Purchases code Señor Sangria as Wine; Toast puts sangria in Cocktails & Liquor. Pick one bucket for both sides."}, {"tag": "Open", "title": "Liquid egg white: bar or kitchen?", "body": "$107.12 cases on 09/09 and 09/16, likely for pisco sours. Counted as Food; also queen olives ($128.24). One cell each to change."}, {"tag": "Open", "title": "Cooking wine stays in Food", "body": "Testa white Chablis singles ($17.50) and a 4 GAL case ($53.25). Move them if your P&L counts cooking wine as beverage."}, {"tag": "Open", "title": "Sysco tableware filed as Supply", "body": "924537499 (09/22): $169.90 of drop-shipped tableware plus freight and tax. Say if it belongs in its own category."}, {"tag": "Open", "title": "Ten cases of yucca bites at once", "body": "The largest single product line, $789.50 on 09/04. A freezer decision worth confirming."}, {"tag": "Open", "title": "Fortune delivers almost daily", "body": "$11,295.39 across 21 September invoices, mostly the same mahi, bronzini and tuna, each with $5.00 fuel. A set delivery schedule would cut fees."}, {"tag": "Open", "title": "Wabash: 16 deliveries in 29 days", "body": "$8,672.00 of August product, $119.25 of fuel. Often cheaper than Fortune on tuna, salmon and corvina."}, {"tag": "Open", "title": "Spirits vendors seen once", "body": "Winebow (08/11, 24 bottles of gin), Breakthru (08/13) and Cream Wine (08/14) have no September invoices. Either stock is on the shelf or invoices are missing."}, {"tag": "Open", "title": "Cleaning is almost all dishmachine chemistry", "body": "US Foods 1205964 (09/03): $576.35 of Ecolab detergent and rinse. Testa never shipped the pot & pan soap ordered 09/15."}, {"tag": "Open", "title": "Bottled juice is a bar cost", "body": "Lime juice and Meyer lemon blend ($236.81 on 09/01) are Bar. Staff also bought lime juice and parchment at The Fresh Market on two different cards: find out whose. October: a third card, debit ...3678, paid for three Fresh Market runs 10/02–10/04 ($34.05)."}, {"tag": "Open", "title": "Testa habanero and salal on 09/26", "body": "Probably not a double bill: the short sheet made good the 09/25 short. Only chase if the kitchen did not order salal on 09/26."}, {"tag": "Open", "title": "Repeat buys inside one week", "body": "Garlic, cherry tomatoes, limes, salt, calamari and shrimp were reordered within days. Pars may be too low."}, {"tag": "Open", "title": "White truffle receipt held", "body": "WTSO #23459 (08/10), $101.14: no vendor or bill-to visible, so it is not in the numbers. Send the full page."}, {"tag": "Open", "title": "Corvina disappeared after 09/01", "body": "One Fortune purchase in September after regular August buys. Either it is off the menu or it is bought somewhere not in the pile."}]};
+</script>
+<script>
+/* Kayao purchasing dashboard (built on the Akiro layout). Reads window.KAYAO_DATA. No dependencies. */
+(function () {
+  "use strict";
+  const D = window.KAYAO_DATA;
+  if (!D) { document.getElementById("main").innerHTML = '<p class="hint">The data block did not load. Rebuild this page from the Kayao workbook.</p>'; return; }
+
+  /* ---------- helpers ---------- */
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const sum = a => a.reduce((x, y) => x + (+y || 0), 0);
+  const money = (n, d = 0) => (n < 0 ? "−" : "") + "$" + Math.abs(n).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const money2 = n => money(n, 2);
+  const pct = n => (n * 100).toFixed(1) + "%";
+  const md = s => s ? s.slice(5, 7) + "/" + s.slice(8, 10) : "–";
+  const asOf = new Date(D.asOf + "T12:00:00");
+  const daysTo = s => Math.round((new Date(s + "T12:00:00") - asOf) / 864e5);
+
+  const W = D.weeks;
+  const CATS = ["Food", "Bar", "Supply", "Cleaning"];
+  const CAT_C = { Food: "var(--indigo)", Bar: "var(--amber)", Supply: "var(--stone)", Cleaning: "var(--mist)" };
+  const SUBS = ["Cocktails & liquor", "Beer", "Wine", "Non-alcoholic"];
+  const SUB_C = { "Cocktails & liquor": "var(--liquor)", Beer: "var(--beer)", Wine: "var(--wine)", "Non-alcoholic": "var(--na)" };
+  const DRINK_SALES = ["Cocktails & liquor", "Beer", "Wine", "Non-alcoholic"];
+  const product = i => sum(CATS.map(c => D.categories[c][i]));
+  const hasSales = i => (D.sales.Food || [])[i] > 0;
+  const foodSales = i => (D.sales.Food || [])[i] || 0;
+  const drinkSales = i => sum(DRINK_SALES.map(k => (D.sales[k] || [])[i] || 0));
+  const entered = W.map((w, i) => i).filter(i => W[i].entered);
+  const PARTIAL = new Set(D.partial || []);
+  const isPartial = i => PARTIAL.has(W[i].id);
+  const complete = entered.filter(i => !isPartial(i));
+  const lastIdx = (complete.length ? complete : entered).slice(-1)[0];
+  const partialIds = entered.filter(isPartial).map(i => W[i].id);
+
+  const INV = D.invoices.map(x => ({ ...x }));
+  INV.forEach(x => {
+    x.month = x.week === "PRE" ? "PRE" : x.week === "POST" ? "POST" : (x.week || "")[0] === "A" ? "August" : (x.week || "")[0] === "O" ? "October" : "September";
+    if (x.status === "open") {
+      const d = x.due ? daysTo(x.due) : null;
+      x.bucket = d === null ? "later" : d < 0 ? "past" : d <= 7 ? "soon" : "later";
+      x.dueText = d === null ? "no due date" : d < 0 ? `${-d} day${d === -1 ? "" : "s"} past due` : d === 0 ? "due today" : d <= 7 ? `due in ${d} day${d === 1 ? "" : "s"}` : "due " + md(x.due);
+    }
+  });
+  const OPEN = INV.filter(x => x.status === "open");
+  const VENDORS = D.vendors.map(v => v.name);
+  const allProduct = sum(entered.map(product));
+
+  const statusTag = x => x.status === "paid"
+    ? `<span class="tag paid">paid${x.paidOn ? " " + md(x.paidOn) : ""}</span>`
+    : `<span class="tag ${x.bucket}">${esc(x.dueText)}</span>`;
+
+  /* ---------- theme ---------- */
+  const root = document.documentElement, themeBtn = $("#theme");
+  const curTheme = () => root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const paintTheme = () => { themeBtn.textContent = curTheme() === "dark" ? "☀" : "☾"; themeBtn.setAttribute("aria-label", curTheme() === "dark" ? "Switch to light theme" : "Switch to dark theme"); };
+  try { const t = localStorage.getItem("kayao-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  paintTheme();
+  themeBtn.addEventListener("click", () => { root.dataset.theme = curTheme() === "dark" ? "light" : "dark"; try { localStorage.setItem("kayao-theme", root.dataset.theme); } catch (e) {} paintTheme(); });
+
+  /* ---------- header ---------- */
+  $("#asof").innerHTML = `Updated <b>${asOf.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</b><br>Invoices through ${W[lastIdx].id} (${W[lastIdx].end})${partialIds.length ? ", " + partialIds.join(", ") + " partial" : ""}`;
+  const past = OPEN.filter(x => x.bucket === "past");
+  $("#tab-owed").textContent = past.length || "";
+  $("#tab-owed").setAttribute("aria-label", past.length + " past due");
+  $("#tab-watch").textContent = D.watch.length || "";
+  $("#foot").textContent = `Built from Kayao_Invoices_September_2026.xlsx. Weeks run Monday to Sunday by invoice date. No invoices dated before 08/01 are loaded, so A1 (07/27–08/02) covers 08/01–08/02 only; a week crossing a month end belongs to the month with more of its days, so O1 (09/28–10/04) is October and there is no S5; October weeks O1 to O5 (10/26–11/01).`;
+
+  /* ---------- tooltip ---------- */
+  const tip = $("#tip");
+  const showTip = (html, el) => {
+    tip.innerHTML = html; tip.hidden = false;
+    const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    let x = r.left + r.width / 2 - t.width / 2, y = r.top - t.height - 8;
+    if (y < 8) y = r.bottom + 8;
+    x = Math.max(8, Math.min(x, innerWidth - t.width - 8));
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  };
+  const hideTip = () => { tip.hidden = true; };
+  addEventListener("scroll", hideTip, { passive: true });
+
+  /* ---------- generic sortable table ---------- */
+  function table(host, cols, rows, opts = {}) {
+    const st = host._sort || (host._sort = { key: opts.sortKey || null, dir: opts.sortDir || 1 });
+    const draw = () => {
+      let data = rows.slice();
+      if (st.key) {
+        const c = cols.find(c => c.key === st.key);
+        const val = c.sort || (r => r[c.key]);
+        data.sort((a, b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * st.dir; });
+      }
+      let h = "<table><thead><tr>";
+      cols.forEach(c => {
+        const aria = st.key === c.key ? (st.dir > 0 ? "ascending" : "descending") : "none";
+        h += `<th class="${c.r ? "r " : ""}${c.cls || ""}" aria-sort="${aria}">${c.nosort ? esc(c.label) : `<button class="sort" type="button" data-k="${c.key}">${esc(c.label)}</button>`}</th>`;
+      });
+      h += "</tr></thead><tbody>";
+      if (!data.length) h += `<tr class="empty-row"><td colspan="${cols.length}">${esc(opts.empty || "Nothing matches these filters.")}</td></tr>`;
+      data.forEach((r, i) => {
+        h += `<tr${opts.onRow ? ` class="click" tabindex="0" data-i="${rows.indexOf(r)}"` : ""}>`;
+        cols.forEach(c => { h += `<td class="${c.r ? "r num " : ""}${c.cls || ""}">${c.html ? c.html(r) : esc(r[c.key])}</td>`; });
+        h += "</tr>";
+        if (opts.expand && opts.expanded && opts.expanded.has(r)) h += `<tr class="note"><td colspan="${cols.length}">${opts.expand(r)}</td></tr>`;
+      });
+      h += "</tbody>";
+      if (opts.foot) h += `<tfoot><tr>${opts.foot(data)}</tr></tfoot>`;
+      host.innerHTML = h + "</table>";
+      $$("button.sort", host).forEach(b => b.addEventListener("click", () => {
+        const k = b.dataset.k; st.dir = st.key === k ? -st.dir : 1; st.key = k; draw();
+      }));
+      if (opts.onRow) $$("tr.click", host).forEach(tr => {
+        const go = () => opts.onRow(rows[+tr.dataset.i], draw);
+        tr.addEventListener("click", go);
+        tr.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+      });
+    };
+    draw();
+  }
+
+  function csv(name, cols, rows) {
+    const q = v => { const s = String(v ?? ""); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const text = [cols.map(c => q(c[0])).join(",")].concat(rows.map(r => cols.map(c => q(c[1](r))).join(","))).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: "text/csv" }));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  const hbar = (label, v, tot, color, attrs = "") => {
+    const w = tot ? Math.max(0, v / tot * 100) : 0;
+    const tagName = attrs ? "button" : "div";
+    return `<${tagName} class="hbar" ${attrs}${attrs ? ' type="button"' : ""}><span>${esc(label)}</span><span class="track"><span class="fill" style="width:${w.toFixed(1)}%;background:${color}"></span></span><span class="val num">${money(v)}<small>${tot ? w.toFixed(0) + "%" : ""}</small></span></${tagName}>`;
+  };
+  const legend = (host, items, line) => { host.innerHTML = items.map(([n, c]) => `<span><i class="${line ? "line" : ""}" style="background:${c}"></i>${esc(n)}</span>`).join(""); };
+
+  /* ---------- ratios ---------- */
+  // Kayao rule (as in the workbook): month and total ratios use only the weeks that have sales loaded.
+  function ratiosFor(ix) {
+    ix = ix.filter(hasSales);
+    if (!ix.length) return { food: null, bar: null };
+    return {
+      food: sum(ix.map(i => D.categories.Food[i])) / sum(ix.map(foodSales)),
+      bar: sum(ix.map(i => D.categories.Bar[i])) / sum(ix.map(drinkSales)),
+    };
+  }
+  const salesIx = entered.filter(hasSales);
+  const AVG = ratiosFor(salesIx);
+
+  /* =========================================================
+     OVERVIEW
+     ========================================================= */
+  function renderOverview() {
+    const last = lastIdx, prev = complete[complete.indexOf(last) - 1];
+    const pLast = product(last), pPrev = prev != null ? product(prev) : null;
+    const ch = pPrev ? (pLast - pPrev) / pPrev : null;
+    const r = ratiosFor([last]);
+    const pastSum = sum(past.map(x => x.total));
+    const carry = carryData();
+    const deltaTag = (c, invert) => c === null ? "" : `<span class="delta ${Math.abs(c) < .01 ? "flat" : (c > 0) !== !!invert ? "up" : "down"}">${c > 0 ? "+" : ""}${(c * 100).toFixed(1)}%</span>`;
+    $("#kpis").innerHTML = [
+      `<a class="kpi${past.length ? " alert" : ""}" href="#owed"><div class="l">Still owed</div><div class="v num">${money2(sum(OPEN.map(x => x.total)))}</div><div class="n">${past.length ? `${money2(pastSum)} past due on ${past.length} invoices` : "Nothing past due"}</div></a>`,
+      `<a class="kpi" href="#weeks/${W[last].id}"><div class="l">Spend in ${W[last].id}</div><div class="v num">${money(pLast)}</div><div class="n">${pPrev ? `vs ${W[prev].id} ${deltaTag(ch)}` : ""}</div></a>`,
+      `<a class="kpi" href="#weeks/${W[last].id}"><div class="l">Food ratio, ${W[last].id}</div><div class="v num">${r.food === null ? "–" : pct(r.food)}</div><div class="n">${AVG.food !== null ? "average " + pct(AVG.food) : "No sales figures yet"}</div></a>`,
+      `<a class="kpi" href="#weeks/${W[last].id}"><div class="l">Bar ratio, ${W[last].id}</div><div class="v num">${r.bar === null ? "–" : pct(r.bar)}</div><div class="n">${AVG.bar !== null ? "average " + pct(AVG.bar) : "No sales figures yet"}</div></a>`,
+      `<a class="kpi" href="#owed"><div class="l">Carried from August</div><div class="v num">${money2(carry.total)}</div><div class="n">${money2(carry.open)} still open</div></a>`,
+    ].join("");
+
+    // ledger
+    const maxP = Math.max(...entered.map(product));
+    let h = "";
+    W.forEach((w, i) => {
+      let col = '<span class="col">';
+      if (w.entered) CATS.slice().reverse().forEach(c => { const v = D.categories[c][i]; if (v > 0) col += `<span class="seg-bar" style="height:${(v / maxP * 100).toFixed(2)}%;background:${CAT_C[c]}"></span>`; });
+      else col += '<span class="empty">not in yet</span>';
+      col += "</span>";
+      h += `<button class="wk${isPartial(i) ? " partial" : ""}" type="button" data-i="${i}" ${w.entered ? "" : "disabled"} aria-label="${w.id}, ${w.start} to ${w.end}${w.entered ? ", " + money(product(i)) : ", not uploaded yet"}">${col}<span class="amt num">${w.entered ? money(product(i)) : "&nbsp;"}${isPartial(i) ? '<em class="prog">part week</em>' : ""}</span><span class="id">${w.id}</span><span class="dates">${w.start}–${w.end}</span></button>`;
+    });
+    let col = 1;
+    ["August", "September", "October"].forEach(m => { const n = W.filter(w => w.month === m).length; if (n) { h += `<span class="month" style="grid-column:${col}/${col + n}">${m}</span>`; col += n; } });
+    const L = $("#ledger"); L.innerHTML = h;
+    $$(".wk", L).forEach(b => {
+      const i = +b.dataset.i;
+      b.addEventListener("click", () => { go("weeks/" + W[i].id); });
+      if (!W[i].entered) return;
+      const t = () => `<b>${W[i].id}, ${W[i].start}–${W[i].end}</b>` + CATS.map(c => `<div class="row"><span>${c}</span><span class="num">${money(D.categories[c][i])}</span></div>`).join("") + `<div class="row"><span>${W[i].invoices} invoices${isPartial(i) ? ". " + (D.partialNote || {})[W[i].id] : ""}</span></div>`;
+      b.addEventListener("mouseenter", () => showTip(t(), b)); b.addEventListener("mouseleave", hideTip);
+      b.addEventListener("focus", () => showTip(t(), b)); b.addEventListener("blur", hideTip);
+    });
+    const sc = $(".ledger-scroll"), lb = $(`.wk[data-i="${lastIdx}"]`, L);
+    requestAnimationFrame(() => { if (sc.scrollWidth > sc.clientWidth) sc.scrollLeft = lb.offsetLeft - sc.clientWidth / 2 + lb.offsetWidth / 2; });
+    legend($("#legend"), CATS.map(c => [c, CAT_C[c]]));
+
+    // attention
+    const soon = OPEN.filter(x => x.bucket === "soon");
+    const list = past.concat(soon).sort((a, b) => (a.due || "") < (b.due || "") ? -1 : 1).slice(0, 7);
+    const extra = past.length + soon.length - list.length;
+    $("#attention").innerHTML = list.length
+      ? list.map(x => `<li><span class="who">${esc(x.vendor)} ${esc(x.number)}</span><span class="amt num">${money2(x.total)}</span><span class="what">${statusTag(x)} dated ${md(x.date)}</span><span></span></li>`).join("") + (extra > 0 ? `<li><span class="what">and ${extra} more</span></li>` : "")
+      : `<li class="empty-state">Nothing is past due or due in the next 7 days.</li>`;
+
+    ratioChart();
+  }
+
+  function ratioChart() {
+    const ix = salesIx;
+    if (!ix.length) { $("#ratio-chart").innerHTML = '<p class="hint">Ratios appear once sales figures are in.</p>'; return; }
+    const series = [["Food", ix.map(i => D.categories.Food[i] / foodSales(i)), "var(--indigo)"], ["Bar", ix.map(i => D.categories.Bar[i] / drinkSales(i)), "var(--amber)"]];
+    const Wd = 520, H = 230, pl = 36, pr = 56, pt = 14, pb = 28;
+    const max = Math.max(0.3, Math.ceil(Math.max(...series.flatMap(s => s[1])) * 10) / 10);
+    const x = k => pl + (ix.length === 1 ? (Wd - pl - pr) / 2 : k * (Wd - pl - pr) / (ix.length - 1));
+    const y = v => pt + (1 - v / max) * (H - pt - pb);
+    let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Food and bar purchase ratios by week">`;
+    for (let g = 0; g <= max + 1e-9; g += 0.1) s += `<line class="grid" x1="${pl}" x2="${Wd - pr}" y1="${y(g)}" y2="${y(g)}"/><text x="${pl - 6}" y="${y(g) + 4}" text-anchor="end">${Math.round(g * 100)}%</text>`;
+    ix.forEach((i, k) => { s += `<text x="${x(k)}" y="${H - 8}" text-anchor="middle">${W[i].id}</text>`; });
+    series.forEach(([n, vals, c]) => {
+      s += `<polyline fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round" points="${vals.map((v, k) => x(k) + "," + y(v)).join(" ")}"/>`;
+      vals.forEach((v, k) => { s += `<circle cx="${x(k)}" cy="${y(v)}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"><title>${n} ${W[ix[k]].id}: ${pct(v)}</title></circle>`; });
+      const lv = vals[vals.length - 1];
+      s += `<text class="lab" x="${x(vals.length - 1) + 8}" y="${y(lv) + 4}" style="fill:${c}">${pct(lv)}</text>`;
+    });
+    $("#ratio-chart").innerHTML = s + "</svg>";
+    legend($("#ratio-legend"), series.map(s => [s[0] + " purchases ÷ " + (s[0] === "Food" ? "food" : "drink") + " sales", s[2]]), true);
+  }
+
+  /* =========================================================
+     WEEKS
+     ========================================================= */
+  const SCOPES = W.map((w, i) => ({ key: w.id, label: w.id, ix: [i], disabled: !w.entered, week: i }))
+    .concat([{ key: "aug", label: "August", ix: entered.filter(i => W[i].month === "August") },
+             { key: "sep", label: "September", ix: entered.filter(i => W[i].month === "September") },
+             { key: "oct", label: "October", ix: entered.filter(i => W[i].month === "October") }].filter(s => s.ix.length));
+  let scopeKey = W[lastIdx].id;
+
+  function renderWeeks(key) {
+    if (key) scopeKey = key;
+    const sc = SCOPES.find(s => s.key === scopeKey) || SCOPES[lastIdx];
+    const seg = $("#wk-seg");
+    if (!seg.childElementCount) {
+      seg.innerHTML = SCOPES.map((s, k) => (k === W.length ? '<span class="sep" aria-hidden="true"></span>' : "") + `<button type="button" data-k="${s.key}" ${s.disabled ? "disabled" : ""}>${s.label}</button>`).join("");
+      $$("button", seg).forEach(b => b.addEventListener("click", () => { go("weeks/" + b.dataset.k); }));
+    }
+    $$("button", seg).forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === sc.key)));
+    const active = $(`button[aria-pressed="true"]`, seg); if (active) active.scrollIntoView({ block: "nearest", inline: "center" });
+    const pos = entered.indexOf(sc.week);
+    $("#wk-prev").disabled = !(sc.week != null && pos > 0);
+    $("#wk-next").disabled = !(sc.week != null && pos < entered.length - 1);
+
+    const ix = sc.ix;
+    const S = arr => sum(ix.map(i => arr[i]));
+    const prod = sum(ix.map(product)), fees = S(D.fees), inv = sum(ix.map(i => W[i].invoices));
+    const food = S(D.categories.Food), bar = S(D.categories.Bar);
+    const r = ratiosFor(ix);
+    const noSales = ix.filter(i => !hasSales(i)).map(i => W[i].id);
+    $("#wk-title").textContent = sc.week != null ? `${W[sc.week].id}, ${W[sc.week].start} to ${W[sc.week].end}${isPartial(sc.week) ? " (" + (D.partialNote || {})[W[sc.week].id] + ")" : ""}` : sc.label + ", " + ix.map(i => W[i].id).join(" + ");
+
+    // previous comparable
+    let prev = null;
+    if (sc.week != null && pos > 0) prev = [entered[pos - 1]];
+    const prevP = prev ? sum(prev.map(product)) : null;
+    const dP = prevP ? (prod - prevP) / prevP : null;
+    const pr = prev ? ratiosFor(prev) : null;
+    const pts = (a, b) => a === null || b === null ? "" : `<span class="delta ${Math.abs(a - b) < .002 ? "flat" : a > b ? "up" : "down"}">${a > b ? "+" : "−"}${Math.abs((a - b) * 100).toFixed(1)} pts</span>`;
+    const flag = (v, avg) => v === null || sc.week == null || avg === null ? "" : v > avg * 1.25 ? '<span class="flag hi">high for us</span>' : v < avg * .6 ? '<span class="flag lo">unusually low</span>' : "";
+    const vs = prev ? ` vs ${W[prev[0]].id}` : "";
+    $("#wk-figs").innerHTML = [
+      ["Product spend", money(prod), `${inv} invoices` + (dP !== null ? `${vs} <span class="delta ${Math.abs(dP) < .01 ? "flat" : dP > 0 ? "up" : "down"}">${dP > 0 ? "+" : ""}${(dP * 100).toFixed(1)}%</span>` : "")],
+      ["Freight, fees and tax", money(fees), prod ? pct(fees / prod) + " of product" : ""],
+      ["Food ratio", r.food === null ? "–" : pct(r.food) + flag(r.food, AVG.food), r.food === null ? "No sales figures for this period" : (sc.week == null && noSales.length ? `Without ${noSales.join(", ")} (no sales yet)` : `${money(food)} of food` + (pr ? vs + " " + pts(r.food, pr.food) : ""))],
+      ["Bar ratio", r.bar === null ? "–" : pct(r.bar) + flag(r.bar, AVG.bar), r.bar === null ? "No sales figures for this period" : (sc.week == null && noSales.length ? `Without ${noSales.join(", ")} (no sales yet)` : `${money(bar)} of bar` + (pr ? vs + " " + pts(r.bar, pr.bar) : ""))],
+    ].map(f => `<div class="kpi"><div class="l">${f[0]}</div><div class="v num">${f[1]}</div><div class="n">${f[2]}</div></div>`).join("");
+
+    $("#wk-cats").innerHTML = CATS.map(c => hbar(c, S(D.categories[c]), prod, CAT_C[c])).join("");
+    const bt = sum(SUBS.map(s => S(D.barSub[s])));
+    $("#wk-barstack").innerHTML = bt ? SUBS.map(s => `<span title="${esc(s)}" style="width:${(S(D.barSub[s]) / bt * 100).toFixed(2)}%;background:${SUB_C[s]}"></span>`).join("") : "";
+    $("#wk-bar").innerHTML = SUBS.map(s => hbar(s, S(D.barSub[s]), bt, SUB_C[s])).join("");
+    const vs2 = D.vendors.map(v => ({ n: v.name, t: S(v.weeks) })).filter(v => v.t > 0).sort((a, b) => b.t - a.t);
+    $("#wk-vend").innerHTML = vs2.map(v => hbar(v.n, v.t, prod, "var(--indigo)", `data-v="${esc(v.n)}" aria-label="Open ${esc(v.n)}"`)).join("") || '<p class="hint">No purchases.</p>';
+    $$("#wk-vend .hbar").forEach(b => b.addEventListener("click", () => openVendor(b.dataset.v)));
+
+    const ids = new Set(ix.map(i => W[i].id));
+    const rows = INV.filter(x => ids.has(x.week));
+    $("#wk-inv-sum").textContent = `${rows.length} invoices, ${money2(sum(rows.map(x => x.total)))} including fees and tax`;
+    const host = $("#wk-inv"); host._sort = null;
+    table(host, [
+      { key: "date", label: "Dated", html: x => md(x.date) },
+      { key: "vendor", label: "Vendor" },
+      { key: "number", label: "Invoice", cls: "hide-sm" },
+      { key: "product", label: "Product", r: 1, html: x => money2(x.product), cls: "hide-sm" },
+      { key: "total", label: "Total", r: 1, html: x => money2(x.total) },
+      { key: "status", label: "Status", sort: x => x.status + (x.due || ""), html: statusTag },
+    ], rows, { sortKey: "date" });
+  }
+  $("#wk-prev").addEventListener("click", () => step(-1));
+  $("#wk-next").addEventListener("click", () => step(1));
+  function step(d) {
+    const sc = SCOPES.find(s => s.key === scopeKey); if (!sc || sc.week == null) return;
+    const p = entered.indexOf(sc.week) + d; if (p < 0 || p >= entered.length) return;
+    go("weeks/" + W[entered[p]].id);
+  }
+  addEventListener("keydown", e => {
+    if (current !== "weeks" || e.target.closest("input,select,textarea,dialog")) return;
+    if (e.key === "ArrowLeft") step(-1); if (e.key === "ArrowRight") step(1);
+  });
+
+  /* =========================================================
+     OWED
+     ========================================================= */
+  function carryData() {
+    const isAug = d => d >= "2026-08-01" && d <= "2026-08-30";
+    const paidSep = INV.filter(x => isAug(x.date) && x.status === "paid" && x.paidOn && x.paidOn >= "2026-09-01");
+    const openAug = OPEN.filter(x => isAug(x.date));
+    const p = sum(paidSep.map(x => x.total)), o = sum(openAug.map(x => x.total));
+    return { paidSep, openAug, paid: p, open: o, total: p + o };
+  }
+  const owedState = { bucket: "all", vendor: "" };
+  function renderOwed() {
+    const B = { all: OPEN, past: OPEN.filter(x => x.bucket === "past"), soon: OPEN.filter(x => x.bucket === "soon"), later: OPEN.filter(x => x.bucket === "later") };
+    $("#owed-kpis").innerHTML = [
+      ["Total owed", B.all, ""], ["Past due", B.past, "alert"], ["Due in the next 7 days", B.soon, ""], ["Due later", B.later, ""],
+    ].map(([l, a, c]) => `<div class="kpi ${a.length && c ? c : ""}"><div class="l">${l}</div><div class="v num">${money2(sum(a.map(x => x.total)))}</div><div class="n">${a.length} invoice${a.length === 1 ? "" : "s"}</div></div>`).join("");
+    const chips = $("#owed-chips");
+    chips.innerHTML = [["all", "All"], ["past", "Past due"], ["soon", "Next 7 days"], ["later", "Later"]]
+      .map(([k, l]) => `<button type="button" data-b="${k}" aria-pressed="${owedState.bucket === k}">${l}<span class="c">${B[k].length}</span></button>`).join("");
+    $$("button", chips).forEach(b => b.addEventListener("click", () => { owedState.bucket = b.dataset.b; renderOwed(); }));
+    const sel = $("#owed-vendor");
+    if (!sel.childElementCount) {
+      const vs = [...new Set(OPEN.map(x => x.vendor))].sort();
+      sel.innerHTML = '<option value="">All vendors</option>' + vs.map(v => `<option>${esc(v)}</option>`).join("");
+      sel.addEventListener("change", () => { owedState.vendor = sel.value; renderOwed(); });
+    }
+    const rows = B[owedState.bucket].filter(x => !owedState.vendor || x.vendor === owedState.vendor);
+    const cols = [
+      { key: "vendor", label: "Vendor" },
+      { key: "number", label: "Invoice" },
+      { key: "date", label: "Dated", html: x => `${md(x.date)} <span class="muted">${esc(x.week)}</span>`, cls: "hide-sm" },
+      { key: "due", label: "Status", sort: x => x.due || "9999", html: statusTag },
+      { key: "total", label: "Amount", r: 1, html: x => money2(x.total) },
+    ];
+    table($("#owed-table"), cols, rows, {
+      sortKey: "due", empty: "Nothing owed in this group.",
+      foot: d => `<td colspan="2">${d.length} invoice${d.length === 1 ? "" : "s"}</td><td class="hide-sm"></td><td></td><td class="r num">${money2(sum(d.map(x => x.total)))}</td>`,
+      onRow: x => openVendor(x.vendor),
+    });
+    $("#owed-csv").onclick = () => csv("kayao-owed-" + D.asOf + ".csv",
+      [["Vendor", x => x.vendor], ["Invoice", x => x.number], ["Dated", x => x.date], ["Week", x => x.week], ["Due", x => x.due || ""], ["Status", x => x.dueText], ["Amount", x => x.total.toFixed(2)]], rows);
+
+    const c = carryData();
+    $("#carry").innerHTML = [["Carried into September", c.total], [`Paid in September (${c.paidSep.length})`, c.paid], [`Still open (${c.openAug.length})`, c.open]]
+      .map(([l, v]) => `<div class="kpi"><div class="l">${l}</div><div class="v num">${money2(v)}</div></div>`).join("");
+    const small = [{ key: "vendor", label: "Vendor" }, { key: "number", label: "Invoice" }, { key: "date", label: "Dated", html: x => md(x.date) }];
+    table($("#carry-paid"), small.concat([{ key: "paidOn", label: "Paid", html: x => md(x.paidOn) }, { key: "total", label: "Amount", r: 1, html: x => money2(x.total) }]), c.paidSep,
+      { sortKey: "vendor", foot: d => `<td colspan="4">Total</td><td class="r num">${money2(sum(d.map(x => x.total)))}</td>` });
+    table($("#carry-open"), small.concat([{ key: "due", label: "Status", html: statusTag }, { key: "total", label: "Amount", r: 1, html: x => money2(x.total) }]), c.openAug,
+      { sortKey: "vendor", foot: d => `<td colspan="4">Total</td><td class="r num">${money2(sum(d.map(x => x.total)))}</td>` });
+  }
+
+  /* =========================================================
+     INVOICES
+     ========================================================= */
+  const expanded = new Set();
+  function renderInvoices() {
+    const sel = $("#inv-vendor");
+    if (!sel.childElementCount) {
+      sel.innerHTML = '<option value="">All vendors</option>' + [...new Set(INV.map(x => x.vendor))].sort().map(v => `<option>${esc(v)}</option>`).join("");
+      ["#inv-q", "#inv-month", "#inv-status", "#inv-vendor"].forEach(s => $(s).addEventListener(s === "#inv-q" ? "input" : "change", renderInvoices));
+    }
+    const q = $("#inv-q").value.trim().toLowerCase(), m = $("#inv-month").value, st = $("#inv-status").value, v = sel.value;
+    const rows = INV.filter(x => (!m || x.month === m) && (!st || x.status === st) && (!v || x.vendor === v) &&
+      (!q || (x.vendor + " " + x.number + " " + x.note).toLowerCase().includes(q)));
+    $("#inv-count").textContent = `${rows.length} of ${INV.length} invoices, ${money2(sum(rows.map(x => x.total)))}`;
+    table($("#inv-table"), [
+      { key: "date", label: "Dated", html: x => md(x.date) },
+      { key: "vendor", label: "Vendor" },
+      { key: "number", label: "Invoice" },
+      { key: "week", label: "Week", cls: "hide-sm" },
+      { key: "product", label: "Product", r: 1, html: x => money2(x.product), cls: "hide-sm" },
+      { key: "fees", label: "Fees & tax", r: 1, html: x => money2(x.fees), cls: "hide-sm" },
+      { key: "total", label: "Total", r: 1, html: x => money2(x.total) },
+      { key: "status", label: "Status", sort: x => x.status + (x.due || x.paidOn || ""), html: statusTag },
+    ], rows, {
+      sortKey: "date", expanded, expand: x => esc(x.note || "No notes."),
+      onRow: (x, redraw) => { expanded.has(x) ? expanded.delete(x) : expanded.add(x); redraw(); },
+      foot: d => `<td colspan="3">${d.length} invoices</td><td class="hide-sm"></td><td class="r num hide-sm">${money2(sum(d.map(x => x.product)))}</td><td class="r num hide-sm">${money2(sum(d.map(x => x.fees)))}</td><td class="r num">${money2(sum(d.map(x => x.total)))}</td><td></td>`,
+    });
+    $("#inv-csv").onclick = () => csv("kayao-invoices-" + D.asOf + ".csv",
+      [["Dated", x => x.date], ["Vendor", x => x.vendor], ["Invoice", x => x.number], ["Week", x => x.week], ["Product", x => x.product.toFixed(2)], ["Fees and tax", x => x.fees.toFixed(2)], ["Total", x => x.total.toFixed(2)], ["Status", x => x.status === "paid" ? "Paid" : "Not paid"], ["Paid on", x => x.paidOn || ""], ["Due", x => x.due || ""], ["Note", x => x.note]], rows);
+  }
+
+  /* =========================================================
+     VENDORS
+     ========================================================= */
+  function spark(weeks) {
+    const vm = Math.max(...weeks);
+    return `<span class="spark" aria-hidden="true">${weeks.map((x, i) => !W[i].entered ? '<i class="na"></i>' : x > 0 ? `<i style="height:${Math.max(2, x / vm * 26).toFixed(1)}px"></i>` : '<i class="z"></i>').join("")}</span>`;
+  }
+  function renderVendors() {
+    const rows = D.vendors.map(v => {
+      const inv = INV.filter(x => x.vendor === v.name), op = inv.filter(x => x.status === "open");
+      return { name: v.name, weeks: v.weeks, total: sum(v.weeks), share: sum(v.weeks) / allProduct, count: inv.length, owed: sum(op.map(x => x.total)), past: op.some(x => x.bucket === "past") };
+    });
+    table($("#vend-table"), [
+      { key: "name", label: "Vendor", html: r => esc(r.name) },
+      { key: "weeks", label: "A1 to O5", nosort: 1, html: r => spark(r.weeks), cls: "hide-sm" },
+      { key: "total", label: "To date", r: 1, html: r => money(r.total) },
+      { key: "share", label: "Share", r: 1, html: r => pct(r.share), cls: "hide-sm" },
+      { key: "count", label: "Invoices", r: 1, cls: "hide-sm" },
+      { key: "owed", label: "Owed", r: 1, html: r => r.owed ? `<span class="${r.past ? "tag past" : ""}">${money2(r.owed)}</span>` : '<span class="muted">–</span>' },
+    ], rows, { sortKey: "total", sortDir: -1, onRow: r => openVendor(r.name) });
+  }
+
+  const drawer = $("#drawer");
+  $("#dr-close").addEventListener("click", () => drawer.close());
+  drawer.addEventListener("click", e => { if (e.target === drawer) drawer.close(); });
+  function openVendor(name) {
+    const v = D.vendors.find(v => v.name === name); if (!v) return;
+    const inv = INV.filter(x => x.vendor === name), op = inv.filter(x => x.status === "open");
+    const t = sum(v.weeks), vm = Math.max(...v.weeks, 1);
+    $("#dr-title").textContent = name;
+    let bars = `<div class="ledger" style="min-width:0;grid-template-columns:repeat(${W.length},1fr);padding:0">`;
+    W.forEach((w, i) => { bars += `<div class="wk" style="cursor:default;padding:4px 0"><span class="col" style="height:90px">${w.entered ? (v.weeks[i] > 0 ? `<span class="seg-bar" style="height:${(v.weeks[i] / vm * 100).toFixed(1)}%;background:var(--indigo)" title="${w.id} ${money(v.weeks[i])}"></span>` : "") : '<span class="empty" style="font-size:10px">–</span>'}</span><span class="dates">${w.id}</span></div>`; });
+    bars += "</div>";
+    $("#dr-body").innerHTML = `<div class="kpis"><div class="kpi"><div class="l">Product to date</div><div class="v num">${money(t)}</div><div class="n">${pct(t / allProduct)} of all spend</div></div><div class="kpi ${op.some(x => x.bucket === "past") ? "alert" : ""}"><div class="l">Owed</div><div class="v num">${money2(sum(op.map(x => x.total)))}</div><div class="n">${op.length} open of ${inv.length} invoices</div></div></div><h3 class="mt">Product spend by week</h3>${bars}<h3 class="mt">Invoices</h3><div class="table-wrap" id="dr-inv"></div>`;
+    table($("#dr-inv"), [
+      { key: "date", label: "Dated", html: x => md(x.date) },
+      { key: "number", label: "Invoice" },
+      { key: "total", label: "Total", r: 1, html: x => money2(x.total) },
+      { key: "status", label: "Status", sort: x => x.status + (x.due || x.paidOn || ""), html: statusTag },
+    ], inv, { sortKey: "date", sortDir: -1 });
+    if (!drawer.open) drawer.showModal();
+  }
+
+  /* =========================================================
+     WATCH
+     ========================================================= */
+  function renderWatch() {
+    const groups = [["Billing", "Billing issues", "var(--stamp)"], ["Price", "Price changes", "var(--amber)"], ["Open", "Open questions", "var(--indigo)"]];
+    $("#watch").innerHTML = groups.map(([k, l, c]) => {
+      const items = D.watch.filter(w => w.tag === k); if (!items.length) return "";
+      return `<div class="watch-group"><h2><span class="dot" style="background:${c}"></span>${l}</h2><div class="watch-grid">${items.map(w => `<div class="w" data-tag="${k}"><div class="t">${esc(w.title)}</div><p>${esc(w.body)}</p></div>`).join("")}</div></div>`;
+    }).join("") || '<p class="hint">Nothing on the watch list.</p>';
+  }
+
+  /* =========================================================
+     ROUTER
+     ========================================================= */
+  const VIEWS = { overview: renderOverview, weeks: renderWeeks, owed: renderOwed, invoices: renderInvoices, vendors: renderVendors, watch: renderWatch };
+  const done = new Set();
+  let current = null;
+  // Navigation is handled in JS (not by the browser following "#" links), so tabs also work
+  // where hash navigation is blocked, e.g. file previews and sandboxed frames.
+  let path = "overview";
+  try { path = decodeURIComponent(location.hash.slice(1)) || "overview"; } catch (e) {}
+  function go(p) {
+    path = p || "overview";
+    try { if (location.hash.slice(1) !== path) history.pushState(null, "", "#" + path); } catch (e) {}
+    route();
+  }
+  document.addEventListener("click", e => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const target = link.getAttribute("href").slice(1);
+    if (!VIEWS[target.split("/")[0]]) return; // e.g. the skip link
+    e.preventDefault();
+    go(target);
+  });
+  function route() {
+    hideTip();
+    const [view, arg] = (path || "overview").split("/");
+    const v = VIEWS[view] ? view : "overview";
+    const changed = v !== current;
+    current = v;
+    $$(".view").forEach(s => { s.hidden = s.id !== "view-" + v; });
+    $$("#tabs a").forEach(a => { if (a.dataset.view === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    const tab = $(`#tabs a[data-view="${v}"]`); if (tab) tab.scrollIntoView({ block: "nearest", inline: "nearest" });
+    if (v === "weeks") renderWeeks(arg ? decodeURIComponent(arg) : null);
+    else if (!done.has(v)) { VIEWS[v](); done.add(v); }
+    if (changed) { window.scrollTo(0, 0); $("#main").focus({ preventScroll: true }); }
+    document.title = `Kayao purchasing: ${$(`#tabs a[data-view="${v}"]`).firstChild.textContent.trim()}`;
+  }
+  const fromUrl = () => { try { const h = decodeURIComponent(location.hash.slice(1)); if (h && h !== path) { path = h; route(); } } catch (e) {} };
+  addEventListener("hashchange", fromUrl);
+  addEventListener("popstate", fromUrl);
+  route();
+})();
+
+</script>
+</body>
+</html>
