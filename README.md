@@ -1,57 +1,103 @@
-# Akiro Chicago purchasing dashboard
+Exodo Hospitality — Weekly Performance Ledger
 
-A one-page dashboard for Akiro Chicago (546 N Wells St). It shows what we bought each week, what it cost against sales, what we still owe, and which vendors and prices to watch.
+Internal KPI dashboard for the four Exodo Hospitality venues. A single self-contained HTML page: weekly and monthly sales, cost and labor figures measured against house benchmarks, with vendor-level drill-downs on food and bar cost.
 
-Everything lives in a single file, `index.html`: design, logic and data. No installs, no build step and no other files are needed.
+Live site: https://exodohospitality.github.io/Weekly-Report Access code: Exodo2026 Data currently published: through the week ending 2026-10-04
 
-## What's inside
+Locations covered
+Location	Weeks logged	History begins
+Akiro Hand Roll Bar	54	2025-09-22
+Kayao Restaurant	66	2025-06-30
+Matilda | Clandestino	66	2025-06-30
+Ayayay Mexican Eatery	66	2025-06-30
 
-| Tab | What it shows |
-|---|---|
-| **Overview** | Total still owed, last week's spend compared with the week before, food and bar ratios, the August carry-over, product spend by week, invoices that need attention, and the ratio trend |
-| **Weeks** | Any fiscal week (A1–A4, S1–S5) or a whole month: spend, fees, food and bar ratios, category and bar mix, vendors, and every invoice in the period |
-| **Owed** | Unpaid invoices, filtered by past due, next 7 days or later, and by vendor. Includes the August carry-over. Downloadable as CSV |
-| **Invoices** | Every invoice, with search and filters for month, status and vendor. Tap a row to see its notes. Downloadable as CSV |
-| **Vendors** | Spend to date, share of total, a weekly trend and the amount owed. Tap a vendor for its full invoice history |
-| **Watch list** | Billing issues, price changes and open questions |
+Matilda and Clandestino share a P&L but are tracked separately for labor, so that location shows split BOH, FOH and salaried percentages — Matilda labor measured against Matilda sales, Clandestino against Clandestino sales.
 
-It works on phones, has light and dark modes, and can be used with a keyboard (← and → step through weeks).
+What's on the page
 
-## Viewing it
+Sales overview — gross, net, and the food/bar split, averaged across whatever period is selected.
 
-Download `index.html` and open it in any browser (Chrome, Safari, Edge or Firefox).
+Benchmark scorecard — each KPI against its house target, colored green or red. Food COGS and Bar COGS carry a Detail badge and open a drill-down (see below).
 
-## Publishing on GitHub Pages
+Trend charts — gross vs. net sales, food/bar mix, dinner vs. brunch average check, then every cost and labor KPI plotted against its benchmark line.
 
-1. Create a repository and upload `index.html` (and this README) to its root.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`, then **Save**.
-4. After a minute or two the dashboard is live at `https://<your-username>.github.io/<repository-name>/`.
+Raw ledger — the full weekly table, collapsed by default.
 
-> The file must be named `index.html` for GitHub Pages to open it automatically. If you keep another name, add it to the end of the address, for example `.../akiro-dashboard.html`.
+Benchmarks
+KPI	Target
+Discount %	≤ 2%
+Food COGS	≤ 25%
+Bar COGS	≤ 18%
+FOH labor	≤ 8%
+BOH labor	≤ 12%
+Salaried	≤ 10%
+Prime cost	≤ 55%
+Controls
+Location — switches venue.
+Weekly / Monthly — monthly figures are rolled up from the weeks currently in range, so a partial month reports only the weeks you selected, never a full month.
+From week / To week — lists the actual weeks present in the workbook. The two stay ordered; picking the same week in both shows a single week. All weeks resets.
+Update from Excel — see below.
+Food and Bar COGS drill-downs
 
-## Weekly updates
+Clicking either card opens a popup built from the per-vendor detail tabs:
 
-1. Send the week's invoices, payment statements and POS ProductMix sales report to be entered in the purchasing workbook.
-2. You receive a new `index.html` with the updated numbers.
-3. In the repository, choose **Add file → Upload files** and upload the new file with the same name. Commit the change.
-4. GitHub Pages redeploys automatically. Refresh the page after a minute or two.
+Food — purchases by vendor (Sysco, Fortune Fish, Allen Brothers, and so on), as a stacked weekly chart plus a share-of-spend table.
+Bar — the bar tabs carry sales and purchases per category, so this popup also shows COGS % per category (Cocktails/Liquor, Beer, Wine, Non-Alcoholic, plus Sake at Akiro).
 
-The top-right corner of the dashboard shows the "Updated" date and the last week included, so you can confirm the new version is live.
+The badge only appears when detail rows exist for the selected weeks, so it hides for Ayayay and for date ranges outside the itemized period.
 
-## Privacy
+Updating the data
 
-A GitHub Pages site is **public to anyone who has the link**, even if the repository itself is private (unless you are on GitHub Enterprise with private Pages).
+The page reads the workbook in your browser. Nothing is uploaded anywhere, and the file is never written back to.
 
-This dashboard contains vendor names, invoice amounts and sales figures. If those should stay private, either:
+Looking at new numbers yourself
+Open the dashboard, enter the access code.
+Click Update from Excel and pick Exodo weekly sales log.xlsx.
+Everything redraws — cards, charts, monthly rollups, ledger, popups.
 
-- keep the repository private and open `index.html` from your computer, or
-- host it somewhere that requires a login.
+The status line under the heading confirms what loaded.
 
-## How to read the numbers
+This is view-only and temporary. Refreshing the page reverts to the data baked into the file, and nobody else sees your upload. To change what everyone sees, the file in this repository has to be replaced.
 
-- **Fiscal weeks** run Monday to Sunday. August is A1–A4 (08/03–08/30); September is S1–S5 (08/31–10/04).
-- **"August" invoices** are those dated 08/01 to 08/30. Invoices dated 08/31 fall in S1 and count as September.
-- **Ratios** are purchases divided by net sales for the same days. They are purchase ratios, not food cost: stock on hand is not counted.
-- **Past due** is measured from the dashboard's "Updated" date, not today's date.
-- **Paid** means payment was confirmed by a statement, a payment portal, a paid stamp on the invoice, or the owner. A past due date alone never marks an invoice paid.
+Publishing an update for everyone
+
+Replace index.html in this repository with a rebuilt copy, then commit. GitHub Pages redeploys in about a minute.
+
+After publishing, confirm it took: open the site and read the small grey line under the "Exodo Hospitality" heading. It states the data date. If it still shows the old one, your browser is serving a cached copy — open the URL with ?v=2 on the end (bump the number each time), or hard refresh with Ctrl+Shift+R / Cmd+Shift+R.
+
+How the workbook is read
+
+The parser matches column headers by name, not position, so columns can be inserted or reordered safely. Renaming a header silently drops that field to zero.
+
+Tabs read:
+
+Tab	Used for
+Akiro Hand Roll Bar, Kayao Restaurant, Matilda & Clandestino, Ayayay Mexican Eatery	all weekly KPIs
+Akiro Food, Kayao Food, Matilda Food	food vendor drill-down
+Akiro Bar, Kayao Bar, Matilda Bar	bar category drill-down
+
+Hoja 11, Payrolls W2 and Bonus are ignored. New vendor columns are picked up automatically. Adding Ayayay Food / Ayayay Bar tabs in the same shape would give Ayayay drill-downs with no code change.
+
+Monthly figures are always computed, never read from the sheet — weekly rows are bucketed by the start date's month. Percentages use the correct denominators: COGS over its own sales line, labor over net sales, Matilda/Clandestino splits over their respective sales.
+
+Known data caveats
+
+Detail tabs lag the main tabs. The six vendor tabs currently cover 8 weeks ending 2026-09-27, while the main tabs run to 2026-10-04. Nothing breaks — the popups label their own range — but the most recent weeks have no vendor breakdown.
+
+Detail totals don't reconcile with the main tabs. Vendor purchases and the main tab's Food cost / Bar cost disagree for the same weeks. Food has converged to roughly 1–3%, but bar still runs 5–15% apart. The popups state the gap whenever it appears. The KPI cards and charts always use the main tab figure. The persistence of the bar gap suggests a supplier or category missing from the bar detail tabs rather than invoice timing — worth resolving at the source.
+
+Ayayay has no detail tabs, so its COGS cards have no drill-down.
+
+Security
+
+The access code is not real protection. It is a string compared in JavaScript, in a file served publicly. Anyone who opens the page source can read both the code and every figure without ever seeing the prompt. It deters a glance over the shoulder, nothing more.
+
+GitHub Pages cannot be made private on the free plan — Pages serves from public repositories on GitHub Free, and genuinely private publication requires GitHub Enterprise Cloud. If this data needs actual access control, host it behind an authentication gateway instead; Cloudflare Pages with a Cloudflare Access policy does this on a free tier and emails a one-time code to addresses you approve.
+
+Treat the published URL as public, and share it accordingly.
+
+Technical notes
+
+Single file, no build step, no dependencies to install. Two libraries load from CDN: Chart.js 4.4.1 for the charts, SheetJS 0.18.5 for reading workbooks in the browser. Fonts come from Google Fonts. All data is embedded in the page as a JSON object.
+
+The layout works on a phone — cards drop to two columns and charts stack — but the 11-column ledger table needs horizontal scrolling. It's built for a desktop screen.
